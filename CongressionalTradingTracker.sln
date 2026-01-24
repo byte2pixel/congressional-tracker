@@ -1,0 +1,48 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.0.0
+MinimumVisualStudioVersion = 17.8.0.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressionalTradingTracker.AppHost", "CongressionalTradingTracker.AppHost\CongressionalTradingTracker.AppHost.csproj", "{E3F64F52-8F77-4A0F-94C6-2D99E6565EB1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressionalTradingTracker.ServiceDefaults", "CongressionalTradingTracker.ServiceDefaults\CongressionalTradingTracker.ServiceDefaults.csproj", "{E3204FD5-EEB6-49B2-B414-6D63418FF3DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressionalTradingTracker.ApiService", "CongressionalTradingTracker.ApiService\CongressionalTradingTracker.ApiService.csproj", "{EE997D46-92F2-4F12-A97D-03A9D63234EA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressionalTradingTracker.Tests", "CongressionalTradingTracker.Tests\CongressionalTradingTracker.Tests.csproj", "{710F9BF5-1594-4D69-A5D4-8C46B41C9C51}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressionalTradingTracker.Web", "CongressionalTradingTracker.Web\CongressionalTradingTracker.Web.csproj", "{1BE1FE39-0998-42A8-A008-CDE4621E9927}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3F64F52-8F77-4A0F-94C6-2D99E6565EB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3F64F52-8F77-4A0F-94C6-2D99E6565EB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3F64F52-8F77-4A0F-94C6-2D99E6565EB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3F64F52-8F77-4A0F-94C6-2D99E6565EB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3204FD5-EEB6-49B2-B414-6D63418FF3DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3204FD5-EEB6-49B2-B414-6D63418FF3DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3204FD5-EEB6-49B2-B414-6D63418FF3DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3204FD5-EEB6-49B2-B414-6D63418FF3DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE997D46-92F2-4F12-A97D-03A9D63234EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE997D46-92F2-4F12-A97D-03A9D63234EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE997D46-92F2-4F12-A97D-03A9D63234EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE997D46-92F2-4F12-A97D-03A9D63234EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{710F9BF5-1594-4D69-A5D4-8C46B41C9C51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{710F9BF5-1594-4D69-A5D4-8C46B41C9C51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{710F9BF5-1594-4D69-A5D4-8C46B41C9C51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{710F9BF5-1594-4D69-A5D4-8C46B41C9C51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BE1FE39-0998-42A8-A008-CDE4621E9927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BE1FE39-0998-42A8-A008-CDE4621E9927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BE1FE39-0998-42A8-A008-CDE4621E9927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BE1FE39-0998-42A8-A008-CDE4621E9927}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9889DB9A-64E9-440F-9C0C-32AC9A62A136}
+	EndGlobalSection
+EndGlobal
