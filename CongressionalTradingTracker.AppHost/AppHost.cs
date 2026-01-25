@@ -1,12 +1,17 @@
-var builder = DistributedApplication.CreateBuilder(args);
+IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
 
-var apiService = builder.AddProject<Projects.CongressionalTradingTracker_ApiService>("apiservice")
+var postgres = builder
+    .AddPostgres("postgres")
+    .WithDataVolume(isReadOnly: false)
+    .WithPgAdmin(a => a.WithHostPort(5050));
+var postgresdb = postgres.AddDatabase("CongressTradingDb");
+
+var apiService = builder
+    .AddProject<Projects.CongressionalTradingTracker_ApiService>("apiservice")
+    .WithReference(postgresdb)
+    .WaitFor(postgresdb)
     .WithHttpHealthCheck("/health");
 
-builder.AddProject<Projects.CongressionalTradingTracker_Web>("webfrontend")
-    .WithExternalHttpEndpoints()
-    .WithHttpHealthCheck("/health")
-    .WithReference(apiService)
-    .WaitFor(apiService);
+var frontend = builder.AddViteApp("frontend", "../frontend");
 
-builder.Build().Run();
+await builder.Build().RunAsync();

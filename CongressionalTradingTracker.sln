@@ -10,7 +10,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressionalTradingTracker
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressionalTradingTracker.Tests", "CongressionalTradingTracker.Tests\CongressionalTradingTracker.Tests.csproj", "{710F9BF5-1594-4D69-A5D4-8C46B41C9C51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongressionalTradingTracker.Web", "CongressionalTradingTracker.Web\CongressionalTradingTracker.Web.csproj", "{1BE1FE39-0998-42A8-A008-CDE4621E9927}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{9FE45DCF-12F8-41BB-98CA-F7CDF47E8C31}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Packages.props = Directory.Packages.props
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongressionalTradingTracker.Domain", "CongressionalTradingTracker.Domain\CongressionalTradingTracker.Domain.csproj", "{876D3B93-59EE-4FA3-9ED9-9AE1CA47F4FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,10 +42,10 @@ Global
 		{710F9BF5-1594-4D69-A5D4-8C46B41C9C51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{710F9BF5-1594-4D69-A5D4-8C46B41C9C51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{710F9BF5-1594-4D69-A5D4-8C46B41C9C51}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1BE1FE39-0998-42A8-A008-CDE4621E9927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BE1FE39-0998-42A8-A008-CDE4621E9927}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1BE1FE39-0998-42A8-A008-CDE4621E9927}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1BE1FE39-0998-42A8-A008-CDE4621E9927}.Release|Any CPU.Build.0 = Release|Any CPU
+		{876D3B93-59EE-4FA3-9ED9-9AE1CA47F4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{876D3B93-59EE-4FA3-9ED9-9AE1CA47F4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{876D3B93-59EE-4FA3-9ED9-9AE1CA47F4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{876D3B93-59EE-4FA3-9ED9-9AE1CA47F4FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
