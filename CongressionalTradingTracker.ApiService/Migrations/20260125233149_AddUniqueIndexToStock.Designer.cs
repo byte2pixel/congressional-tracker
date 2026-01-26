@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CongressionalTradingTracker.ApiService.Migrations
 {
     [DbContext(typeof(TradeDbContext))]
-    [Migration("20260125030530_initial")]
-    partial class initial
+    [Migration("20260125233149_AddUniqueIndexToStock")]
+    partial class AddUniqueIndexToStock
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,9 @@ namespace CongressionalTradingTracker.ApiService.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("StockId");
+
+                    b.HasIndex("Symbol")
+                        .IsUnique();
 
                     b.ToTable("Stocks");
                 });

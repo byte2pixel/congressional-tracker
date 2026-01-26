@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CongressionalTradingTracker.ApiService\CongressionalTradingTracker.ApiService.csproj" />
+    <ProjectReference Include="..\CongressionalTradingTracker.MigrationService\CongressionalTradingTracker.MigrationService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

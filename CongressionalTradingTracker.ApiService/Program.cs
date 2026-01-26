@@ -1,11 +1,10 @@
 using CongressionalTradingTracker.ApiService.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
-var connectionString = builder.Configuration.GetConnectionString("CongressTradingDb");
-Console.WriteLine($"Connection string: {connectionString ?? "NULL"}");
 builder.AddNpgsqlDbContext<TradeDbContext>("CongressTradingDb");
 
 // Add services to the container.
@@ -13,11 +12,26 @@ builder.Services.AddProblemDetails();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+// add policy to allow cors from all origins (for frontend development)
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: "Frontend",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    );
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
+app.UseCors("Frontend");
 
 if (app.Environment.IsDevelopment())
 {
@@ -68,9 +82,18 @@ app.MapGet(
     )
     .WithName("HealthCheck");
 
+app.MapGet(
+    "/api/stock",
+    async (TradeDbContext db) =>
+    {
+        var stocks = await db.Stocks.ToListAsync();
+        return Results.Ok(stocks);
+    }
+);
+
 app.MapDefaultEndpoints();
 
-app.Run();
+await app.RunAsync();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {

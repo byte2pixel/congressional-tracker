@@ -9,4 +9,10 @@ public class TradeDbContext : DbContext
 
     public TradeDbContext(DbContextOptions<TradeDbContext> options)
         : base(options) { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Stock>()
+            .HasIndex(s => s.Symbol).IsUnique();
+    }
 }
