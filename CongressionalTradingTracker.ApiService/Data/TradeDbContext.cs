@@ -6,6 +6,7 @@ namespace CongressionalTradingTracker.ApiService.Data;
 public class TradeDbContext : DbContext
 {
     public DbSet<Stock> Stocks { get; set; }
+    public DbSet<Politician> Politicians { get; set; }
 
     public TradeDbContext(DbContextOptions<TradeDbContext> options)
         : base(options) { }
@@ -14,5 +15,7 @@ public class TradeDbContext : DbContext
     {
         modelBuilder.Entity<Stock>()
             .HasIndex(s => s.Symbol).IsUnique();
+        modelBuilder.Entity<Politician>()
+            .HasIndex(s => s.Name).IsUnique();
     }
 }

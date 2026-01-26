@@ -91,6 +91,15 @@ app.MapGet(
     }
 );
 
+app.MapGet(
+    "/api/politician",
+    async (TradeDbContext db) =>
+    {
+        var politicians = await db.Politicians.ToListAsync();
+        return Results.Ok(politicians);
+    }
+);
+
 app.MapDefaultEndpoints();
 
 await app.RunAsync();
