@@ -1,4 +1,5 @@
 using CongressionalTradingTracker.ApiService.Data;
+using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +11,12 @@ builder.AddNpgsqlDbContext<TradeDbContext>("CongressTradingDb");
 // Add services to the container.
 builder.Services.AddProblemDetails();
 
+// Add FastEndpoints
+builder.Services.AddFastEndpoints();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
 // add policy to allow cors from all origins (for frontend development)
 
 builder.Services.AddCors(options =>
@@ -20,9 +25,7 @@ builder.Services.AddCors(options =>
         name: "Frontend",
         policy =>
         {
-            policy.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
         }
     );
 });
@@ -32,6 +35,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
 app.UseCors("Frontend");
+app.UseFastEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
@@ -50,24 +54,6 @@ app.MapGet(
         }
     )
     .WithName("HealthCheck");
-
-app.MapGet(
-    "/api/stock",
-    async (TradeDbContext db) =>
-    {
-        var stocks = await db.Stocks.ToListAsync();
-        return Results.Ok(stocks);
-    }
-);
-
-app.MapGet(
-    "/api/politician",
-    async (TradeDbContext db) =>
-    {
-        var politicians = await db.Politicians.ToListAsync();
-        return Results.Ok(politicians);
-    }
-);
 
 app.MapDefaultEndpoints();
 

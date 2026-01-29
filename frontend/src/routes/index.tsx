@@ -16,12 +16,12 @@ const apiUrl = import.meta.env.VITE_services__apiservice__http__0 || 'http://loc
 
 function fetchStock() {
   // Replace with your actual API endpoint
-  return fetch(`${apiUrl}/api/stock`).then((res) => res.json());
+  return fetch(`${apiUrl}/api/stocks`).then((res) => res.json());
 }
 
 function fetchPolitician() {
   // Replace with your actual API endpoint
-  return fetch(`${apiUrl}/api/politician`).then((res) => res.json());
+  return fetch(`${apiUrl}/api/politicians`).then((res) => res.json());
 }
 
 function App() {

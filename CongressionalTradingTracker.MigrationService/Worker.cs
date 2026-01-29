@@ -2,9 +2,6 @@ using System.Diagnostics;
 using CongressionalTradingTracker.ApiService.Data;
 using CongressionalTradingTracker.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
-using OpenTelemetry.Trace;
 
 namespace CongressionalTradingTracker.MigrationService;
 
@@ -49,10 +46,19 @@ public class Worker(
         var strategy = dbContext.Database.CreateExecutionStrategy();
         var wasCreated = await strategy.ExecuteAsync(async () =>
         {
-            // Run migration in a transaction to avoid partial migration if it fails.
-            var exists = await dbContext.Database.CanConnectAsync(cancellationToken);
+            // Get all migrations defined in the assembly
+            var allMigrations = dbContext.Database.GetMigrations();
+
+            // Get pending migrations (ones not yet applied)
+            var pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync(
+                cancellationToken
+            );
+
+            // If all migrations are pending, it's a fresh database
+            var isNewDatabase = allMigrations.Count() == pendingMigrations.Count();
+
             await dbContext.Database.MigrateAsync(cancellationToken);
-            return !exists;
+            return isNewDatabase;
         });
         return wasCreated;
     }
@@ -63,6 +69,7 @@ public class Worker(
     )
     {
         Stock firstStock = new() { Symbol = "AAPL" };
+        Politician firstPolitician = new() { Name = "John Doe", CurrentPosition = "Senator" };
 
         var strategy = dbContext.Database.CreateExecutionStrategy();
         await strategy.ExecuteAsync(async () =>
@@ -72,6 +79,7 @@ public class Worker(
                 cancellationToken
             );
             await dbContext.Stocks.AddAsync(firstStock, cancellationToken);
+            await dbContext.Politicians.AddAsync(firstPolitician, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
         });
