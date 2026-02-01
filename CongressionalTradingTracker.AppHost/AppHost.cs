@@ -19,7 +19,11 @@ var migrations = builder
     .WaitFor(postgresdb);
 
 // Configure Redis cache service with redis-commander and persistent data volume
-var cache = builder.AddRedis("cache").WithRedisCommander().WithDataVolume(isReadOnly: false);
+var cache = builder
+    .AddRedis("cache")
+    .WithDataVolume(isReadOnly: false)
+    .WithPersistence(interval: TimeSpan.FromMinutes(1), keysChangedThreshold: 1)
+    .WithRedisInsight();
 
 // Configure the API service with dependencies on the database, cache, and migrations
 var apiService = builder

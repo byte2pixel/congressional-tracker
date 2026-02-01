@@ -14,6 +14,7 @@ public class StockEndpoint(TradeDbContext dbContext)
     {
         Get("/api/stocks");
         AllowAnonymous();
+        Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 
     public override async Task<Results<Ok<List<StockResponse>>, ProblemDetails>> ExecuteAsync(

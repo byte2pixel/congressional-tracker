@@ -6,10 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
+builder.Services.AddProblemDetails();
+
+// Add database context
 builder.AddNpgsqlDbContext<TradeDbContext>("CongressTradingDb");
 
-// Add services to the container.
-builder.Services.AddProblemDetails();
+// Add Redis client
+builder.AddRedisOutputCache("cache");
 
 // Add FastEndpoints
 builder.Services.AddFastEndpoints();
@@ -18,7 +21,6 @@ builder.Services.AddFastEndpoints();
 builder.Services.AddOpenApi();
 
 // add policy to allow cors from all origins (for frontend development)
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -36,6 +38,7 @@ var app = builder.Build();
 app.UseExceptionHandler();
 app.UseCors("Frontend");
 app.UseFastEndpoints();
+app.UseOutputCache();
 
 if (app.Environment.IsDevelopment())
 {

@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		.csharpierignore = .csharpierignore
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CongressionalTradingTracker.Domain", "CongressionalTradingTracker.Domain\CongressionalTradingTracker.Domain.csproj", "{876D3B93-59EE-4FA3-9ED9-9AE1CA47F4FB}"

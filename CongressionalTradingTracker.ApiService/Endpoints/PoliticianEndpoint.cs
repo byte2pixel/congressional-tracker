@@ -17,6 +17,7 @@ public class PoliticianEndpoint(TradeDbContext dbContext)
     {
         Get("/api/politicians");
         AllowAnonymous();
+        Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 
     public override async Task<Results<Ok<List<PoliticianResponse>>, ProblemDetails>> ExecuteAsync(
