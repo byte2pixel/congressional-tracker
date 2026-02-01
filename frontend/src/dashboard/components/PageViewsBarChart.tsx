@@ -17,7 +17,7 @@ export default function PageViewsBarChart() {
     <Card variant="outlined" sx={{ width: "100%" }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
-          Page views and downloads
+          Politician Buy & Sell Actions
         </Typography>
         <Stack sx={{ justifyContent: "space-between" }}>
           <Stack
@@ -34,7 +34,7 @@ export default function PageViewsBarChart() {
             <Chip size="small" color="error" label="-8%" />
           </Stack>
           <Typography variant="caption" sx={{ color: "text.secondary" }}>
-            Page views and downloads for the last 6 months
+            Politician Buy & Sell Actions for the last 6 months
           </Typography>
         </Stack>
         <BarChart
@@ -51,20 +51,20 @@ export default function PageViewsBarChart() {
           yAxis={[{ width: 50 }]}
           series={[
             {
-              id: "page-views",
-              label: "Page views",
+              id: "buy-actions",
+              label: "Buy Actions",
               data: [2234, 3872, 2998, 4125, 3357, 2789, 2998],
               stack: "A",
             },
             {
-              id: "downloads",
-              label: "Downloads",
+              id: "sell-actions",
+              label: "Sell Actions",
               data: [3098, 4215, 2384, 2101, 4752, 3593, 2384],
               stack: "A",
             },
             {
-              id: "conversions",
-              label: "Conversions",
+              id: "total-transactions",
+              label: "Total Transactions",
               data: [4051, 2275, 3129, 4693, 3904, 2038, 2275],
               stack: "A",
             },

@@ -82,7 +82,12 @@ export function renderAvatar(
 }
 
 export const columns: Array<GridColDef> = [
-  { field: "pageTitle", headerName: "Page Title", flex: 1.5, minWidth: 200 },
+  {
+    field: "politicianName",
+    headerName: "Politician",
+    flex: 1.5,
+    minWidth: 200,
+  },
   {
     field: "status",
     headerName: "Status",
@@ -134,7 +139,7 @@ export const columns: Array<GridColDef> = [
 export const rows: GridRowsProp = [
   {
     id: 1,
-    pageTitle: "Homepage Overview",
+    politicianName: "Nancy Pelosi",
     status: "Online",
     eventCount: 8345,
     users: 212423,
@@ -149,7 +154,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 2,
-    pageTitle: "Product Details - Gadgets",
+    politicianName: "Chuck Schumer",
     status: "Online",
     eventCount: 5653,
     users: 172240,
@@ -162,7 +167,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 3,
-    pageTitle: "Checkout Process - Step 1",
+    politicianName: "Mitch McConnell",
     status: "Offline",
     eventCount: 3455,
     users: 58240,
@@ -177,7 +182,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 4,
-    pageTitle: "User Profile Dashboard",
+    politicianName: "Alexandria Ocasio-Cortez",
     status: "Online",
     eventCount: 112543,
     users: 96240,
@@ -192,7 +197,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 5,
-    pageTitle: "Article Listing - Tech News",
+    politicianName: "Bernie Sanders",
     status: "Offline",
     eventCount: 3653,
     users: 142240,
@@ -207,7 +212,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 6,
-    pageTitle: "FAQs - Customer Support",
+    politicianName: "Elizabeth Warren",
     status: "Online",
     eventCount: 106543,
     users: 15240,
@@ -222,7 +227,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 7,
-    pageTitle: "Product Comparison - Laptops",
+    politicianName: "Kevin McCarthy",
     status: "Offline",
     eventCount: 7853,
     users: 32240,
@@ -237,7 +242,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 8,
-    pageTitle: "Shopping Cart - Electronics",
+    politicianName: "Katie Porter",
     status: "Online",
     eventCount: 8563,
     users: 48240,
@@ -252,7 +257,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 9,
-    pageTitle: "Payment Confirmation - Bank Transfer",
+    politicianName: "John Cornyn",
     status: "Offline",
     eventCount: 4563,
     users: 18240,
@@ -267,7 +272,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 10,
-    pageTitle: "Product Reviews - Smartphones",
+    politicianName: "Cory Booker",
     status: "Online",
     eventCount: 9863,
     users: 28240,
@@ -282,7 +287,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 11,
-    pageTitle: "Subscription Management - Services",
+    politicianName: "Susan Collins",
     status: "Offline",
     eventCount: 6563,
     users: 24240,
@@ -297,7 +302,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 12,
-    pageTitle: "Order Tracking - Shipments",
+    politicianName: "Adam Schiff",
     status: "Online",
     eventCount: 12353,
     users: 38240,
@@ -312,7 +317,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 13,
-    pageTitle: "Customer Feedback - Surveys",
+    politicianName: "Lisa Murkowski",
     status: "Offline",
     eventCount: 5863,
     users: 13240,
@@ -327,7 +332,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 14,
-    pageTitle: "Account Settings - Preferences",
+    politicianName: "Hakeem Jeffries",
     status: "Online",
     eventCount: 7853,
     users: 18240,
@@ -342,7 +347,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 15,
-    pageTitle: "Login Page - Authentication",
+    politicianName: "Ted Cruz",
     status: "Offline",
     eventCount: 9563,
     users: 24240,
@@ -357,7 +362,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 16,
-    pageTitle: "Promotions - Seasonal Sales",
+    politicianName: "Ilhan Omar",
     status: "Online",
     eventCount: 13423,
     users: 54230,
@@ -372,7 +377,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 17,
-    pageTitle: "Tutorials - How to Guides",
+    politicianName: "Tim Scott",
     status: "Offline",
     eventCount: 4234,
     users: 19342,
@@ -386,7 +391,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 18,
-    pageTitle: "Blog Posts - Tech Insights",
+    politicianName: "Debbie Stabenow",
     status: "Online",
     eventCount: 8567,
     users: 34234,
@@ -400,7 +405,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 19,
-    pageTitle: "Events - Webinars",
+    politicianName: "Jamaal Bowman",
     status: "Offline",
     eventCount: 3456,
     users: 19234,
@@ -415,7 +420,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 20,
-    pageTitle: "Support - Contact Us",
+    politicianName: "Lauren Boebert",
     status: "Online",
     eventCount: 6734,
     users: 27645,
@@ -430,7 +435,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 21,
-    pageTitle: "Case Studies - Success Stories",
+    politicianName: "Ayanna Pressley",
     status: "Offline",
     eventCount: 4567,
     users: 19345,
@@ -444,7 +449,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 22,
-    pageTitle: "News - Industry Updates",
+    politicianName: "John Fetterman",
     status: "Online",
     eventCount: 7856,
     users: 34567,
@@ -458,7 +463,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 23,
-    pageTitle: "Forum - User Discussions",
+    politicianName: "Joni Ernst",
     status: "Offline",
     eventCount: 5678,
     users: 23456,
@@ -473,7 +478,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 24,
-    pageTitle: "Documentation - API Reference",
+    politicianName: "Ro Khanna",
     status: "Online",
     eventCount: 6789,
     users: 27689,
@@ -488,7 +493,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 25,
-    pageTitle: "Services - Consulting",
+    politicianName: "Rashida Tlaib",
     status: "Offline",
     eventCount: 4563,
     users: 19240,
@@ -503,7 +508,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 26,
-    pageTitle: "Feedback - User Reviews",
+    politicianName: "Jordan Lee",
     status: "Online",
     eventCount: 8564,
     users: 34240,
@@ -518,7 +523,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 27,
-    pageTitle: "Profiles - Team Members",
+    politicianName: "Taylor Smith",
     status: "Offline",
     eventCount: 5634,
     users: 23423,
@@ -533,7 +538,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 28,
-    pageTitle: "Notifications - Alerts",
+    politicianName: "Morgan Davis",
     status: "Online",
     eventCount: 6745,
     users: 27654,
@@ -548,7 +553,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 29,
-    pageTitle: "Dashboard - Metrics",
+    politicianName: "Riley Chen",
     status: "Offline",
     eventCount: 5678,
     users: 23456,
@@ -563,7 +568,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 30,
-    pageTitle: "Reports - Monthly Analysis",
+    politicianName: "Casey Patel",
     status: "Online",
     eventCount: 7890,
     users: 34567,
@@ -578,7 +583,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 31,
-    pageTitle: "Training - Employee Onboarding",
+    politicianName: "Jamie Brooks",
     status: "Offline",
     eventCount: 3456,
     users: 19234,
@@ -593,7 +598,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 32,
-    pageTitle: "Resources - Knowledge Base",
+    politicianName: "Avery Kim",
     status: "Online",
     eventCount: 5678,
     users: 23456,
@@ -608,7 +613,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 33,
-    pageTitle: "Settings - Privacy Controls",
+    politicianName: "Peyton Martinez",
     status: "Offline",
     eventCount: 6789,
     users: 27689,
@@ -623,7 +628,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 34,
-    pageTitle: "Integrations - Third-Party Services",
+    politicianName: "Dakota Nguyen",
     status: "Online",
     eventCount: 4567,
     users: 19345,
@@ -638,7 +643,7 @@ export const rows: GridRowsProp = [
   },
   {
     id: 35,
-    pageTitle: "Account - Billing Information",
+    politicianName: "Skylar Thompson",
     status: "Offline",
     eventCount: 7890,
     users: 34567,

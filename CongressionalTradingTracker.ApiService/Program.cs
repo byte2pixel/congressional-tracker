@@ -1,6 +1,5 @@
 using CongressionalTradingTracker.ApiService.Data;
 using FastEndpoints;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -9,13 +9,14 @@ import HighlightedCard from "./HighlightedCard";
 import PageViewsBarChart from "./PageViewsBarChart";
 import SessionsChart from "./SessionsChart";
 import StatCard from "./StatCard";
+import { ApiTest } from "./ApiTest";
 import type { StatCardProps } from "./StatCard";
 
 const data: Array<StatCardProps> = [
   {
-    title: "Users",
-    value: "14k",
-    interval: "Last 30 days",
+    title: "Total Trades",
+    value: "1,245",
+    interval: "This Session",
     trend: "up",
     data: [
       200, 24, 220, 260, 240, 380, 100, 240, 280, 240, 300, 340, 320, 360, 340,
@@ -23,10 +24,10 @@ const data: Array<StatCardProps> = [
     ],
   },
   {
-    title: "Conversions",
-    value: "325",
-    interval: "Last 30 days",
-    trend: "down",
+    title: "Insider Buys",
+    value: "312",
+    interval: "This Month",
+    trend: "up",
     data: [
       1640, 1250, 970, 1130, 1050, 900, 720, 1080, 900, 450, 920, 820, 840, 600,
       820, 780, 800, 760, 380, 740, 660, 620, 840, 500, 520, 480, 400, 360, 300,
@@ -34,9 +35,9 @@ const data: Array<StatCardProps> = [
     ],
   },
   {
-    title: "Event count",
-    value: "200k",
-    interval: "Last 30 days",
+    title: "Politicians Tracked",
+    value: "538",
+    interval: "All Time",
     trend: "neutral",
     data: [
       500, 400, 510, 530, 520, 600, 530, 520, 510, 730, 520, 510, 530, 620, 510,
@@ -86,6 +87,7 @@ export default function MainGrid() {
           </Stack>
         </Grid>
       </Grid>
+      <ApiTest />
       <Copyright sx={{ my: 4 }} />
     </Box>
   );

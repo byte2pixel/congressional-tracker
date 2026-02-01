@@ -12,41 +12,41 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 
 import {
-  BrazilFlag,
+  ExecutiveIcon,
   GlobeFlag,
-  IndiaFlag,
-  UsaFlag,
+  HouseIcon,
+  SenateIcon,
 } from "../internals/components/CustomIcons";
 
 const data = [
-  { label: "India", value: 50000 },
-  { label: "USA", value: 35000 },
-  { label: "Brazil", value: 10000 },
-  { label: "Other", value: 5000 },
+  { label: "House", value: 42000 },
+  { label: "Senate", value: 32000 },
+  { label: "Executive", value: 18000 },
+  { label: "Other", value: 8000 },
 ];
 
-const countries = [
+const groups = [
   {
-    name: "India",
-    value: 50,
-    flag: <IndiaFlag />,
+    name: "House",
+    value: 42,
+    flag: <HouseIcon />, // You can replace with a custom icon for House if available
     color: "hsl(220, 25%, 65%)",
   },
   {
-    name: "USA",
-    value: 35,
-    flag: <UsaFlag />,
+    name: "Senate",
+    value: 32,
+    flag: <SenateIcon />, // You can replace with a custom icon for Senate if available
     color: "hsl(220, 25%, 45%)",
   },
   {
-    name: "Brazil",
-    value: 10,
-    flag: <BrazilFlag />,
+    name: "Executive",
+    value: 18,
+    flag: <ExecutiveIcon />, // You can replace with a custom icon for Executive if available
     color: "hsl(220, 25%, 30%)",
   },
   {
     name: "Other",
-    value: 5,
+    value: 8,
     flag: <GlobeFlag />,
     color: "hsl(220, 25%, 20%)",
   },
@@ -131,7 +131,7 @@ export default function ChartUserByCountry() {
     >
       <CardContent>
         <Typography component="h2" variant="subtitle2">
-          Users by country
+          Trades by Political Group
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <PieChart
@@ -155,16 +155,16 @@ export default function ChartUserByCountry() {
             width={260}
             hideLegend
           >
-            <PieCenterLabel primaryText="98.5K" secondaryText="Total" />
+            <PieCenterLabel primaryText="98K" secondaryText="Total Trades" />
           </PieChart>
         </Box>
-        {countries.map((country, index) => (
+        {groups.map((group, index) => (
           <Stack
             key={index}
             direction="row"
             sx={{ alignItems: "center", gap: 2, pb: 2 }}
           >
-            {country.flag}
+            {group.flag}
             <Stack sx={{ gap: 1, flexGrow: 1 }}>
               <Stack
                 direction="row"
@@ -175,19 +175,19 @@ export default function ChartUserByCountry() {
                 }}
               >
                 <Typography variant="body2" sx={{ fontWeight: "500" }}>
-                  {country.name}
+                  {group.name}
                 </Typography>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {country.value}%
+                  {group.value}%
                 </Typography>
               </Stack>
               <LinearProgress
                 variant="determinate"
-                aria-label="Number of users by country"
-                value={country.value}
+                aria-label="Number of trades by group"
+                value={group.value}
                 sx={{
                   [`& .${linearProgressClasses.bar}`]: {
-                    backgroundColor: country.color,
+                    backgroundColor: group.color,
                   },
                 }}
               />
