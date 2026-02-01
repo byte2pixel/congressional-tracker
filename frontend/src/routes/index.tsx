@@ -1,19 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import Dashboard from '@/dashboard/Dashboard';
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import Dashboard from "@/dashboard/Dashboard";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: App,
-})
+});
 
-const apiUrl = import.meta.env.VITE_services__apiservice__http__0 || 'http://localhost:5348';
-
+const apiUrl =
+  import.meta.env.VITE_services__apiservice__http__0 || "http://localhost:5348";
 
 function fetchStock() {
   // Replace with your actual API endpoint
@@ -26,14 +26,14 @@ function fetchPolitician() {
 }
 
 function App() {
-  const [selected, setSelected] = useState<'stock' | 'politician' | null>(null);
+  const [selected, setSelected] = useState<"stock" | "politician" | null>(null);
 
   const {
     data: stockData,
     refetch: refetchStock,
     isFetching: isFetchingStock,
   } = useQuery({
-    queryKey: ['stock'],
+    queryKey: ["stock"],
     queryFn: fetchStock,
     enabled: false,
   });
@@ -43,15 +43,15 @@ function App() {
     refetch: refetchPolitician,
     isFetching: isFetchingPolitician,
   } = useQuery({
-    queryKey: ['politician'],
+    queryKey: ["politician"],
     queryFn: fetchPolitician,
     enabled: false,
   });
 
-  let response = '';
-  if (selected === 'stock' && stockData) {
+  let response = "";
+  if (selected === "stock" && stockData) {
     response = JSON.stringify(stockData, null, 2);
-  } else if (selected === 'politician' && politicianData) {
+  } else if (selected === "politician" && politicianData) {
     response = JSON.stringify(politicianData, null, 2);
   }
 

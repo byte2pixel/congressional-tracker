@@ -1,6 +1,6 @@
-import Badge, { badgeClasses } from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
-import type { IconButtonProps } from '@mui/material';
+import Badge, { badgeClasses } from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import type { IconButtonProps } from "@mui/material";
 
 export interface MenuButtonProps extends IconButtonProps {
   showBadge?: boolean;
