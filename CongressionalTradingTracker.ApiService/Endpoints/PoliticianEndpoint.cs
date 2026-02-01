@@ -17,6 +17,7 @@ public class PoliticianEndpoint(TradeDbContext dbContext)
     {
         Get("/api/politicians");
         AllowAnonymous();
+        ResponseCache(60);
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 

@@ -14,6 +14,7 @@ public class StockEndpoint(TradeDbContext dbContext)
     {
         Get("/api/stocks");
         AllowAnonymous();
+        ResponseCache(60);
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 

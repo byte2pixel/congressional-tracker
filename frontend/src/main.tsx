@@ -13,11 +13,7 @@ import reportWebVitals from './reportWebVitals.ts'
 
 const TanStackQueryProviderContext = TanStackQueryProvider.getContext()
 const router = createRouter({
-  routeTree,
-  context: {
-    ...TanStackQueryProviderContext,
-  },
-  defaultPreload: 'intent',
+  routeTree, context: { ...TanStackQueryProviderContext, }, defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
   defaultPreloadStaleTime: 0,
