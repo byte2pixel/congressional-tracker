@@ -16,9 +16,6 @@ builder.AddRedisOutputCache("cache");
 // Add FastEndpoints
 builder.Services.AddFastEndpoints();
 
-// Add response caching
-builder.Services.AddResponseCaching();
-
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -39,7 +36,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
 app.UseCors("Frontend");
-app.UseResponseCaching();
 app.UseFastEndpoints();
 app.UseOutputCache();
 
