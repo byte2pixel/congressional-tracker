@@ -1,19 +1,26 @@
 using CongressionalTradingTracker.ApiService.Data;
 using CongressionalTradingTracker.ApiService.Services;
-
+using DotNetEnv;
+using DotNetEnv.Configuration;
 using FastEndpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddDotNetEnv(".env", LoadOptions.TraversePath());
+
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
-builder.Services.AddHttpClient<QuiverQuantClient>(c =>
+builder.Services.AddHttpClient<QuiverQuantService>(c =>
 {
-    string url = builder.Configuration.GetSection("QuiverQuant:BaseUrl").Value ?? throw new InvalidOperationException("QuiverQuant:BaseUrl configuration is missing.");
-    string token = builder.Configuration.GetSection("QuiverQuant:Token").Value ?? throw new InvalidOperationException("QuiverQuant:Token configuration is missing.");
+    string url =
+        builder.Configuration.GetSection("QuiverQuant:BaseUrl").Value
+        ?? throw new InvalidOperationException("QuiverQuant:BaseUrl configuration is missing.");
+    string token =
+        builder.Configuration.GetSection("QuiverQuant:Token").Value
+        ?? throw new InvalidOperationException("QuiverQuant:Token configuration is missing.");
     c.BaseAddress = new Uri(url);
     c.DefaultRequestHeaders.Add("accept", "application/json");
-    c.DefaultRequestHeaders.Add("authorization", "Bearer " + token);
+    c.DefaultRequestHeaders.Add("Authorization", "Token " + token);
 });
 builder.Services.AddProblemDetails();
 

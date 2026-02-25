@@ -18,6 +18,13 @@ var migrations = builder
     .WithReference(postgresdb)
     .WaitFor(postgresdb);
 
+// Add a background worker service for scheduled tasks
+var worker = builder
+    .AddProject<Projects.CongressionalTradingTracker_BackgroundTasks>("worker")
+    .WithReference(postgresdb)
+    .WithReference(migrations)
+    .WaitForCompletion(migrations);
+
 // Configure Redis cache service with redis-commander and persistent data volume
 var cache = builder
     .AddRedis("cache")
@@ -35,7 +42,10 @@ var apiService = builder
     .WithHttpHealthCheck("/health");
 
 // Configure the frontend service with a reference to the API service
-var frontend = builder.AddViteApp("frontend", "../frontend").WithReference(apiService);
+var frontend = builder
+    .AddViteApp("frontend", "../frontend")
+    .WithReference(apiService)
+    .WaitFor(apiService);
 
 // Run the distributed application
 await builder.Build().RunAsync();

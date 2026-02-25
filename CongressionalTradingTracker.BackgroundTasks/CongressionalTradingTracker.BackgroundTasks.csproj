@@ -3,17 +3,16 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-CongressionalTradingTracker.MigrationService-afc3e3ff-664c-4071-aa85-f61a6f7738ed</UserSecretsId>
+    <UserSecretsId>dotnet-CongresionalTradingTracker.BackgroundTasks-961b3c35-2e4d-4387-a0b1-0dad1276535a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    <PackageReference Include="FastEndpoints.JobQueues" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CongressionalTradingTracker.Core\CongressionalTradingTracker.Core.csproj" />
     <ProjectReference Include="..\CongressionalTradingTracker.Infrastructure\CongressionalTradingTracker.Infrastructure.csproj" />
     <ProjectReference Include="..\CongressionalTradingTracker.ServiceDefaults\CongressionalTradingTracker.ServiceDefaults.csproj" />
   </ItemGroup>
