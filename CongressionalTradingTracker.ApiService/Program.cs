@@ -1,11 +1,7 @@
 using CongressionalTradingTracker.Infrastructure;
-using DotNetEnv;
-using DotNetEnv.Configuration;
 using FastEndpoints;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Configuration.AddDotNetEnv(".env", LoadOptions.TraversePath());
 
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();

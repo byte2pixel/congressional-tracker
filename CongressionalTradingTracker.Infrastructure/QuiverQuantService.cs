@@ -16,7 +16,7 @@ public class QuiverQuantService(HttpClient client) : IQuiverQuantService
     )
     {
         var result = await client.GetFromJsonAsync<List<CongressTradeDto>>(
-            "beta/bulk/congresstrading",
+            "bulk/congresstrading",
             JsonOptions,
             ct
         );
@@ -28,7 +28,7 @@ public class QuiverQuantService(HttpClient client) : IQuiverQuantService
     )
     {
         var result = await client.GetFromJsonAsync<List<CongressTradeDto>>(
-            "beta/live/congresstrading",
+            "live/congresstrading",
             JsonOptions,
             ct
         );

@@ -24,7 +24,6 @@ public class Trade
     public string? District { get; set; }
 
     // Asset metadata
-    public string? TickerType { get; set; }
     public string? Description { get; set; }
 
     // Performance metrics (may be null until calculated)

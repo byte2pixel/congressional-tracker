@@ -14,16 +14,16 @@ public class Worker(
         var intervalMinutes = configuration.GetValue("QuiverQuant:LiveSyncIntervalMinutes", 60);
         var timer = new PeriodicTimer(TimeSpan.FromMinutes(intervalMinutes));
 
-        // Ensure bulk sync runs on first tick without waiting for the timer
-        await RunSyncAsync(isFirstRun: true, stoppingToken);
+        // Ensure bulk sync runs immediately without waiting for the first timer tick
+        await RunSyncAsync(stoppingToken);
 
         while (await timer.WaitForNextTickAsync(stoppingToken))
         {
-            await RunSyncAsync(isFirstRun: false, stoppingToken);
+            await RunSyncAsync(stoppingToken);
         }
     }
 
-    private async Task RunSyncAsync(bool isFirstRun, CancellationToken ct)
+    private async Task RunSyncAsync(CancellationToken ct)
     {
         await using var scope = scopeFactory.CreateAsyncScope();
         var quiverQuant = scope.ServiceProvider.GetRequiredService<IQuiverQuantService>();

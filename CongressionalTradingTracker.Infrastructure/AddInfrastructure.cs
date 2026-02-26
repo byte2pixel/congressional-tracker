@@ -11,20 +11,6 @@ public static class InfrastructureExtension
         IConfiguration configuration
     )
     {
-        services.AddHttpClient<IQuiverQuantService, QuiverQuantService>(client =>
-        {
-            var baseUrl =
-                configuration["QuiverQuant:BaseUrl"]
-                ?? throw new InvalidOperationException("QuiverQuant:BaseUrl is not configured.");
-            var apiKey =
-                configuration["QuiverQuant:ApiKey"]
-                ?? throw new InvalidOperationException("QuiverQuant:ApiKey is not configured.");
-            client.BaseAddress = new Uri(baseUrl);
-            client.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Token", apiKey);
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
-
         services.AddScoped<IStockService, StockService>();
         services.AddScoped<IPoliticianService, PoliticianService>();
         services.AddScoped<ITradeService, TradeService>();

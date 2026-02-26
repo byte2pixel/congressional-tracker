@@ -79,11 +79,23 @@ public class CongressTradeDto
     [JsonPropertyName("Chamber")]
     public string? Chamber { get; init; }
 
+    /// <summary>US state – bulk API only.</summary>
+    [JsonPropertyName("State")]
+    public string? State { get; init; }
+
+    /// <summary>Company/fund name – bulk API only.</summary>
+    [JsonPropertyName("Company")]
+    public string? Company { get; init; }
+
     // ── Convenience accessors ─────────────────────────────────────────────────
     public string PoliticianName => Representative ?? Name ?? string.Empty;
     public string ChamberName => House ?? Chamber ?? string.Empty;
-    public DateTime EffectiveTransactionDate => TransactionDate ?? Traded ?? DateTime.MinValue;
-    public DateTime EffectiveReportDate => ReportDate ?? Filed ?? DateTime.MinValue;
+
+    public DateTime EffectiveTransactionDate =>
+        DateTime.SpecifyKind(TransactionDate ?? Traded ?? DateTime.MinValue, DateTimeKind.Utc);
+
+    public DateTime EffectiveReportDate =>
+        DateTime.SpecifyKind(ReportDate ?? Filed ?? DateTime.MinValue, DateTimeKind.Utc);
 
     /// <summary>
     /// Parses a mid-point USD amount from either the numeric Amount field

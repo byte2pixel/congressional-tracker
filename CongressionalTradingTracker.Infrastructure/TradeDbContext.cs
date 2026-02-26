@@ -26,6 +26,7 @@ public class TradeDbContext : DbContext
                 t.StockId,
                 t.TransactionDate,
                 t.Transaction,
+                t.Range,
             })
             .IsUnique();
 
