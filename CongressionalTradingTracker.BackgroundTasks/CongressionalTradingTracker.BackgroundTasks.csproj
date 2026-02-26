@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastEndpoints.JobQueues" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
 

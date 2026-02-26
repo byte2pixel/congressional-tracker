@@ -1,12 +1,12 @@
 using CongressionalTradingTracker.BackgroundTasks;
-using FastEndpoints;
+using CongressionalTradingTracker.Infrastructure;
 
 var builder = Host.CreateApplicationBuilder(args);
+builder.AddServiceDefaults();
+builder.AddNpgsqlDbContext<TradeDbContext>("CongressTradingDb");
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddHostedService<Worker>();
-builder.Services.AddJobQueues<JobRecord, CongressTradingProvider>();
 
 var host = builder.Build();
-
-host.UseJobQueues();
 
 await host.RunAsync();

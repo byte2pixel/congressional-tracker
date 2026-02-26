@@ -10,7 +10,7 @@ builder.Configuration.AddDotNetEnv(".env", LoadOptions.TraversePath());
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
 builder.AddNpgsqlDbContext<TradeDbContext>("CongressTradingDb");
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddProblemDetails();
 
 // Add Redis client

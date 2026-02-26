@@ -1,16 +1,67 @@
+using CongressionalTradingTracker.Core;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CongressionalTradingTracker.BackgroundTasks;
 
-public class Worker(ILogger<Worker> logger) : BackgroundService
+public class Worker(
+    ILogger<Worker> logger,
+    IServiceScopeFactory scopeFactory,
+    IConfiguration configuration
+) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        var intervalMinutes = configuration.GetValue("QuiverQuant:LiveSyncIntervalMinutes", 60);
+        var timer = new PeriodicTimer(TimeSpan.FromMinutes(intervalMinutes));
+
+        // Ensure bulk sync runs on first tick without waiting for the timer
+        await RunSyncAsync(isFirstRun: true, stoppingToken);
+
+        while (await timer.WaitForNextTickAsync(stoppingToken))
         {
-            if (logger.IsEnabled(LogLevel.Information))
+            await RunSyncAsync(isFirstRun: false, stoppingToken);
+        }
+    }
+
+    private async Task RunSyncAsync(bool isFirstRun, CancellationToken ct)
+    {
+        await using var scope = scopeFactory.CreateAsyncScope();
+        var quiverQuant = scope.ServiceProvider.GetRequiredService<IQuiverQuantService>();
+        var tradeService = scope.ServiceProvider.GetRequiredService<ITradeService>();
+        var syncState = scope.ServiceProvider.GetRequiredService<ISyncStateService>();
+
+        try
+        {
+            var bulkCompleted = await syncState.IsBulkSyncCompletedAsync(ct);
+
+            if (!bulkCompleted)
             {
-                logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                logger.LogInformation("Starting one-time bulk congressional trades sync...");
+                var bulkTrades = await quiverQuant.GetBulkTradesAsync(ct);
+                logger.LogInformation(
+                    "Fetched {Count} bulk trades. Upserting...",
+                    bulkTrades.Count
+                );
+                await tradeService.UpsertTradesAsync(bulkTrades, ct);
+                await syncState.MarkBulkSyncCompletedAsync(ct);
+                logger.LogInformation("Bulk sync completed.");
             }
-            await Task.Delay(1000, stoppingToken);
+            else
+            {
+                logger.LogInformation("Fetching live congressional trades...");
+                var liveTrades = await quiverQuant.GetLiveTradesAsync(ct);
+                logger.LogInformation(
+                    "Fetched {Count} live trades. Upserting...",
+                    liveTrades.Count
+                );
+                await tradeService.UpsertTradesAsync(liveTrades, ct);
+                await syncState.UpdateLastLiveSyncAsync(ct);
+                logger.LogInformation("Live sync completed.");
+            }
+        }
+        catch (Exception ex) when (!ct.IsCancellationRequested)
+        {
+            logger.LogError(ex, "Error during congressional trades sync.");
         }
     }
 }
