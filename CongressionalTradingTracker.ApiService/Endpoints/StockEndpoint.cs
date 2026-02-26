@@ -1,20 +1,18 @@
-using CongressionalTradingTracker.ApiService.Data;
 using CongressionalTradingTracker.ApiService.Dtos;
 using CongressionalTradingTracker.ApiService.Mappers;
+using CongressionalTradingTracker.Core;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
 
 namespace CongressionalTradingTracker.ApiService.Endpoints;
 
-public class StockEndpoint(TradeDbContext dbContext)
+public class StockEndpoint(IStockService service)
     : EndpointWithoutRequest<Results<Ok<List<StockResponse>>, ProblemDetails>, StockMapper>
 {
     public override void Configure()
     {
         Get("/api/stocks");
         AllowAnonymous();
-        ResponseCache(60);
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 
@@ -24,7 +22,7 @@ public class StockEndpoint(TradeDbContext dbContext)
     {
         try
         {
-            var dbStocks = await dbContext.Stocks.ToArrayAsync(ct);
+            var dbStocks = await service.GetAllStocksAsync(ct);
             var stocks = Map.FromEntity(dbStocks);
             return TypedResults.Ok(stocks);
         }

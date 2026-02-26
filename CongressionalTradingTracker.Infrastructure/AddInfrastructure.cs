@@ -5,15 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CongressionalTradingTracker.Infrastructure;
 
-public static class AddInfrastructure
+public static class InfrastructureExtension
 {
-    public static IServiceCollection AddInfrastructureServices(
-        this IServiceCollection services,
-        IConfiguration configuration
-    )
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddTransient<IQuiverQuantService, QuiverQuantService>();
-        // TODO: Add other infrastructure services here
+        services.AddScoped<IStockService, StockService>();
+        services.AddScoped<IPoliticianService, PoliticianService>();
         return services;
     }
 }

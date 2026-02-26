@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using CongressionalTradingTracker.ApiService.Data;
 using CongressionalTradingTracker.Domain;
+using CongressionalTradingTracker.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace CongressionalTradingTracker.MigrationService;

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CongressionalTradingTracker.ApiService.Migrations
+namespace CongressionalTradingTracker.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class AddUniqueIndexToStock : Migration

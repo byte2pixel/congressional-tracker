@@ -1,7 +1,7 @@
 using CongressionalTradingTracker.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace CongressionalTradingTracker.ApiService.Data;
+namespace CongressionalTradingTracker.Infrastructure;
 
 public class TradeDbContext : DbContext
 {

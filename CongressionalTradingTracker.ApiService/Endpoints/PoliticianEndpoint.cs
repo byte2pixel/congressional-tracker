@@ -1,13 +1,12 @@
-using CongressionalTradingTracker.ApiService.Data;
 using CongressionalTradingTracker.ApiService.Dtos;
 using CongressionalTradingTracker.ApiService.Mappers;
+using CongressionalTradingTracker.Core;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
 
 namespace CongressionalTradingTracker.ApiService.Endpoints;
 
-public class PoliticianEndpoint(TradeDbContext dbContext)
+public class PoliticianEndpoint(IPoliticianService service)
     : EndpointWithoutRequest<
         Results<Ok<List<PoliticianResponse>>, ProblemDetails>,
         PoliticianMapper
@@ -17,7 +16,6 @@ public class PoliticianEndpoint(TradeDbContext dbContext)
     {
         Get("/api/politicians");
         AllowAnonymous();
-        ResponseCache(60);
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 
@@ -27,7 +25,7 @@ public class PoliticianEndpoint(TradeDbContext dbContext)
     {
         try
         {
-            var dbPoliticians = await dbContext.Politicians.ToArrayAsync(ct);
+            var dbPoliticians = await service.GetAllPoliticiansAsync(ct);
             var politicians = Map.FromEntity(dbPoliticians);
             return TypedResults.Ok(politicians);
         }

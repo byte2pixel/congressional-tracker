@@ -1,5 +1,4 @@
-using CongressionalTradingTracker.ApiService.Data;
-using CongressionalTradingTracker.ApiService.Services;
+using CongressionalTradingTracker.Infrastructure;
 using DotNetEnv;
 using DotNetEnv.Configuration;
 using FastEndpoints;
@@ -10,22 +9,9 @@ builder.Configuration.AddDotNetEnv(".env", LoadOptions.TraversePath());
 
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
-builder.Services.AddHttpClient<QuiverQuantService>(c =>
-{
-    string url =
-        builder.Configuration.GetSection("QuiverQuant:BaseUrl").Value
-        ?? throw new InvalidOperationException("QuiverQuant:BaseUrl configuration is missing.");
-    string token =
-        builder.Configuration.GetSection("QuiverQuant:Token").Value
-        ?? throw new InvalidOperationException("QuiverQuant:Token configuration is missing.");
-    c.BaseAddress = new Uri(url);
-    c.DefaultRequestHeaders.Add("accept", "application/json");
-    c.DefaultRequestHeaders.Add("Authorization", "Token " + token);
-});
-builder.Services.AddProblemDetails();
-
-// Add database context
 builder.AddNpgsqlDbContext<TradeDbContext>("CongressTradingDb");
+builder.Services.AddInfrastructure();
+builder.Services.AddProblemDetails();
 
 // Add Redis client
 builder.AddRedisOutputCache("cache");

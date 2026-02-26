@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace CongressionalTradingTracker.ApiService.Migrations
+namespace CongressionalTradingTracker.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class AddPoliticianTable : Migration
