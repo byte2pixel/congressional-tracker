@@ -4,5 +4,20 @@ public class Politician
 {
     public int PoliticianId { get; set; }
     public required string Name { get; set; }
-    public required string CurrentPosition { get; set; }
+
+    /// <summary>Senate / House</summary>
+    public required string House { get; set; }
+
+    /// <summary>Unique congressional bioguide identifier (e.g. "P000197").</summary>
+    public string? BioGuideId { get; set; }
+
+    /// <summary>Current party affiliation (R / D / I).</summary>
+    public string? Party { get; set; }
+
+    /// <summary>US state the politician represents.</summary>
+    public string? State { get; set; }
+    public string? District { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

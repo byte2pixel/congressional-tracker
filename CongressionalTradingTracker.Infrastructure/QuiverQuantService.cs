@@ -1,0 +1,38 @@
+using System.Net.Http.Json;
+using System.Text.Json;
+using CongressionalTradingTracker.Core;
+
+namespace CongressionalTradingTracker.Infrastructure;
+
+public class QuiverQuantService(HttpClient client) : IQuiverQuantService
+{
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        Converters = { new ApiDateTimeConverter(), new NullableDateTimeConverter() },
+    };
+
+    public async Task<IReadOnlyList<CongressBulkDto>> GetBulkTradesAsync(
+        CancellationToken ct = default
+    )
+    {
+        var result = await client.GetFromJsonAsync<List<CongressBulkDto>>(
+            "bulk/congresstrading",
+            JsonOptions,
+            ct
+        );
+        return result ?? [];
+    }
+
+    public async Task<IReadOnlyList<CongressLiveDto>> GetLiveTradesAsync(
+        CancellationToken ct = default
+    )
+    {
+        var result = await client.GetFromJsonAsync<List<CongressLiveDto>>(
+            "live/congresstrading",
+            JsonOptions,
+            ct
+        );
+        return result ?? [];
+    }
+}

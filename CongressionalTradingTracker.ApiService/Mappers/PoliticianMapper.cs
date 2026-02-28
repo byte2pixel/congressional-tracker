@@ -8,11 +8,7 @@ public class PoliticianMapper : ResponseMapper<List<PoliticianResponse>, Politic
 {
     public override List<PoliticianResponse> FromEntity(Politician[] e)
     {
-        return e.Select(p => new PoliticianResponse
-            {
-                Name = p.Name,
-                CurrentPosition = p.CurrentPosition,
-            })
+        return e.Select(p => new PoliticianResponse { Name = p.Name, CurrentPosition = p.House })
             .ToList();
     }
 }

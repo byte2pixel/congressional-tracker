@@ -1,14 +1,13 @@
-using CongressionalTradingTracker.ApiService.Data;
+using CongressionalTradingTracker.Infrastructure;
 using FastEndpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
-builder.Services.AddProblemDetails();
-
-// Add database context
 builder.AddNpgsqlDbContext<TradeDbContext>("CongressTradingDb");
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddProblemDetails();
 
 // Add Redis client
 builder.AddRedisOutputCache("cache");
