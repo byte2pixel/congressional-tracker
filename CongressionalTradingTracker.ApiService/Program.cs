@@ -1,5 +1,8 @@
+using CongressionalTradingTracker.ApiService;
 using CongressionalTradingTracker.Infrastructure;
 using FastEndpoints;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,9 +33,33 @@ builder.Services.AddCors(options =>
     );
 });
 
+builder.Services.AddAuthorization();
+
+builder
+    .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddKeycloakJwtBearer(
+        serviceName: "keycloak",
+        realm: "api",
+        options =>
+        {
+            options.Audience = "api-service";
+            options.Authority = "http://localhost:8080/realms/api";
+            // For development only - disable HTTPS metadata validation
+            if (builder.Environment.IsDevelopment())
+            {
+                options.RequireHttpsMetadata = false;
+            }
+        }
+    );
+
+// Transform Keycloak realm_access.roles into ASP.NET Core role claims for FastEndpoints authorization
+builder.Services.AddTransient<IClaimsTransformation, ClaimsTransformation>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseExceptionHandler();
 app.UseCors("Frontend");
 app.UseFastEndpoints();
@@ -54,6 +81,7 @@ app.MapGet(
             return canConnect ? Results.Ok(new { status = "Healthy" }) : Results.StatusCode(503);
         }
     )
+    .AllowAnonymous()
     .WithName("HealthCheck");
 
 app.MapDefaultEndpoints();
