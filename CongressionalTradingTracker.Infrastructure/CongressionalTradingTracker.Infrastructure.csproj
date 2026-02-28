@@ -18,4 +18,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Http" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
 </Project>

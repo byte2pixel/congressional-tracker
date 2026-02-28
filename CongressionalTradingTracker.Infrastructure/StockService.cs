@@ -6,7 +6,7 @@ namespace CongressionalTradingTracker.Infrastructure;
 
 public class StockService(TradeDbContext dbContext) : IStockService
 {
-    public Task<Stock[]> GetAllStocksAsync(CancellationToken ct)
+    public Task<Ticker[]> GetAllStocksAsync(CancellationToken ct)
     {
         return dbContext.Stocks.ToArrayAsync(ct);
     }

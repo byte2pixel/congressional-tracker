@@ -5,24 +5,24 @@
 namespace CongressionalTradingTracker.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUniqueIndexToStock : Migration
+    public partial class AddRawRangeToTrade : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateIndex(
-                name: "IX_Stocks_Symbol",
-                table: "Stocks",
-                column: "Symbol",
-                unique: true);
+            migrationBuilder.AddColumn<string>(
+                name: "RawRange",
+                table: "Trades",
+                type: "text",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Stocks_Symbol",
-                table: "Stocks");
+            migrationBuilder.DropColumn(
+                name: "RawRange",
+                table: "Trades");
         }
     }
 }

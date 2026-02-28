@@ -6,7 +6,7 @@ public class Politician
     public required string Name { get; set; }
 
     /// <summary>Senate / House</summary>
-    public required string CurrentPosition { get; set; }
+    public required string House { get; set; }
 
     /// <summary>Unique congressional bioguide identifier (e.g. "P000197").</summary>
     public string? BioGuideId { get; set; }
@@ -16,4 +16,8 @@ public class Politician
 
     /// <summary>US state the politician represents.</summary>
     public string? State { get; set; }
+    public string? District { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

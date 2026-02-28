@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CongressionalTradingTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(TradeDbContext))]
-    [Migration("20260226212738_AddTradesSyncStateAndEntityFields")]
-    partial class AddTradesSyncStateAndEntityFields
+    [Migration("20260228040256_AddRawRangeToTrade")]
+    partial class AddRawRangeToTrade
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,13 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
                     b.Property<string>("BioGuideId")
                         .HasColumnType("text");
 
-                    b.Property<string>("CurrentPosition")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("District")
+                        .HasColumnType("text");
+
+                    b.Property<string>("House")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -50,38 +56,18 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
                     b.Property<string>("State")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("PoliticianId");
+
+                    b.HasIndex("BioGuideId")
+                        .IsUnique();
 
                     b.HasIndex("Name")
                         .IsUnique();
 
                     b.ToTable("Politicians");
-                });
-
-            modelBuilder.Entity("CongressionalTradingTracker.Domain.Stock", b =>
-                {
-                    b.Property<int>("StockId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StockId"));
-
-                    b.Property<string>("Company")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Symbol")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TickerType")
-                        .HasColumnType("text");
-
-                    b.HasKey("StockId");
-
-                    b.HasIndex("Symbol")
-                        .IsUnique();
-
-                    b.ToTable("Stocks");
                 });
 
             modelBuilder.Entity("CongressionalTradingTracker.Domain.SyncState", b =>
@@ -103,6 +89,32 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
                     b.ToTable("SyncStates");
                 });
 
+            modelBuilder.Entity("CongressionalTradingTracker.Domain.Ticker", b =>
+                {
+                    b.Property<int>("TickerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TickerId"));
+
+                    b.Property<string>("Company")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TickerType")
+                        .HasColumnType("text");
+
+                    b.HasKey("TickerId");
+
+                    b.HasIndex("Symbol")
+                        .IsUnique();
+
+                    b.ToTable("Stocks");
+                });
+
             modelBuilder.Entity("CongressionalTradingTracker.Domain.Trade", b =>
                 {
                     b.Property<int>("TradeId")
@@ -111,8 +123,14 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TradeId"));
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -137,7 +155,20 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
                     b.Property<decimal?>("PriceChange")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("Range")
+                    b.Property<decimal?>("RangeMax")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal?>("RangeMid")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("RangeMin")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("RawAmount")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RawRange")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("ReportDate")
@@ -146,7 +177,10 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
                     b.Property<decimal?>("SpyChange")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("StockId")
+                    b.Property<string>("SubHolding")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TickerId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Transaction")
@@ -156,11 +190,14 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("TradeId");
 
-                    b.HasIndex("StockId");
+                    b.HasIndex("TickerId");
 
-                    b.HasIndex("PoliticianId", "StockId", "TransactionDate", "Transaction", "Range")
+                    b.HasIndex("PoliticianId", "TickerId", "TransactionDate", "ReportDate", "Transaction", "RawAmount", "SubHolding")
                         .IsUnique();
 
                     b.ToTable("Trades");
@@ -174,15 +211,15 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CongressionalTradingTracker.Domain.Stock", "Stock")
+                    b.HasOne("CongressionalTradingTracker.Domain.Ticker", "Ticker")
                         .WithMany()
-                        .HasForeignKey("StockId")
+                        .HasForeignKey("TickerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Politician");
 
-                    b.Navigation("Stock");
+                    b.Navigation("Ticker");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,7 +5,7 @@ namespace CongressionalTradingTracker.Infrastructure;
 
 public class TradeDbContext : DbContext
 {
-    public DbSet<Stock> Stocks { get; set; }
+    public DbSet<Ticker> Stocks { get; set; }
     public DbSet<Politician> Politicians { get; set; }
     public DbSet<Trade> Trades { get; set; }
     public DbSet<SyncState> SyncStates { get; set; }
@@ -15,18 +15,21 @@ public class TradeDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Stock>().HasIndex(s => s.Symbol).IsUnique();
+        modelBuilder.Entity<Ticker>().HasIndex(s => s.Symbol).IsUnique();
         modelBuilder.Entity<Politician>().HasIndex(s => s.Name).IsUnique();
+        modelBuilder.Entity<Politician>().HasIndex(s => s.BioGuideId).IsUnique();
 
         modelBuilder
             .Entity<Trade>()
             .HasIndex(t => new
             {
                 t.PoliticianId,
-                t.StockId,
+                t.TickerId,
                 t.TransactionDate,
+                t.ReportDate,
                 t.Transaction,
-                t.Range,
+                t.RawAmount,
+                t.SubHolding,
             })
             .IsUnique();
 
@@ -36,6 +39,10 @@ public class TradeDbContext : DbContext
             .WithMany()
             .HasForeignKey(t => t.PoliticianId);
 
-        modelBuilder.Entity<Trade>().HasOne(t => t.Stock).WithMany().HasForeignKey(t => t.StockId);
+        modelBuilder
+            .Entity<Trade>()
+            .HasOne(t => t.Ticker)
+            .WithMany()
+            .HasForeignKey(t => t.TickerId);
     }
 }

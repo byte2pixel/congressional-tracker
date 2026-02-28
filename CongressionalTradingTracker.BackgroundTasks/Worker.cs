@@ -42,19 +42,29 @@ public class Worker(
                     "Fetched {Count} bulk trades. Upserting...",
                     bulkTrades.Count
                 );
-                await tradeService.UpsertTradesAsync(bulkTrades, ct);
+                await tradeService.UpsertBulkTradesAsync(bulkTrades, ct);
                 await syncState.MarkBulkSyncCompletedAsync(ct);
                 logger.LogInformation("Bulk sync completed.");
             }
             else
             {
+                var lastSync = await syncState.GetLastLiveSyncAsync(ct);
+                if (lastSync.HasValue && lastSync.Value.Date == DateTime.UtcNow.Date)
+                {
+                    logger.LogInformation(
+                        "Live sync already completed today ({Date:yyyy-MM-dd}). Skipping.",
+                        lastSync.Value.Date
+                    );
+                    return;
+                }
+
                 logger.LogInformation("Fetching live congressional trades...");
                 var liveTrades = await quiverQuant.GetLiveTradesAsync(ct);
                 logger.LogInformation(
                     "Fetched {Count} live trades. Upserting...",
                     liveTrades.Count
                 );
-                await tradeService.UpsertTradesAsync(liveTrades, ct);
+                await tradeService.UpsertLiveTradesAsync(liveTrades, ct);
                 await syncState.UpdateLastLiveSyncAsync(ct);
                 logger.LogInformation("Live sync completed.");
             }

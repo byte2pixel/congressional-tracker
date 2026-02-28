@@ -2,6 +2,6 @@ namespace CongressionalTradingTracker.Core;
 
 public interface IQuiverQuantService
 {
-    Task<IReadOnlyList<CongressTradeDto>> GetBulkTradesAsync(CancellationToken ct = default);
-    Task<IReadOnlyList<CongressTradeDto>> GetLiveTradesAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<CongressBulkDto>> GetBulkTradesAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<CongressLiveDto>> GetLiveTradesAsync(CancellationToken ct = default);
 }

@@ -19,6 +19,12 @@ public class SyncStateService(TradeDbContext dbContext) : ISyncStateService
         await dbContext.SaveChangesAsync(ct);
     }
 
+    public async Task<DateTime?> GetLastLiveSyncAsync(CancellationToken ct = default)
+    {
+        var state = await GetOrCreateAsync(ct);
+        return state.LastLiveSyncAt;
+    }
+
     public async Task UpdateLastLiveSyncAsync(CancellationToken ct = default)
     {
         var state = await GetOrCreateAsync(ct);

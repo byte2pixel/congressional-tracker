@@ -9,13 +9,14 @@ public class QuiverQuantService(HttpClient client) : IQuiverQuantService
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
+        Converters = { new ApiDateTimeConverter(), new NullableDateTimeConverter() },
     };
 
-    public async Task<IReadOnlyList<CongressTradeDto>> GetBulkTradesAsync(
+    public async Task<IReadOnlyList<CongressBulkDto>> GetBulkTradesAsync(
         CancellationToken ct = default
     )
     {
-        var result = await client.GetFromJsonAsync<List<CongressTradeDto>>(
+        var result = await client.GetFromJsonAsync<List<CongressBulkDto>>(
             "bulk/congresstrading",
             JsonOptions,
             ct
@@ -23,11 +24,11 @@ public class QuiverQuantService(HttpClient client) : IQuiverQuantService
         return result ?? [];
     }
 
-    public async Task<IReadOnlyList<CongressTradeDto>> GetLiveTradesAsync(
+    public async Task<IReadOnlyList<CongressLiveDto>> GetLiveTradesAsync(
         CancellationToken ct = default
     )
     {
-        var result = await client.GetFromJsonAsync<List<CongressTradeDto>>(
+        var result = await client.GetFromJsonAsync<List<CongressLiveDto>>(
             "live/congresstrading",
             JsonOptions,
             ct
