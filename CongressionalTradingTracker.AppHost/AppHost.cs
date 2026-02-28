@@ -25,6 +25,8 @@ var worker = builder
     .WithReference(migrations)
     .WaitForCompletion(migrations);
 
+var keycloak = builder.AddKeycloak("keycloak", 8080).WithDataVolume().WithOtlpExporter();
+
 // Configure Redis cache service with redis-commander and persistent data volume
 var cache = builder
     .AddRedis("cache")
@@ -35,15 +37,18 @@ var cache = builder
 // Configure the API service with dependencies on the database, cache, and migrations
 var apiService = builder
     .AddProject<Projects.CongressionalTradingTracker_ApiService>("apiservice")
+    .WithReference(keycloak)
     .WithReference(cache)
     .WithReference(postgresdb)
     .WithReference(migrations)
+    .WaitFor(keycloak)
     .WaitForCompletion(migrations)
     .WithHttpHealthCheck("/health");
 
 // Configure the frontend service with a reference to the API service
 var frontend = builder
     .AddViteApp("frontend", "../frontend")
+    .WithReference(keycloak)
     .WithReference(apiService)
     .WaitFor(apiService);
 

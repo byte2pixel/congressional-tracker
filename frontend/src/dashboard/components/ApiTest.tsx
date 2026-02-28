@@ -4,22 +4,32 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Stack } from "@mui/material";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
+import useKeycloak from "@/hooks/useKeycloak";
 
 const apiUrl =
   import.meta.env.VITE_services__apiservice__http__0 || "http://localhost:5348";
 
-function fetchStock() {
+function fetchStock(token?: string) {
   // Replace with your actual API endpoint
-  return fetch(`${apiUrl}/api/stocks`).then((res) => res.json());
+  return fetch(`${apiUrl}/api/stocks`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
 }
 
-function fetchPolitician() {
+function fetchPolitician(token?: string) {
   // Replace with your actual API endpoint
-  return fetch(`${apiUrl}/api/politicians`).then((res) => res.json());
+  return fetch(`${apiUrl}/api/politicians`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
 }
 
 export function ApiTest() {
   const [selected, setSelected] = useState<"stock" | "politician" | null>(null);
+  const { keycloak } = useKeycloak();
 
   const {
     data: stockData,
@@ -27,7 +37,7 @@ export function ApiTest() {
     isFetching: isFetchingStock,
   } = useQuery({
     queryKey: ["stock"],
-    queryFn: fetchStock,
+    queryFn: () => fetchStock(keycloak?.token),
     enabled: false,
   });
 
@@ -37,7 +47,7 @@ export function ApiTest() {
     isFetching: isFetchingPolitician,
   } = useQuery({
     queryKey: ["politician"],
-    queryFn: fetchPolitician,
+    queryFn: () => fetchPolitician(keycloak?.token),
     enabled: false,
   });
 

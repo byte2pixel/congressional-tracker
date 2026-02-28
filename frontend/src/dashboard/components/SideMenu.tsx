@@ -1,11 +1,11 @@
 import { styled } from "@mui/material/styles";
-import Avatar from "@mui/material/Avatar";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
+import { Button } from "@mui/material";
 import MenuContent from "./MenuContent";
-import OptionsMenu from "./OptionsMenu";
+import LoggedIn from "./LoggedIn";
+import useKeycloak from "@/hooks/useKeycloak";
 
 const drawerWidth = 240;
 
@@ -21,6 +21,12 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export default function SideMenu() {
+  const { authenticated, keycloak } = useKeycloak();
+
+  const handleLogin = () => {
+    keycloak?.login();
+  };
+
   return (
     <Drawer
       variant="permanent"
@@ -51,24 +57,13 @@ export default function SideMenu() {
           borderColor: "divider",
         }}
       >
-        <Avatar
-          sizes="small"
-          alt="Mel Dommer"
-          src="/static/images/avatar/7.jpg"
-          sx={{ width: 36, height: 36 }}
-        />
-        <Box sx={{ mr: "auto" }}>
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 500, lineHeight: "16px" }}
-          >
-            Mel Dommer
-          </Typography>
-          <Typography variant="caption" sx={{ color: "text.secondary" }}>
-            mel@dommer.edu
-          </Typography>
-        </Box>
-        <OptionsMenu />
+        {authenticated ? (
+          <LoggedIn />
+        ) : (
+          <Button variant="contained" onClick={handleLogin}>
+            Login
+          </Button>
+        )}
       </Stack>
     </Drawer>
   );

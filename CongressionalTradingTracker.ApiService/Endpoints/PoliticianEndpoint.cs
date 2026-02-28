@@ -15,7 +15,7 @@ public class PoliticianEndpoint(IPoliticianService service)
     public override void Configure()
     {
         Get("/api/politicians");
-        AllowAnonymous();
+        Roles("api-role");
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 
