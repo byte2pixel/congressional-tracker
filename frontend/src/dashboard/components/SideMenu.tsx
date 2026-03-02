@@ -3,6 +3,7 @@ import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { Button } from "@mui/material";
+import LoginIcon from "@mui/icons-material/Login";
 import MenuContent from "./MenuContent";
 import LoggedIn from "./LoggedIn";
 import useKeycloak from "@/hooks/useKeycloak";
@@ -60,7 +61,7 @@ export default function SideMenu() {
         {authenticated ? (
           <LoggedIn />
         ) : (
-          <Button variant="contained" onClick={handleLogin}>
+          <Button onClick={handleLogin} startIcon={<LoginIcon />} fullWidth>
             Login
           </Button>
         )}
