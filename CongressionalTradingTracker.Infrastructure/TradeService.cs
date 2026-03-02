@@ -49,7 +49,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             );
             var politician = new Politician
             {
-                Name = bioGuideId,
+                Name = dto.Name,
                 BioGuideId = dto.BioGuideId,
                 Party = dto.Party,
                 District = dto.District,
@@ -93,9 +93,16 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                 politician.State = dto.State;
                 dirty = true;
             }
+
             if (politician.District is null && dto.District is not null)
             {
                 politician.District = dto.District;
+                dirty = true;
+            }
+
+            if (politician.Name != dto.Name)
+            {
+                politician.Name = dto.Name;
                 dirty = true;
             }
 
