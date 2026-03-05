@@ -463,8 +463,8 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                 (
                     int PoliticianId,
                     int TickerId,
-                    DateTime TransactionDate,
-                    DateTime ReportDate,
+                    DateTime EffectiveTransactionDate,
+                    DateTime EffectiveReportDate,
                     string Transaction,
                     string RawAmount
                 ),
@@ -483,8 +483,8 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             var key = (
                 politician.PoliticianId,
                 stock.TickerId,
-                dto.TransactionDate,
-                dto.ReportDate,
+                dto.EffectiveTransactionDate,
+                dto.EffectiveReportDate,
                 dto.Transaction,
                 dto.Amount
             );
@@ -511,8 +511,8 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                 {
                     PoliticianId = key.PoliticianId,
                     TickerId = key.TickerId,
-                    TransactionDate = key.TransactionDate,
-                    ReportDate = key.ReportDate,
+                    TransactionDate = key.EffectiveTransactionDate,
+                    ReportDate = key.EffectiveReportDate,
                     Transaction = key.Transaction,
                     RawAmount = dto.Amount,
                     RawRange = dto.RawRange,
@@ -526,8 +526,8 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                     ExcessReturn = dto.ExcessReturn,
                     PriceChange = dto.PriceChange,
                     SpyChange = dto.SpyChange,
-                    CreatedAt = key.TransactionDate,
-                    UpdatedAt = dto.LastModified,
+                    CreatedAt = key.EffectiveTransactionDate,
+                    UpdatedAt = dto.EffectiveLastModified,
                 }
             );
         }

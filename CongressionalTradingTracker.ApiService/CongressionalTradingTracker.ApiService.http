@@ -4,3 +4,8 @@ GET {{ApiService_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST https://app-pub-pri-elastic.azurewebsites.net/search
+Content-Type: application/json
+
+{"index":"bioguideprofiles","matches":[{"fields":["usCongressBioId"],"query":"G000359"}]}

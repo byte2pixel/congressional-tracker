@@ -54,4 +54,20 @@ public class CongressLiveDto
 
     [JsonPropertyName("Party")]
     public string Party { get; init; } = string.Empty;
+
+    public DateTime EffectiveTransactionDate =>
+        DateTime.SpecifyKind(TransactionDate, DateTimeKind.Utc);
+
+    public DateTime EffectiveReportDate => DateTime.SpecifyKind(ReportDate, DateTimeKind.Utc);
+
+    public DateTime EffectiveLastModified
+    {
+        get
+        {
+            var lastModified = DateTime.SpecifyKind(LastModified, DateTimeKind.Utc);
+            return DateTime.Compare(DateTime.UtcNow, lastModified) > 0
+                ? lastModified
+                : DateTime.UtcNow;
+        }
+    }
 }
