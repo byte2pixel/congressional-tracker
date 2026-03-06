@@ -18,8 +18,5 @@
     <PackageReference Include="FastEndpoints" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  
 </Project>
