@@ -18,5 +18,4 @@
     <PackageReference Include="FastEndpoints" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
   </ItemGroup>
-  
 </Project>

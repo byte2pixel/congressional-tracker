@@ -5,6 +5,11 @@ Accept: application/json
 
 ###
 
+GET {{ApiService_HostAddress}}/api/politicians/search?query=nan&Limit=5
+Accept: application/json
+
+### 
+
 POST https://app-pub-pri-elastic.azurewebsites.net/search
 Content-Type: application/json
 

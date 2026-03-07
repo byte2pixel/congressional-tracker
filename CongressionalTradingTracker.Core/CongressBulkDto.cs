@@ -12,7 +12,7 @@ public class CongressBulkDto
     public DateTime? Traded { get; set; }
 
     [JsonPropertyName("Transaction")]
-    public string Transaction { get; set; }
+    public string Transaction { get; set; } = string.Empty;
 
     [JsonPropertyName("Status")]
     public string? Status { get; set; }
@@ -21,7 +21,7 @@ public class CongressBulkDto
     public string Amount { get; set; } = "0";
 
     [JsonPropertyName("excess_return")]
-    public string ExcessReturn { get; set; }
+    public string ExcessReturn { get; set; } = string.Empty;
 
     [JsonPropertyName("Subholding")]
     public string? SubHolding { get; set; }
@@ -44,19 +44,19 @@ public class CongressBulkDto
 
     // Politician metadata stored at time of trade
     [JsonPropertyName("Name")]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     [JsonPropertyName("BioGuideID")]
-    public string BioGuideId { get; set; }
+    public string BioGuideId { get; set; } = string.Empty;
 
     [JsonPropertyName("Party")]
-    public string Party { get; set; }
+    public string Party { get; set; } = string.Empty;
 
     [JsonPropertyName("District")]
     public string? District { get; set; }
 
     [JsonPropertyName("Chamber")]
-    public string House { get; set; }
+    public string House { get; set; } = string.Empty;
 
     [JsonPropertyName("State")]
     public string? State { get; set; }
