@@ -16,7 +16,10 @@
 1. Clone the repository.
 2. Navigate to the root directory and create a `.env` file based on the provided `.env.example` file.
 3. Fill in the required environment variables in the `.env` file.
+    - You may need to launch the aspire dashboard to get some of the information to set up the frontend env file.
 4. Navigate to the `frontend` directory and create a `.env` file based on the provided `.env.example` file in that directory.
+    - The api service url will be the url in the api projects launchSettings.json file like: `"applicationUrl": "http://localhost:5348",`
+    - The keycloak settings will be based on the server setup later on.
 5. Trust the APS.NET Core HTTPS development certificate by running the following command in your terminal:
     ```
     dotnet dev-certs https --trust

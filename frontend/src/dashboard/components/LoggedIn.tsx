@@ -3,15 +3,15 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import useKeycloak from "@/hooks/useKeycloak";
 
 export default function LoggedIn() {
-  const { keycloak } = useKeycloak();
-
+  const { keycloak, userPicture } = useKeycloak();
+  console.log("rerendering LoggedIn component with userPicture:", userPicture);
   return (
     <Stack direction="column" alignItems="end">
       <Stack direction="row" alignItems="center" spacing={2}>
         <Avatar
           sizes="small"
-          alt={keycloak?.tokenParsed?.preferred_username || "Unknown User"}
-          src={keycloak?.tokenParsed?.picture || "/static/images/avatar/7.jpg"}
+          alt={keycloak?.tokenParsed?.preferred_username ?? "Unknown User"}
+          src={userPicture ?? "/static/images/avatar/7.jpg"}
           sx={{ width: 36, height: 36 }}
         />
         <Box sx={{ mr: "auto" }}>

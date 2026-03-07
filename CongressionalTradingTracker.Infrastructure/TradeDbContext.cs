@@ -16,6 +16,12 @@ public class TradeDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Ticker>().HasIndex(s => s.Symbol).IsUnique();
+        modelBuilder
+            .Entity<Ticker>()
+            .HasIndex(p => p.Company)
+            .HasMethod("gin")
+            .HasOperators("gin_trgm_ops")
+            .HasDatabaseName("IX_Ticker_Company_trgm");
 
         modelBuilder.Entity<Politician>().HasIndex(p => p.Name).IsUnique();
 

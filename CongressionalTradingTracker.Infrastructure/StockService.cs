@@ -10,4 +10,15 @@ public class StockService(TradeDbContext dbContext) : IStockService
     {
         return dbContext.Stocks.ToArrayAsync(ct);
     }
+
+    public Task<Ticker[]> SearchStocksAsync(string query, int limit, CancellationToken ct)
+    {
+        return dbContext
+            .Stocks.Where(s =>
+                EF.Functions.ILike(s.Symbol, $"{query}%")
+                || EF.Functions.ILike(s.Company ?? "", $"%{query}%")
+            )
+            .Take(limit)
+            .ToArrayAsync(ct);
+    }
 }

@@ -4,6 +4,13 @@ import Keycloak from "keycloak-js";
 interface KeycloakContextProps {
   keycloak: Keycloak | null;
   authenticated: boolean;
+  userPicture: string | null;
+}
+
+interface KeycloakState {
+  keycloak: Keycloak | null;
+  authenticated: boolean;
+  userPicture: string | null;
 }
 
 const KeycloakContext = createContext<KeycloakContextProps | undefined>(
@@ -16,8 +23,11 @@ interface KeycloakProviderProps {
 
 const KeycloakProvider: React.FC<KeycloakProviderProps> = ({ children }) => {
   const isRun = useRef<boolean>(false);
-  const [keycloak, setKeycloak] = useState<Keycloak | null>(null);
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [state, setState] = useState<KeycloakState>({
+    keycloak: null,
+    authenticated: false,
+    userPicture: null,
+  });
 
   useEffect(() => {
     if (isRun.current) return;
@@ -37,15 +47,17 @@ const KeycloakProvider: React.FC<KeycloakProviderProps> = ({ children }) => {
           onLoad: "login-required",
         })
         .then((auth: boolean) => {
-          setAuthenticated(auth);
+          const picture = auth ? keycloakInstance.tokenParsed?.picture : null;
+          setState({
+            keycloak: keycloakInstance,
+            authenticated: auth,
+            userPicture: picture,
+          });
+          console.log("keycloak", keycloakInstance);
         })
         .catch((error) => {
           console.error("Keycloak initialization failed:", error);
-          setAuthenticated(false);
-        })
-        .finally(() => {
-          setKeycloak(keycloakInstance);
-          console.log("keycloak", keycloakInstance);
+          setState({ keycloak: null, authenticated: false, userPicture: null });
         });
     };
 
@@ -53,7 +65,7 @@ const KeycloakProvider: React.FC<KeycloakProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <KeycloakContext.Provider value={{ keycloak, authenticated }}>
+    <KeycloakContext.Provider value={state}>
       {children}
     </KeycloakContext.Provider>
   );

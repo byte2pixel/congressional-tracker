@@ -11,49 +11,51 @@ import {
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useState } from "react";
 import type { HTMLAttributes } from "react";
-import type { Politician } from "@/api/politicians";
-import { usePoliticianSearch } from "@/hooks/usePoliticianSearch";
+import type { Stock } from "@/api/stocks";
+import { useStockSearch } from "@/hooks/useStockSearch";
 
-interface PoliticianOptionProps extends HTMLAttributes<HTMLLIElement> {
-  option: Politician;
+interface StockOptionProps extends HTMLAttributes<HTMLLIElement> {
+  option: Stock;
 }
 
-function PoliticianOption({ option, ...props }: PoliticianOptionProps) {
+function StockOption({ option, ...props }: StockOptionProps) {
   const { key, ...restProps } = props as typeof props & { key?: React.Key };
   return (
     <li key={key} {...restProps}>
       <Stack direction="row" spacing={1} alignItems="center">
-        <Typography variant="body2">{option.name}</Typography>
+        <Typography variant="body2">{option.symbol}</Typography>
         <Typography variant="caption" color="text.secondary">
-          {option.party} · {option.house}
+          {option.company}
         </Typography>
       </Stack>
     </li>
   );
 }
 
-export default function PoliticianSearchCard() {
+export default function StockSearchCard() {
   const [inputValue, setInputValue] = useState("");
-  const { data: options = [], isFetching } = usePoliticianSearch(inputValue);
+  const { data: options = [], isFetching } = useStockSearch(inputValue);
 
   return (
     <Card variant="outlined" sx={{ height: "100%", flexGrow: 1 }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
-          Politician Search
+          Stock Search
         </Typography>
         <Stack spacing={2} sx={{ justifyContent: "space-between" }}>
           <Autocomplete
             freeSolo
-            id="politician-search"
+            id="stock-search"
             disableClearable
             options={options}
-            getOptionLabel={(opt) => (typeof opt === "string" ? opt : opt.name)}
+            getOptionLabel={(opt) =>
+              typeof opt === "string" ? opt : opt.symbol
+            }
             inputValue={inputValue}
             onInputChange={(_, newValue) => setInputValue(newValue)}
             loading={isFetching}
             renderOption={({ key, ...props }, option) => (
-              <PoliticianOption key={key} {...props} option={option} />
+              <StockOption key={key} {...props} option={option} />
             )}
             renderInput={(params) => (
               <OutlinedInput
@@ -62,7 +64,7 @@ export default function PoliticianSearchCard() {
                 inputProps={params.inputProps}
                 id={params.id}
                 size="small"
-                placeholder="Search politicians…"
+                placeholder="Search stocks…"
                 startAdornment={
                   <InputAdornment
                     position="start"

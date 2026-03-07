@@ -11,6 +11,7 @@ import SessionsChart from "./SessionsChart";
 import StatCard from "./StatCard";
 import { ApiTest } from "./ApiTest";
 import PoliticianSearchCard from "./PoliticianSearchCard";
+import StockSearchCard from "./StockSearchCard";
 import type { StatCardProps } from "./StatCard";
 
 const data: Array<StatCardProps> = [
@@ -64,7 +65,7 @@ export default function MainGrid() {
           <PoliticianSearchCard />
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <PoliticianSearchCard />
+          <StockSearchCard />
         </Grid>
       </Grid>
       <Grid

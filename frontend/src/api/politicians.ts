@@ -1,8 +1,7 @@
-const apiUrl =
-  import.meta.env.VITE_services__apiservice__http__0 || "http://localhost:5348";
+const apiUrl = import.meta.env.VITE_services__apiservice__http__0;
 
 export interface Politician {
-  id: string;
+  bioGuideId: string;
   name: string;
   house: string;
   party: string;
