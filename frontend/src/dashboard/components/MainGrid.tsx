@@ -10,6 +10,7 @@ import PageViewsBarChart from "./PageViewsBarChart";
 import SessionsChart from "./SessionsChart";
 import StatCard from "./StatCard";
 import { ApiTest } from "./ApiTest";
+import PoliticianSearchCard from "./PoliticianSearchCard";
 import type { StatCardProps } from "./StatCard";
 
 const data: Array<StatCardProps> = [
@@ -53,6 +54,19 @@ export default function MainGrid() {
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         Overview
       </Typography>
+      <Grid
+        container
+        spacing={2}
+        columns={12}
+        sx={{ mb: (theme) => theme.spacing(2) }}
+      >
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <PoliticianSearchCard />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <PoliticianSearchCard />
+        </Grid>
+      </Grid>
       <Grid
         container
         spacing={2}
