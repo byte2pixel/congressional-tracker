@@ -1,0 +1,37 @@
+using CongressionalTradingTracker.Core;
+using FastEndpoints;
+using Microsoft.AspNetCore.Http.HttpResults;
+
+namespace CongressionalTradingTracker.ApiService.UseCases;
+
+public class MostRecentTradesEndpoint(ITradeService tradeService)
+    : EndpointWithoutRequest<
+        Results<Ok<List<MostRecentTradeResponse>>, ProblemDetails>,
+        MostRecentTradesMapper
+    >
+{
+    public override void Configure()
+    {
+        Get("/api/trades/recent");
+        Roles("api-role");
+        // AllowAnonymous();
+        Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
+    }
+
+    public override async Task<
+        Results<Ok<List<MostRecentTradeResponse>>, ProblemDetails>
+    > ExecuteAsync(CancellationToken ct)
+    {
+        try
+        {
+            var recentTrades = await tradeService.MostRecentTradesAsync(ct);
+            var response = await Map.FromEntityAsync(recentTrades, ct);
+            return TypedResults.Ok(response);
+        }
+        catch
+        {
+            AddError("An error occurred while retrieving recent trades.");
+            return new ProblemDetails(ValidationFailures);
+        }
+    }
+}

@@ -7,6 +7,17 @@ namespace CongressionalTradingTracker.Infrastructure;
 
 public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger) : ITradeService
 {
+    public Task<List<Trade>> MostRecentTradesAsync(CancellationToken ct = default)
+    {
+        return dbContext
+            .Trades.Include(t => t.Politician)
+            .Include(t => t.Ticker)
+            .OrderByDescending(t => t.TransactionDate)
+            .ThenByDescending(t => t.ReportDate)
+            .Take(50)
+            .ToListAsync(ct);
+    }
+
     public async Task UpsertBulkTradesAsync(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,

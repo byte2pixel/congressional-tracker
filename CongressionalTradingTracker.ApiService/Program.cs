@@ -62,7 +62,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseExceptionHandler();
 app.UseCors("Frontend");
-app.UseFastEndpoints();
+app.UseFastEndpoints(c => c.Errors.UseProblemDetails());
 app.UseOutputCache();
 
 if (app.Environment.IsDevelopment())
