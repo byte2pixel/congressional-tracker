@@ -48,6 +48,7 @@ export default function StockSearchCard() {
             id="stock-search"
             disableClearable
             options={options}
+            filterOptions={(x) => x}
             getOptionLabel={(opt) =>
               typeof opt === "string" ? opt : opt.symbol
             }

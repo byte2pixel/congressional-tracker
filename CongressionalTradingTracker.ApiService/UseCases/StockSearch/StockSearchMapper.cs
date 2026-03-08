@@ -11,7 +11,7 @@ public class StockSearchMapper : ResponseMapper<List<StockSearchResponse>, Ticke
             .Select(s => new StockSearchResponse
             {
                 Symbol = s.Symbol,
-                Name = s.Company ?? s.Symbol,
+                Company = s.Company ?? s.Symbol,
             })
             .ToList();
     }

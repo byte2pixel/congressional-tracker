@@ -14,3 +14,8 @@ POST https://app-pub-pri-elastic.azurewebsites.net/search
 Content-Type: application/json
 
 {"index":"bioguideprofiles","matches":[{"fields":["usCongressBioId"],"query":"G000359"}]}
+
+###
+
+GET https://finnhub.io/api/v1/search?q=zzff&exchange=US&token={{finnhub.apiKey}}
+Content-Type: application/json

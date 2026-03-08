@@ -9,6 +9,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
 {
     public async Task UpsertBulkTradesAsync(
         IEnumerable<CongressBulkDto> trades,
+        IFinnhubService finnhub,
         CancellationToken ct = default
     )
     {
@@ -129,14 +130,19 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             var dto = dtoList.First(d =>
                 d.Symbol.Equals(symbol, StringComparison.OrdinalIgnoreCase)
             );
+            var finnhubResult = (await finnhub.LookupSymbolAsync(symbol, ct)).Result.FirstOrDefault(
+                s => s.Symbol.Equals(symbol, StringComparison.OrdinalIgnoreCase)
+            );
             var ticker = new Ticker
             {
                 Symbol = symbol,
-                Company = dto.Company,
+                Company = finnhubResult?.Description ?? dto.Company, // prefer finnhub description if available
                 TickerType = dto.TickerType,
             };
             dbContext.Stocks.Add(ticker);
             stockCache[symbol] = ticker;
+            // add fake rate limiting for finnhub.
+            await Task.Delay(1000, ct);
         }
 
         // Update pre-existing tickers with any newly available fields (skip just-inserted ones)
@@ -352,6 +358,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
 
     public async Task UpsertLiveTradesAsync(
         IEnumerable<CongressLiveDto> trades,
+        IFinnhubService finnhub,
         CancellationToken ct = default
     )
     {
@@ -439,9 +446,19 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             var dto = dtoList.First(d =>
                 d.Symbol.Equals(symbol, StringComparison.OrdinalIgnoreCase)
             );
-            var ticker = new Ticker { Symbol = symbol, TickerType = dto.TickerType };
+            var finnhubResult = (await finnhub.LookupSymbolAsync(symbol, ct)).Result.FirstOrDefault(
+                s => s.Symbol.Equals(symbol, StringComparison.OrdinalIgnoreCase)
+            );
+            var ticker = new Ticker
+            {
+                Symbol = symbol,
+                TickerType = dto.TickerType,
+                Company = finnhubResult?.Description ?? null,
+            };
             dbContext.Stocks.Add(ticker);
             stockCache[symbol] = ticker;
+            // add fake rate limiting for finnhub.
+            await Task.Delay(800, ct);
         }
 
         foreach (var dto in dtoList)

@@ -10,9 +10,6 @@ builder.AddServiceDefaults();
 builder.AddNpgsqlDbContext<TradeDbContext>("CongressTradingDb");
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// var timeoutSeconds = builder.Configuration.GetValue("QuiverQuant:TimeoutSeconds", 300);
-// var timeout = TimeSpan.FromSeconds(timeoutSeconds);
-
 builder.Services.AddHttpClient<IQuiverQuantService, QuiverQuantService>(client =>
 {
     var baseUrl =
@@ -28,6 +25,22 @@ builder.Services.AddHttpClient<IQuiverQuantService, QuiverQuantService>(client =
         new System.Net.Http.Headers.AuthenticationHeaderValue("Token", apiKey);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
+
+builder.Services.AddHttpClient<IFinnhubService, FinnhubService>(client =>
+{
+    var baseUrl =
+        builder.Configuration["Finnhub:BaseUrl"]
+        ?? throw new InvalidOperationException("Finnhub:BaseUrl is not configured.");
+    var apiKey =
+        builder.Configuration["Finnhub:ApiKey"]
+        ?? throw new InvalidOperationException("Finnhub:ApiKey is not configured.");
+
+    client.BaseAddress = new Uri(baseUrl);
+    client.Timeout = TimeSpan.FromMinutes(5);
+    client.DefaultRequestHeaders.Add("X-Finnhub-Token", apiKey);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();

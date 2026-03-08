@@ -1,5 +1,4 @@
 using CongressionalTradingTracker.Core;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CongressionalTradingTracker.BackgroundTasks;
 
@@ -27,6 +26,7 @@ public class Worker(
     {
         await using var scope = scopeFactory.CreateAsyncScope();
         var quiverQuant = scope.ServiceProvider.GetRequiredService<IQuiverQuantService>();
+        var finnhub = scope.ServiceProvider.GetRequiredService<IFinnhubService>();
         var tradeService = scope.ServiceProvider.GetRequiredService<ITradeService>();
         var syncState = scope.ServiceProvider.GetRequiredService<ISyncStateService>();
 
@@ -38,13 +38,12 @@ public class Worker(
             {
                 logger.LogInformation("Starting one-time bulk congressional trades sync...");
                 var bulkTrades = await quiverQuant.GetBulkTradesAsync(ct);
+                await tradeService.UpsertBulkTradesAsync(bulkTrades, finnhub, ct);
+                await syncState.MarkBulkSyncCompletedAsync(ct);
                 logger.LogInformation(
-                    "Fetched {Count} bulk trades. Upserting...",
+                    "Bulk sync completed. Fetched and upserted {Count} trades.",
                     bulkTrades.Count
                 );
-                await tradeService.UpsertBulkTradesAsync(bulkTrades, ct);
-                await syncState.MarkBulkSyncCompletedAsync(ct);
-                logger.LogInformation("Bulk sync completed.");
             }
             else
             {
@@ -60,13 +59,12 @@ public class Worker(
 
                 logger.LogInformation("Fetching live congressional trades...");
                 var liveTrades = await quiverQuant.GetLiveTradesAsync(ct);
+                await tradeService.UpsertLiveTradesAsync(liveTrades, finnhub, ct);
+                await syncState.UpdateLastLiveSyncAsync(ct);
                 logger.LogInformation(
-                    "Fetched {Count} live trades. Upserting...",
+                    "Live sync completed. Fetched and upserted {Count} trades.",
                     liveTrades.Count
                 );
-                await tradeService.UpsertLiveTradesAsync(liveTrades, ct);
-                await syncState.UpdateLastLiveSyncAsync(ct);
-                logger.LogInformation("Live sync completed.");
             }
         }
         catch (Exception ex) when (!ct.IsCancellationRequested)
