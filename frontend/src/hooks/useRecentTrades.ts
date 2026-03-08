@@ -1,0 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
+import useKeycloak from "./useKeycloak";
+import { recentTrades } from "@/api/recentTrades";
+
+export function useRecentTrades() {
+  const { keycloak } = useKeycloak();
+  return useQuery({
+    queryKey: ["trades", "recent"],
+    queryFn: () => recentTrades(keycloak?.token),
+    staleTime: 1 * 60 * 60000, // 1 hour, matches Redis cache
+  });
+}
