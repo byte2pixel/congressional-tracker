@@ -5,10 +5,10 @@ import { alpha } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import { Outlet } from "@tanstack/react-router";
 import AppTheme from "../shared-theme/AppTheme";
 import AppNavbar from "./components/AppNavbar";
 import Header from "./components/Header";
-import MainGrid from "./components/MainGrid";
 import SideMenu from "./components/SideMenu";
 import {
   chartsCustomizations,
@@ -31,7 +31,6 @@ export default function Dashboard(props: { disableCustomTheme?: boolean }) {
       <Box sx={{ display: "flex" }}>
         <SideMenu />
         <AppNavbar />
-        {/* Main content */}
         <Box
           component="main"
           sx={(theme) => ({
@@ -52,7 +51,7 @@ export default function Dashboard(props: { disableCustomTheme?: boolean }) {
             }}
           >
             <Header />
-            <MainGrid />
+            <Outlet />
           </Stack>
         </Box>
       </Box>

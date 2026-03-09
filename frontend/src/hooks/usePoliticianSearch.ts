@@ -4,13 +4,13 @@ import { searchPoliticians } from "@/api/politicians";
 import useKeycloak from "@/hooks/useKeycloak";
 
 export function usePoliticianSearch(query: string, limit = 20) {
-  const { keycloak } = useKeycloak();
+  const { authenticated, keycloak } = useKeycloak();
   const debouncedQuery = useDeferredValue(query);
 
   return useQuery({
     queryKey: ["politicians", "search", debouncedQuery, limit],
     queryFn: () => searchPoliticians(debouncedQuery, limit, keycloak?.token),
-    enabled: debouncedQuery.length >= 2, // don't query on empty/single char
+    enabled: authenticated && debouncedQuery.length >= 2, // don't query on empty/single char
     placeholderData: keepPreviousData, // keep old results while typing
     staleTime: 60_000, // matches your Redis 1-min cache
   });

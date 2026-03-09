@@ -1,1 +1,2 @@
 *.config.js
+**/routeTree.gen.ts

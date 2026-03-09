@@ -23,7 +23,7 @@ public class ClaimsTransformation : IClaimsTransformation
         }
 
         foreach (
-            string? roleValue in roles
+            string roleValue in roles
                 .EnumerateArray()
                 .Select(role => role.GetString())
                 .OfType<string>()
