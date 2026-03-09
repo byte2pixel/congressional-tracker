@@ -1,9 +1,41 @@
 import { DataGrid } from "@mui/x-data-grid";
+import { useMediaQuery, useTheme } from "@mui/material";
 import { columns, rows } from "../internals/data/recentTradesColumns";
 import { useRecentTrades } from "@/hooks/useRecentTrades";
 
 export default function RecentTradesDataGrid() {
   const { data, isLoading, error } = useRecentTrades();
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMedium = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isLarge = useMediaQuery(theme.breakpoints.between("md", "lg"));
+
+  let columnVisibilityModel = {};
+  if (isSmall) {
+    columnVisibilityModel = {
+      amount: false,
+      transactionDate: false,
+      transactionType: false,
+    };
+  } else if (isMedium) {
+    columnVisibilityModel = {
+      amount: true,
+      transactionDate: false,
+      transactionType: false,
+    };
+  } else if (isLarge) {
+    columnVisibilityModel = {
+      amount: true,
+      transactionDate: true,
+      transactionType: false,
+    };
+  } else {
+    columnVisibilityModel = {
+      amount: true,
+      transactionDate: true,
+      transactionType: true,
+    };
+  }
 
   if (error) {
     console.log("Error fetching recent trades:", error);
@@ -15,11 +47,12 @@ export default function RecentTradesDataGrid() {
       checkboxSelection
       rows={data ? rows(data) : []}
       columns={columns}
+      columnVisibilityModel={columnVisibilityModel}
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
       }
       initialState={{
-        pagination: { paginationModel: { pageSize: 20 } },
+        pagination: { paginationModel: { pageSize: 10 } },
       }}
       pageSizeOptions={[10, 20, 50]}
       disableColumnResize

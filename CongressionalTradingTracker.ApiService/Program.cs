@@ -58,10 +58,10 @@ builder.Services.AddTransient<IClaimsTransformation, ClaimsTransformation>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseAuthentication();
-app.UseAuthorization();
 app.UseExceptionHandler();
 app.UseCors("Frontend");
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseFastEndpoints(c => c.Errors.UseProblemDetails());
 app.UseOutputCache();
 
