@@ -64,6 +64,18 @@ const KeycloakProvider: React.FC<KeycloakProviderProps> = ({ children }) => {
     initKeycloak();
   }, []);
 
+  useEffect(() => {
+    if (!state.keycloak) return;
+
+    const interval = setInterval(() => {
+      state.keycloak?.updateToken(60).catch(() => {
+        state.keycloak?.logout();
+      });
+    }, 30000); // every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [state.keycloak]);
+
   return (
     <KeycloakContext.Provider value={state}>
       {children}
