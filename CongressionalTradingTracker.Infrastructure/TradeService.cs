@@ -18,6 +18,46 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             .ToListAsync(ct);
     }
 
+    public Task<List<MostActiveTraderDto>> MostActiveTradersAsync(
+        DateTime from,
+        DateTime to,
+        int limit = 50,
+        CancellationToken ct = default
+    )
+    {
+        return dbContext
+            .Trades.Where(t => t.TransactionDate >= from && t.TransactionDate <= to)
+            .GroupBy(t => new
+            {
+                t.PoliticianId,
+                t.Politician.Name,
+                t.Politician.BioGuideId,
+                t.Politician.Party,
+                t.Politician.House,
+                t.Politician.State,
+            })
+            .Select(g => new MostActiveTraderDto
+            {
+                PoliticianId = g.Key.PoliticianId,
+                Name = g.Key.Name,
+                BioGuideId = g.Key.BioGuideId,
+                Party = g.Key.Party,
+                House = g.Key.House,
+                State = g.Key.State,
+                TotalTrades = g.Count(),
+                PurchaseCount = g.Count(t =>
+                    EF.Functions.ILike(t.Transaction, "P%")
+                ), // some transactions are "Purchase", "Purchase (Partial)"), etc.
+                SaleCount = g.Count(t =>
+                    EF.Functions.ILike(t.Transaction, "S%")
+                ), // some transactions are "Sale", "Sale (Partial)", etc.
+                TotalEstimatedVolume = g.Sum(t => t.RangeMid ?? t.RangeMin),
+            })
+            .OrderByDescending(d => d.TotalTrades)
+            .Take(limit)
+            .ToListAsync(ct);
+    }
+
     public async Task UpsertBulkTradesAsync(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,

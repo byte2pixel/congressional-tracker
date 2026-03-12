@@ -1,7 +1,3 @@
-using CongressionalTradingTracker.Core;
-using FastEndpoints;
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace CongressionalTradingTracker.ApiService.UseCases;
 
 public class MostRecentTradesEndpoint(ITradeService tradeService)
@@ -14,7 +10,6 @@ public class MostRecentTradesEndpoint(ITradeService tradeService)
     {
         Get("/api/trades/recent");
         Roles("api-role");
-        // AllowAnonymous();
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 

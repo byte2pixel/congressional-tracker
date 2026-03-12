@@ -1,6 +1,3 @@
-using CongressionalTradingTracker.Domain;
-using FastEndpoints;
-
 namespace CongressionalTradingTracker.ApiService.UseCases;
 
 public class MostRecentTradesMapper : ResponseMapper<List<MostRecentTradeResponse>, List<Trade>>

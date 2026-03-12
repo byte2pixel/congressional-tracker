@@ -1,6 +1,5 @@
 using CongressionalTradingTracker.ApiService;
 using CongressionalTradingTracker.Infrastructure;
-using FastEndpoints;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 

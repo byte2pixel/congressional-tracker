@@ -1,7 +1,3 @@
-using CongressionalTradingTracker.Core;
-using FastEndpoints;
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace CongressionalTradingTracker.ApiService.UseCases;
 
 public class StockSearchEndpoint(IStockService service)
@@ -24,7 +20,8 @@ public class StockSearchEndpoint(IStockService service)
     )
     {
         try
-        { var dbStocks = await service.SearchStocksAsync(req.Query, req.Limit, ct);
+        {
+            var dbStocks = await service.SearchStocksAsync(req.Query, req.Limit, ct);
             var stocks = Map.FromEntity(dbStocks);
             return TypedResults.Ok(stocks);
         }

@@ -59,5 +59,10 @@ public class TradeDbContext : DbContext
             .HasOne(t => t.Ticker)
             .WithMany()
             .HasForeignKey(t => t.TickerId);
+
+        modelBuilder
+            .Entity<Trade>()
+            .HasIndex(t => t.TransactionDate)
+            .HasDatabaseName("IX_Trades_TransactionDate");
     }
 }

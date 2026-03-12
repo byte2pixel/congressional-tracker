@@ -1,6 +1,3 @@
-using FastEndpoints;
-using FluentValidation;
-
 namespace CongressionalTradingTracker.ApiService.UseCases;
 
 public class PoliticianSearchValidator : Validator<PoliticianSearchRequest>

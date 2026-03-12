@@ -13,6 +13,11 @@ Accept: application/json
 GET {{ApiService_HostAddress}}/api/trades/recent
 Accept: application/json
 
+### 
+
+GET {{ApiService_HostAddress}}/api/traders/most-active
+Accept: application/json
+
 ###
 
 POST https://app-pub-pri-elastic.azurewebsites.net/search

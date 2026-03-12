@@ -1,7 +1,3 @@
-using CongressionalTradingTracker.Core;
-using FastEndpoints;
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace CongressionalTradingTracker.ApiService.UseCases;
 
 public class PoliticianSearchEndpoint(IPoliticianService service)
