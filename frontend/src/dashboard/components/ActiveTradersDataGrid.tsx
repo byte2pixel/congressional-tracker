@@ -1,10 +1,10 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { columns, rows } from "../internals/data/recentTradesColumns";
-import { useRecentTrades } from "@/hooks/useRecentTrades";
+import { columns, rows } from "../internals/data/activeTradersColumns";
+import { useActiveTraders } from "@/hooks/useActiveTraders";
 
-export default function RecentTradesDataGrid() {
-  const { data, isLoading, error } = useRecentTrades();
+export default function ActiveTradersDataGrid() {
+  const { data, isLoading, error } = useActiveTraders();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const isMedium = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -38,12 +38,12 @@ export default function RecentTradesDataGrid() {
   }
 
   if (error) {
-    console.log("Error fetching recent trades:", error);
+    console.log("Error fetching most active traders:", error);
   }
 
   return (
     <DataGrid
-      label="Most Recent Trades"
+      label="Most Active Traders (By Estimated Volume)"
       showToolbar
       loading={isLoading}
       checkboxSelection

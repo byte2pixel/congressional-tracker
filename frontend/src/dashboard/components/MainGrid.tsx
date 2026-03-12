@@ -2,6 +2,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { Divider } from "@mui/material";
 import Copyright from "../internals/components/Copyright";
 import ChartUserByCountry from "./ChartUserByCountry";
 import CustomizedDataGrid from "./CustomizedDataGrid";
@@ -12,6 +13,7 @@ import StatCard from "./StatCard";
 import PoliticianSearchCard from "./PoliticianSearchCard";
 import StockSearchCard from "./StockSearchCard";
 import RecentTradesDataGrid from "./RecentTradesDataGrid";
+import ActiveTradersDataGrid from "./ActiveTradersDataGrid";
 import type { StatCardProps } from "./StatCard";
 
 const data: Array<StatCardProps> = [
@@ -53,7 +55,7 @@ export default function MainGrid() {
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       {/* cards */}
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
-        Overview
+        Find a Politician or Stock
       </Typography>
       <Grid
         container
@@ -68,6 +70,10 @@ export default function MainGrid() {
           <StockSearchCard />
         </Grid>
       </Grid>
+      <Divider sx={{ mb: (theme) => theme.spacing(2) }} />
+      <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+        Latest Activity
+      </Typography>
       <Grid
         container
         spacing={2}
@@ -76,6 +82,16 @@ export default function MainGrid() {
       >
         <Grid size={{ xs: 12 }}>
           <RecentTradesDataGrid />
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        spacing={2}
+        columns={12}
+        sx={{ mb: (theme) => theme.spacing(2) }}
+      >
+        <Grid size={{ xs: 12 }}>
+          <ActiveTradersDataGrid />
         </Grid>
       </Grid>
       <Grid

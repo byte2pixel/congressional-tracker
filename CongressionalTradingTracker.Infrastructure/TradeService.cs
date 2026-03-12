@@ -45,15 +45,11 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                 House = g.Key.House,
                 State = g.Key.State,
                 TotalTrades = g.Count(),
-                PurchaseCount = g.Count(t =>
-                    EF.Functions.ILike(t.Transaction, "P%")
-                ), // some transactions are "Purchase", "Purchase (Partial)"), etc.
-                SaleCount = g.Count(t =>
-                    EF.Functions.ILike(t.Transaction, "S%")
-                ), // some transactions are "Sale", "Sale (Partial)", etc.
+                PurchaseCount = g.Count(t => EF.Functions.ILike(t.Transaction, "P%")), // some transactions are "Purchase", "Purchase (Partial)"), etc.
+                SaleCount = g.Count(t => EF.Functions.ILike(t.Transaction, "S%")), // some transactions are "Sale", "Sale (Partial)", etc.
                 TotalEstimatedVolume = g.Sum(t => t.RangeMid ?? t.RangeMin),
             })
-            .OrderByDescending(d => d.TotalTrades)
+            .OrderByDescending(d => d.TotalEstimatedVolume)
             .Take(limit)
             .ToListAsync(ct);
     }
