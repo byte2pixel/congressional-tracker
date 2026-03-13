@@ -53,7 +53,6 @@ const KeycloakProvider: React.FC<KeycloakProviderProps> = ({ children }) => {
             authenticated: auth,
             userPicture: picture,
           });
-          console.log("keycloak", keycloakInstance);
         })
         .catch((error) => {
           console.error("Keycloak initialization failed:", error);

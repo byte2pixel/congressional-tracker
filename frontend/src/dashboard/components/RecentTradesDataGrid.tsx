@@ -1,14 +1,20 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { memo, useMemo } from "react";
 import { columns, rows } from "../internals/data/recentTradesColumns";
 import { useRecentTrades } from "@/hooks/useRecentTrades";
 
-export default function RecentTradesDataGrid() {
+function RecentTradesDataGrid() {
   const { data, isLoading, error } = useRecentTrades();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const isMedium = useMediaQuery(theme.breakpoints.between("sm", "md"));
   const isLarge = useMediaQuery(theme.breakpoints.between("md", "lg"));
+
+  const getRows = useMemo(() => {
+    if (!data) return [];
+    return rows(data);
+  }, [data]);
 
   let columnVisibilityModel = {};
   if (isSmall) {
@@ -47,7 +53,7 @@ export default function RecentTradesDataGrid() {
       showToolbar
       loading={isLoading}
       checkboxSelection
-      rows={data ? rows(data) : []}
+      rows={getRows}
       columns={columns}
       disableColumnSelector
       columnVisibilityModel={columnVisibilityModel}
@@ -93,3 +99,5 @@ export default function RecentTradesDataGrid() {
     />
   );
 }
+
+export default memo(RecentTradesDataGrid);

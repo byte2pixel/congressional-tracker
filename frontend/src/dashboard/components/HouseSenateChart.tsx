@@ -1,0 +1,134 @@
+import * as React from "react";
+import { useMemo } from "react";
+import { PieChart } from "@mui/x-charts/PieChart";
+import { useDrawingArea } from "@mui/x-charts/hooks";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { useActiveTraders } from "@/hooks/useActiveTraders";
+
+const colors = ["hsl(220, 20%, 55%)", "hsl(220, 20%, 35%)"];
+
+const StyledText = styled("text")(({ theme }) => ({
+  textAnchor: "middle",
+  dominantBaseline: "central",
+  fill: (theme.vars || theme).palette.text.secondary,
+}));
+
+function PieCenterLabel({ total }: { total: number }) {
+  const { width, height, left, top } = useDrawingArea();
+  return (
+    <React.Fragment>
+      <StyledText
+        x={left + width / 2}
+        y={top + height / 2 - 10}
+        style={{ fontSize: "1.25rem", fontWeight: 600 }}
+      >
+        {total}
+      </StyledText>
+      <StyledText
+        x={left + width / 2}
+        y={top + height / 2 + 14}
+        style={{ fontSize: "0.75rem" }}
+      >
+        Traders
+      </StyledText>
+    </React.Fragment>
+  );
+}
+
+export default function HouseSenateChart() {
+  const { data, isLoading } = useActiveTraders();
+
+  const { pieData, total } = useMemo(() => {
+    if (!data) return { pieData: [], total: 0 };
+    const houseCount = data.filter((t) => t.house === "Representatives").length;
+    const senateCount = data.filter((t) => t.house === "Senate").length;
+    return {
+      pieData: [
+        { label: "House", value: houseCount },
+        { label: "Senate", value: senateCount },
+      ],
+      total: data.length,
+    };
+  }, [data]);
+
+  return (
+    <Card
+      variant="outlined"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: 1,
+        height: "100%",
+      }}
+    >
+      <CardContent>
+        <Typography component="h2" variant="subtitle2" gutterBottom>
+          Chamber Breakdown
+        </Typography>
+        {isLoading ? (
+          <Skeleton
+            variant="circular"
+            width={200}
+            height={200}
+            sx={{ mx: "auto", my: 2 }}
+          />
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <PieChart
+              colors={colors}
+              series={[
+                {
+                  data: pieData,
+                  innerRadius: 60,
+                  outerRadius: 85,
+                  paddingAngle: 2,
+                  highlightScope: { fade: "global", highlight: "item" },
+                },
+              ]}
+              height={210}
+              width={210}
+              margin={{ left: 0, right: 0, top: 0, bottom: 0 }}
+              hideLegend
+            >
+              <PieCenterLabel total={total} />
+            </PieChart>
+            <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
+              {pieData.map((item, i) => (
+                <Stack
+                  key={item.label}
+                  direction="row"
+                  alignItems="center"
+                  spacing={0.5}
+                >
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      bgcolor: colors[i],
+                    }}
+                  />
+                  <Typography variant="caption">
+                    {item.label}: {item.value}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
+          </Box>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

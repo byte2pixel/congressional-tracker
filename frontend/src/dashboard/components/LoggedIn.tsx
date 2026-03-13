@@ -4,7 +4,6 @@ import useKeycloak from "@/hooks/useKeycloak";
 
 export default function LoggedIn() {
   const { keycloak, userPicture } = useKeycloak();
-  console.log("rerendering LoggedIn component with userPicture:", userPicture);
   return (
     <Stack direction="column" alignItems="end">
       <Stack direction="row" alignItems="center" spacing={2}>

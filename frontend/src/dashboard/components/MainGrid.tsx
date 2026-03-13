@@ -1,11 +1,11 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
+// import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
 import Copyright from "../internals/components/Copyright";
-import ChartUserByCountry from "./ChartUserByCountry";
-import CustomizedDataGrid from "./CustomizedDataGrid";
+// import ChartUserByCountry from "./ChartUserByCountry";
+// import CustomizedDataGrid from "./CustomizedDataGrid";
 import HighlightedCard from "./HighlightedCard";
 import PageViewsBarChart from "./PageViewsBarChart";
 import SessionsChart from "./SessionsChart";
@@ -115,7 +115,7 @@ export default function MainGrid() {
           <PageViewsBarChart />
         </Grid>
       </Grid>
-      <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+      {/* <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         Details
       </Typography>
       <Grid container spacing={2} columns={12}>
@@ -127,7 +127,7 @@ export default function MainGrid() {
             <ChartUserByCountry />
           </Stack>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Copyright sx={{ my: 4 }} />
     </Box>
   );
