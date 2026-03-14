@@ -7,10 +7,12 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 import { Route } from "@/routes/politicians_.$bioguideid";
+import { usePolitician } from "@/hooks/usePolitician";
 
 // TODO: wire up GET /api/politicians/{bioGuideId} when backend endpoint is ready
 
 function ProfileHeader({ bioGuideId }: { bioGuideId: string }) {
+  const { data, isLoading } = usePolitician(bioGuideId);
   return (
     <Card variant="outlined" sx={{ width: "100%" }}>
       <CardContent>
@@ -22,12 +24,25 @@ function ProfileHeader({ bioGuideId }: { bioGuideId: string }) {
           {/* TODO: replace with politician photo */}
           <Skeleton variant="circular" width={80} height={80} />
           <Stack spacing={0.5}>
-            {/* TODO: replace with politician name */}
-            <Skeleton variant="text" width={240} height={36} />
+            <Typography variant="h6" fontWeight="bold">
+              {isLoading ? (
+                <Skeleton variant="text" width={120} />
+              ) : (
+                data?.name || "Unknown Politician"
+              )}
+            </Typography>
             <Stack direction="row" spacing={1}>
-              {/* TODO: replace with party and chamber */}
-              <Skeleton variant="text" width={80} />
-              <Skeleton variant="text" width={80} />
+              {isLoading ? (
+                <>
+                  <Skeleton variant="text" width={80} />
+                  <Skeleton variant="text" width={80} />
+                </>
+              ) : (
+                <>
+                  <Typography variant="body2">{data?.party}</Typography>
+                  <Typography variant="body2">{data?.house}</Typography>
+                </>
+              )}
             </Stack>
             <Typography variant="caption" color="text.secondary">
               ID: {bioGuideId}

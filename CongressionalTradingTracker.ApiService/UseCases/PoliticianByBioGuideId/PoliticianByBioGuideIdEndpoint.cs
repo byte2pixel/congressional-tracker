@@ -11,7 +11,7 @@ public class PoliticianByBioGuideIdEndpoint(IPoliticianService service)
     {
         Get("/api/politicians/{BioGuideId}");
         AllowAnonymous();
-        Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5))));
+        Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 
     public override async Task<

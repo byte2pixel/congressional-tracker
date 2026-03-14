@@ -12,7 +12,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useState } from "react";
 import type { HTMLAttributes } from "react";
 import type { Stock } from "@/api/stocks";
-import { useStockSearch } from "@/hooks/useStockSearch";
+import { useStockSearch } from "@/hooks/useSearchStock";
 
 interface StockOptionProps extends HTMLAttributes<HTMLLIElement> {
   option: Stock;

@@ -10,10 +10,10 @@ import {
 } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useState } from "react";
-import type { HTMLAttributes } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import type { HTMLAttributes } from "react";
 import type { Politician } from "@/api/politicians";
-import { usePoliticianSearch } from "@/hooks/usePoliticianSearch";
+import { usePoliticianSearch } from "@/hooks/useSearchPolitician";
 
 interface PoliticianOptionProps extends HTMLAttributes<HTMLLIElement> {
   option: Politician;

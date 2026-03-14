@@ -12,6 +12,6 @@ export function usePoliticianSearch(query: string, limit = 20) {
     queryFn: () => searchPoliticians(debouncedQuery, limit, keycloak?.token),
     enabled: authenticated && debouncedQuery.length >= 2, // don't query on empty/single char
     placeholderData: keepPreviousData, // keep old results while typing
-    staleTime: 60_000, // matches your Redis 1-min cache
+    staleTime: 60_000, // 1 minute, matches Redis 1-min cache
   });
 }

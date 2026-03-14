@@ -8,6 +8,6 @@ export function useRecentTrades() {
     queryKey: ["trades", "recent"],
     queryFn: () => recentTrades(keycloak?.token),
     enabled: authenticated,
-    staleTime: 1 * 60 * 60000, // 1 hour, matches Redis cache
+    staleTime: 60 * 60_000, // 1 hour, matches Redis cache
   });
 }
