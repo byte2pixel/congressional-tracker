@@ -11,6 +11,7 @@ import {
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useState } from "react";
 import type { HTMLAttributes } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import type { Politician } from "@/api/politicians";
 import { usePoliticianSearch } from "@/hooks/usePoliticianSearch";
 
@@ -35,6 +36,15 @@ function PoliticianOption({ option, ...props }: PoliticianOptionProps) {
 export default function PoliticianSearchCard() {
   const [inputValue, setInputValue] = useState("");
   const { data: options = [], isFetching } = usePoliticianSearch(inputValue);
+  const navigate = useNavigate();
+
+  function handleSelect(_: React.SyntheticEvent, value: Politician | string) {
+    if (typeof value === "string") return;
+    void navigate({
+      to: "/politicians/$bioguideid",
+      params: { bioguideid: value.bioGuideId },
+    });
+  }
 
   return (
     <Card variant="outlined" sx={{ height: "100%", flexGrow: 1 }}>
@@ -51,6 +61,7 @@ export default function PoliticianSearchCard() {
             getOptionLabel={(opt) => (typeof opt === "string" ? opt : opt.name)}
             inputValue={inputValue}
             onInputChange={(_, newValue) => setInputValue(newValue)}
+            onChange={handleSelect}
             loading={isFetching}
             renderOption={({ key, ...props }, option) => (
               <PoliticianOption key={key} {...props} option={option} />

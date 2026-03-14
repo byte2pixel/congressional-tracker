@@ -16,6 +16,7 @@ import { Route as PoliticiansRouteImport } from './routes/politicians'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PoliticiansBioguideidRouteImport } from './routes/politicians_.$bioguideid'
 
 const WatchlistRoute = WatchlistRouteImport.update({
   id: '/watchlist',
@@ -52,6 +53,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoliticiansBioguideidRoute = PoliticiansBioguideidRouteImport.update({
+  id: '/politicians_/$bioguideid',
+  path: '/politicians/$bioguideid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/stocks': typeof StocksRoute
   '/watchlist': typeof WatchlistRoute
+  '/politicians/$bioguideid': typeof PoliticiansBioguideidRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/stocks': typeof StocksRoute
   '/watchlist': typeof WatchlistRoute
+  '/politicians/$bioguideid': typeof PoliticiansBioguideidRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/stocks': typeof StocksRoute
   '/watchlist': typeof WatchlistRoute
+  '/politicians_/$bioguideid': typeof PoliticiansBioguideidRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/stocks'
     | '/watchlist'
+    | '/politicians/$bioguideid'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/stocks'
     | '/watchlist'
+    | '/politicians/$bioguideid'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/stocks'
     | '/watchlist'
+    | '/politicians_/$bioguideid'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +131,7 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   StocksRoute: typeof StocksRoute
   WatchlistRoute: typeof WatchlistRoute
+  PoliticiansBioguideidRoute: typeof PoliticiansBioguideidRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/politicians_/$bioguideid': {
+      id: '/politicians_/$bioguideid'
+      path: '/politicians/$bioguideid'
+      fullPath: '/politicians/$bioguideid'
+      preLoaderRoute: typeof PoliticiansBioguideidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   StocksRoute: StocksRoute,
   WatchlistRoute: WatchlistRoute,
+  PoliticiansBioguideidRoute: PoliticiansBioguideidRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

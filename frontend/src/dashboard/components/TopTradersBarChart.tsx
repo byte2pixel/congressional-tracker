@@ -4,15 +4,17 @@ import CardContent from "@mui/material/CardContent";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
+import { useNavigate } from "@tanstack/react-router";
 import { Gradient } from "../internals/components/Gradient";
 import { formatVolume } from "../internals/utils/format";
 import { useActiveTraders } from "@/hooks/useActiveTraders";
 
 export default function TopTradersBarChart() {
   const { data, isLoading } = useActiveTraders();
+  const navigate = useNavigate();
 
-  const { names, volumes } = useMemo(() => {
-    if (!data) return { names: [], volumes: [] };
+  const { names, volumes, bioGuideIds } = useMemo(() => {
+    if (!data) return { names: [], volumes: [], bioGuideIds: [] };
     const top10 = [...data]
       .sort((a, b) => b.totalEstimatedVolume - a.totalEstimatedVolume)
       .slice(0, 10);
@@ -23,6 +25,7 @@ export default function TopTradersBarChart() {
         return parts[parts.length - 1];
       }),
       volumes: v,
+      bioGuideIds: top10.map((t) => t.bioGuideId),
     };
   }, [data]);
 
@@ -55,6 +58,16 @@ export default function TopTradersBarChart() {
             margin={{ left: 0, right: 10, top: 10, bottom: 0 }}
             grid={{ vertical: true }}
             hideLegend
+            onItemClick={(_, context) => {
+              const bioGuideId = bioGuideIds[context.dataIndex];
+              if (bioGuideId) {
+                void navigate({
+                  to: "/politicians/$bioguideid",
+                  params: { bioguideid: bioGuideId },
+                });
+              }
+            }}
+            sx={{ cursor: "pointer" }}
           >
             <Gradient id="my-gradient" />
           </BarChart>

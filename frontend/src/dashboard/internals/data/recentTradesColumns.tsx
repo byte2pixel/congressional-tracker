@@ -2,10 +2,12 @@ import { Stack, Typography } from "@mui/material";
 import { formatVolume } from "../utils/format";
 import type { RecentTrade } from "@/api/recentTrades";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { PoliticianLink } from "@/dashboard/components/PoliticianLink";
 
 export const rows = (trades: Array<RecentTrade>): GridRowsProp => {
   return trades.map((trade, index) => ({
     id: index,
+    bioGuideId: trade.bioGuideId,
     name: trade.name,
     party: trade.party,
     house: trade.house,
@@ -25,6 +27,9 @@ export const columns: Array<GridColDef> = [
     headerName: "Politician",
     flex: 1.5,
     minWidth: 150,
+    renderCell: (params) => (
+      <PoliticianLink name={params.value} bioGuideId={params.row.bioGuideId} />
+    ),
   },
   {
     field: "symbol",
