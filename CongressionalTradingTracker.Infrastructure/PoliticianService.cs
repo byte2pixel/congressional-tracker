@@ -13,4 +13,9 @@ public class PoliticianService(TradeDbContext dbContext) : IPoliticianService
             .Take(limit)
             .ToArrayAsync(ct);
     }
+
+    public Task<Politician?> GetPoliticianByBioGuideIdAsync(string bioGuideId, CancellationToken ct)
+    {
+        return dbContext.Politicians.Where(p => p.BioGuideId == bioGuideId).FirstOrDefaultAsync(ct);
+    }
 }

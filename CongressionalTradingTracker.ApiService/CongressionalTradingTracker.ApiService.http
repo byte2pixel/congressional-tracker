@@ -8,6 +8,11 @@ Accept: application/json
 GET {{ApiService_HostAddress}}/api/politicians/search?query=nan&Limit=5
 Accept: application/json
 
+###
+
+GET {{ApiService_HostAddress}}/api/politicians/T000250
+Accept: application/json
+
 ### 
 
 GET {{ApiService_HostAddress}}/api/trades/recent
