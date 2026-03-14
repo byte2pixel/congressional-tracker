@@ -9,6 +9,16 @@ export interface Politician {
   district?: string;
 }
 
+export interface PoliticianTrade {
+  symbol: string;
+  company: string;
+  transactionDate: string;
+  transactionType: string;
+  amount: number;
+  range: string | null;
+  excessReturn: number | null;
+}
+
 export async function searchPoliticians(
   query: string,
   limit: number,
@@ -30,5 +40,16 @@ export async function getPolitician(
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error("Failed to fetch politician");
+  return await res.json();
+}
+
+export async function getPoliticiansTrades(
+  bioGuideId: string,
+  token?: string,
+): Promise<Array<PoliticianTrade>> {
+  const res = await fetch(`${apiUrl}/api/politicians/${bioGuideId}/trades`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Failed to fetch politician trades");
   return await res.json();
 }

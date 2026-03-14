@@ -6,10 +6,9 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
+import PoliticianTradesDataGrid from "./PoliticianTradesDataGrid";
 import { Route } from "@/routes/politicians_.$bioguideid";
 import { usePolitician } from "@/hooks/usePolitician";
-
-// TODO: wire up GET /api/politicians/{bioGuideId} when backend endpoint is ready
 
 function ProfileHeader({ bioGuideId }: { bioGuideId: string }) {
   const { data, isLoading } = usePolitician(bioGuideId);
@@ -74,25 +73,6 @@ function StatCards() {
   );
 }
 
-function TradeHistory() {
-  return (
-    <Card variant="outlined" sx={{ width: "100%" }}>
-      <CardContent>
-        <Typography component="h2" variant="subtitle2" gutterBottom>
-          Trade History
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
-        {/* TODO: replace with real data grid */}
-        <Stack spacing={1}>
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} variant="rectangular" height={40} />
-          ))}
-        </Stack>
-      </CardContent>
-    </Card>
-  );
-}
-
 function ActivityChart() {
   return (
     <Card variant="outlined" sx={{ width: "100%" }}>
@@ -142,7 +122,7 @@ export default function PoliticianDetailPage() {
             <BuySellChart />
           </Grid>
         </Grid>
-        <TradeHistory />
+        <PoliticianTradesDataGrid />
       </Stack>
     </Box>
   );
