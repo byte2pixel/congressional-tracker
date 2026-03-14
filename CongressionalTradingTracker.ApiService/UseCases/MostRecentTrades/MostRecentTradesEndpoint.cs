@@ -19,7 +19,9 @@ public class MostRecentTradesEndpoint(ITradeService tradeService)
     {
         try
         {
-            var recentTrades = await tradeService.MostRecentTradesAsync(ct);
+            DateTime from = DateTime.UtcNow.AddMonths(-6);
+            DateTime to = DateTime.UtcNow;
+            var recentTrades = await tradeService.MostRecentTradesAsync(from, to, 0, ct: ct);
             var response = await Map.FromEntityAsync(recentTrades, ct);
             return TypedResults.Ok(response);
         }

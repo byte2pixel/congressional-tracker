@@ -7,14 +7,20 @@ namespace CongressionalTradingTracker.Infrastructure;
 
 public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger) : ITradeService
 {
-    public Task<List<Trade>> MostRecentTradesAsync(CancellationToken ct = default)
+    public Task<List<Trade>> MostRecentTradesAsync(
+        DateTime from,
+        DateTime to,
+        int limit = 50,
+        CancellationToken ct = default
+    )
     {
         return dbContext
-            .Trades.Include(t => t.Politician)
+            .Trades.Where(t => t.TransactionDate >= from && t.TransactionDate <= to)
+            .Include(t => t.Politician)
             .Include(t => t.Ticker)
             .OrderByDescending(t => t.TransactionDate)
             .ThenByDescending(t => t.ReportDate)
-            .Take(50)
+            .Take(limit == 0 ? int.MaxValue : limit)
             .ToListAsync(ct);
     }
 
@@ -50,7 +56,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                 TotalEstimatedVolume = g.Sum(t => t.RangeMid ?? t.RangeMin),
             })
             .OrderByDescending(d => d.TotalEstimatedVolume)
-            .Take(limit)
+            .Take(limit == 0 ? int.MaxValue : limit)
             .ToListAsync(ct);
     }
 
@@ -81,7 +87,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                 TotalEstimatedVolume = g.Sum(t => t.RangeMid ?? t.RangeMin),
             })
             .OrderByDescending(d => d.TotalEstimatedVolume)
-            .Take(limit)
+            .Take(limit == 0 ? int.MaxValue : limit)
             .ToListAsync(ct);
     }
 

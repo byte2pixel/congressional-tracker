@@ -5,13 +5,8 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { Gradient } from "../internals/components/Gradient";
+import { formatVolume } from "../internals/utils/format";
 import { useActiveTraders } from "@/hooks/useActiveTraders";
-
-function formatVolume(value: number): string {
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
-  return `$${value}`;
-}
 
 export default function TopTradersBarChart() {
   const { data, isLoading } = useActiveTraders();
@@ -37,7 +32,7 @@ export default function TopTradersBarChart() {
         <Typography component="h2" variant="subtitle2" gutterBottom>
           Top 10 Traders by Volume
         </Typography>
-        {isLoading || volumes.length === 0 ? (
+        {isLoading ? (
           <Skeleton variant="rectangular" height={320} />
         ) : (
           <BarChart
@@ -45,7 +40,7 @@ export default function TopTradersBarChart() {
             yAxis={[{ scaleType: "band", data: names, width: 80 }]}
             xAxis={[
               {
-                valueFormatter: formatVolume,
+                valueFormatter: (value: number) => formatVolume(value, 1),
                 height: 28,
               },
             ]}

@@ -4,7 +4,12 @@ namespace CongressionalTradingTracker.Core;
 
 public interface ITradeService
 {
-    Task<List<Trade>> MostRecentTradesAsync(CancellationToken ct = default);
+    Task<List<Trade>> MostRecentTradesAsync(
+        DateTime from,
+        DateTime to,
+        int limit = 50,
+        CancellationToken ct = default
+    );
 
     Task<List<MostActiveTraderDto>> MostActiveTradersAsync(
         DateTime from,

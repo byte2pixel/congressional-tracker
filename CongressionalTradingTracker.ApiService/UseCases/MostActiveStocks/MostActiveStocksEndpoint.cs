@@ -9,8 +9,7 @@ public class MostActiveStocksEndpoint(ITradeService tradeService)
     public override void Configure()
     {
         Get("/api/stocks/most-active");
-        // Roles("api-role");
-        AllowAnonymous();
+        Roles("api-role");
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 
@@ -22,7 +21,7 @@ public class MostActiveStocksEndpoint(ITradeService tradeService)
         {
             var from = DateTime.UtcNow.AddMonths(-6);
             var to = DateTime.UtcNow;
-            var mostActiveStocks = await tradeService.MostActiveStocksAsync(from, to, 50, ct);
+            var mostActiveStocks = await tradeService.MostActiveStocksAsync(from, to, 0, ct);
             var response = await Map.FromEntityAsync(mostActiveStocks, ct);
             return TypedResults.Ok(response);
         }

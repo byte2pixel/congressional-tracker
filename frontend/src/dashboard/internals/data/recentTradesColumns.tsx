@@ -1,4 +1,5 @@
 import { Stack, Typography } from "@mui/material";
+import { formatVolume } from "../utils/format";
 import type { RecentTrade } from "@/api/recentTrades";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
@@ -78,13 +79,7 @@ export const columns: Array<GridColDef> = [
     // minWidth: 50,
     renderCell: (params) => {
       const amount = params.value;
-      if (amount >= 1_000_000) {
-        return `$${(amount / 1_000_000).toFixed(1)}M`;
-      } else if (amount >= 1_000) {
-        return `$${(amount / 1_000).toFixed(1)}K`;
-      } else {
-        return `$${amount.toFixed(0)}`;
-      }
+      return formatVolume(amount, 1);
     },
   },
   {

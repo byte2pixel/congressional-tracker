@@ -5,13 +5,8 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { Gradient } from "../internals/components/Gradient";
+import { formatVolume } from "../internals/utils/format";
 import { useMostActiveStocks } from "@/hooks/useMostActiveStocks";
-
-function formatVolume(value: number): string {
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
-  return `$${value}`;
-}
 
 export default function TopStocksBarChart() {
   const { data, isLoading } = useMostActiveStocks();
@@ -41,7 +36,7 @@ export default function TopStocksBarChart() {
             yAxis={[{ scaleType: "band", data: symbols, width: 60 }]}
             xAxis={[
               {
-                valueFormatter: formatVolume,
+                valueFormatter: (value: number) => formatVolume(value, 1),
                 height: 28,
               },
             ]}

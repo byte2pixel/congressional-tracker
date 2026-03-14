@@ -6,19 +6,13 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Copyright from "../internals/components/Copyright";
+import { formatVolume } from "../internals/utils/format";
 import ActiveStocksDataGrid from "./ActiveStocksDataGrid";
 import BuySellRatioPieChart from "./BuySellRatioPieChart";
 import StockSearchCard from "./StockSearchCard";
 import StockTypeBarChart from "./StockTypeBarChart";
 import TopStocksBarChart from "./TopStocksBarChart";
 import { useMostActiveStocks } from "@/hooks/useMostActiveStocks";
-
-function formatVolume(value: number): string {
-  if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(1)}B`;
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
-  return `$${value.toFixed(0)}`;
-}
 
 interface CountCardProps {
   title: string;
