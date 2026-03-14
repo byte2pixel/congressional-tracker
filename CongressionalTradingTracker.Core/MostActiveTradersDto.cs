@@ -3,7 +3,7 @@ namespace CongressionalTradingTracker.Core;
 public class MostActiveTraderDto
 {
     public int PoliticianId { get; set; }
-    public string? BioGuideId { get; set; }
+    public required string BioGuideId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Party { get; set; }
     public string House { get; set; } = string.Empty;

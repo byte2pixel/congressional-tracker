@@ -9,7 +9,7 @@ public class Politician
     public required string House { get; set; }
 
     /// <summary>Unique congressional bioguide identifier (e.g. "P000197").</summary>
-    public string? BioGuideId { get; set; }
+    public required string BioGuideId { get; set; }
 
     /// <summary>Current party affiliation (R / D / I).</summary>
     public string? Party { get; set; }

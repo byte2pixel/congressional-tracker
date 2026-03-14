@@ -2,7 +2,7 @@ namespace CongressionalTradingTracker.ApiService.UseCases;
 
 public class MostActiveTraderResponse
 {
-    public string? BioGuideId { get; set; }
+    public required string BioGuideId { get; set; }
     public required string Name { get; set; }
     public required string Party { get; set; }
     public required string House { get; set; }

@@ -47,7 +47,7 @@ public class CongressLiveDto
     public string Name { get; init; } = string.Empty;
 
     [JsonPropertyName("BioGuideID")]
-    public string BioGuideId { get; init; } = string.Empty;
+    public required string BioGuideId { get; init; }
 
     [JsonPropertyName("House")]
     public string House { get; init; } = string.Empty;

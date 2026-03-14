@@ -1,7 +1,7 @@
 const apiUrl = import.meta.env.VITE_services__apiservice__http__0;
 
 export interface ActiveTrader {
-  bioGuideId: string | null;
+  bioGuideId: string;
   name: string;
   party: string;
   house: string;

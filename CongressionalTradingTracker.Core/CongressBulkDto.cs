@@ -47,7 +47,7 @@ public class CongressBulkDto
     public string Name { get; set; } = string.Empty;
 
     [JsonPropertyName("BioGuideID")]
-    public string BioGuideId { get; set; } = string.Empty;
+    public required string BioGuideId { get; set; }
 
     [JsonPropertyName("Party")]
     public string Party { get; set; } = string.Empty;
