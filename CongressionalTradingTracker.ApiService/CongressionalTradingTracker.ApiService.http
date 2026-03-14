@@ -20,6 +20,11 @@ Accept: application/json
 
 ###
 
+GET {{ApiService_HostAddress}}/api/stocks/most-active
+Accept: application/json
+
+###
+
 POST https://app-pub-pri-elastic.azurewebsites.net/search
 Content-Type: application/json
 

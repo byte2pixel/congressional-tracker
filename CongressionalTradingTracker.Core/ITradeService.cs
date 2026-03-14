@@ -13,6 +13,13 @@ public interface ITradeService
         CancellationToken ct = default
     );
 
+    Task<List<MostActiveStockDto>> MostActiveStocksAsync(
+        DateTime from,
+        DateTime to,
+        int limit = 50,
+        CancellationToken ct = default
+    );
+
     Task UpsertBulkTradesAsync(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,

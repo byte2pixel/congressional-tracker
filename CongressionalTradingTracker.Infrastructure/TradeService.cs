@@ -54,6 +54,37 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             .ToListAsync(ct);
     }
 
+    public Task<List<MostActiveStockDto>> MostActiveStocksAsync(
+        DateTime from,
+        DateTime to,
+        int limit = 50,
+        CancellationToken ct = default
+    )
+    {
+        return dbContext
+            .Trades.Where(t => t.TransactionDate >= from && t.TransactionDate <= to)
+            .GroupBy(t => new
+            {
+                t.TickerId,
+                t.Ticker.Symbol,
+                t.Ticker.Company,
+                t.Ticker.TickerType,
+            })
+            .Select(g => new MostActiveStockDto
+            {
+                Symbol = g.Key.Symbol,
+                Company = g.Key.Company,
+                TickerType = g.Key.TickerType,
+                TotalTrades = g.Count(),
+                PurchaseCount = g.Count(t => EF.Functions.ILike(t.Transaction, "P%")),
+                SaleCount = g.Count(t => EF.Functions.ILike(t.Transaction, "S%")),
+                TotalEstimatedVolume = g.Sum(t => t.RangeMid ?? t.RangeMin),
+            })
+            .OrderByDescending(d => d.TotalEstimatedVolume)
+            .Take(limit)
+            .ToListAsync(ct);
+    }
+
     public async Task UpsertBulkTradesAsync(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,
@@ -184,7 +215,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             {
                 Symbol = symbol,
                 Company = finnhubResult?.Description ?? dto.Company, // prefer finnhub description if available
-                TickerType = dto.TickerType,
+                TickerType = finnhubResult?.Type ?? dto.TickerType,
             };
             dbContext.Stocks.Add(ticker);
             stockCache[symbol] = ticker;
@@ -499,7 +530,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             var ticker = new Ticker
             {
                 Symbol = symbol,
-                TickerType = dto.TickerType,
+                TickerType = finnhubResult?.Type ?? dto.TickerType,
                 Company = finnhubResult?.Description ?? null,
             };
             dbContext.Stocks.Add(ticker);
