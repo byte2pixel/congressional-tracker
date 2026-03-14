@@ -82,10 +82,10 @@ export default function PoliticiansGrid() {
         sx={{ mb: (theme) => theme.spacing(2) }}
       >
         <Grid size={{ xs: 12, md: 4 }}>
-          <PartyTradesBarChart />
+          <HouseSenateChart />
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
-          <HouseSenateChart />
+          <PartyTradesBarChart />
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <TopTradersBarChart />

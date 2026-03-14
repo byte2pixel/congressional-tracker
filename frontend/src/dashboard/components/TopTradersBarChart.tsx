@@ -4,7 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { useTheme } from "@mui/material/styles";
+import { Gradient } from "../internals/components/Gradient";
 import { useActiveTraders } from "@/hooks/useActiveTraders";
 
 function formatVolume(value: number): string {
@@ -14,7 +14,6 @@ function formatVolume(value: number): string {
 }
 
 export default function TopTradersBarChart() {
-  const theme = useTheme();
   const { data, isLoading } = useActiveTraders();
 
   const { names, volumes } = useMemo(() => {
@@ -22,12 +21,13 @@ export default function TopTradersBarChart() {
     const top10 = [...data]
       .sort((a, b) => b.totalEstimatedVolume - a.totalEstimatedVolume)
       .slice(0, 10);
+    const v = top10.map((t) => t.totalEstimatedVolume);
     return {
       names: top10.map((t) => {
         const parts = t.name.trim().split(" ");
         return parts[parts.length - 1];
       }),
-      volumes: top10.map((t) => t.totalEstimatedVolume),
+      volumes: v,
     };
   }, [data]);
 
@@ -37,7 +37,7 @@ export default function TopTradersBarChart() {
         <Typography component="h2" variant="subtitle2" gutterBottom>
           Top 10 Traders by Volume
         </Typography>
-        {isLoading ? (
+        {isLoading || volumes.length === 0 ? (
           <Skeleton variant="rectangular" height={320} />
         ) : (
           <BarChart
@@ -47,29 +47,22 @@ export default function TopTradersBarChart() {
               {
                 valueFormatter: formatVolume,
                 height: 28,
-                colorMap: {
-                  type: "continuous",
-                  color: [
-                    theme.palette.primary.dark,
-                    theme.palette.primary.main,
-                  ],
-                  min: Math.min(...volumes),
-                  max: Math.max(...volumes),
-                },
               },
             ]}
             series={[
               {
                 data: volumes,
                 label: "Est. Volume",
-                color: theme.palette.primary.main,
+                color: `url(#my-gradient)`,
               },
             ]}
             height={320}
             margin={{ left: 0, right: 10, top: 10, bottom: 0 }}
             grid={{ vertical: true }}
             hideLegend
-          />
+          >
+            <Gradient id="my-gradient" />
+          </BarChart>
         )}
       </CardContent>
     </Card>
