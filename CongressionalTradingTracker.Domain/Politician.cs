@@ -20,4 +20,7 @@ public class Politician
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+
+    // EF Core navigation property
+    public ICollection<Trade> Trades { get; set; } = [];
 }

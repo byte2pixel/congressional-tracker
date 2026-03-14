@@ -217,13 +217,13 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
             modelBuilder.Entity("CongressionalTradingTracker.Domain.Trade", b =>
                 {
                     b.HasOne("CongressionalTradingTracker.Domain.Politician", "Politician")
-                        .WithMany()
+                        .WithMany("Trades")
                         .HasForeignKey("PoliticianId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CongressionalTradingTracker.Domain.Ticker", "Ticker")
-                        .WithMany()
+                        .WithMany("Trades")
                         .HasForeignKey("TickerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -231,6 +231,16 @@ namespace CongressionalTradingTracker.Infrastructure.Migrations
                     b.Navigation("Politician");
 
                     b.Navigation("Ticker");
+                });
+
+            modelBuilder.Entity("CongressionalTradingTracker.Domain.Politician", b =>
+                {
+                    b.Navigation("Trades");
+                });
+
+            modelBuilder.Entity("CongressionalTradingTracker.Domain.Ticker", b =>
+                {
+                    b.Navigation("Trades");
                 });
 #pragma warning restore 612, 618
         }

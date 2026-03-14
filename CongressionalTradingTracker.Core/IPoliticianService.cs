@@ -9,4 +9,8 @@ public interface IPoliticianService
         string bioGuideId,
         CancellationToken ct
     );
+    public Task<Politician?> GetPoliticianTradesByBioGuideIdAsync(
+        string bioGuideId,
+        CancellationToken ct
+    );
 }

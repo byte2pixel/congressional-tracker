@@ -15,6 +15,11 @@ Accept: application/json
 
 ### 
 
+GET {{ApiService_HostAddress}}/api/politicians/T000250/trades
+Accept: application/json
+
+### 
+
 GET {{ApiService_HostAddress}}/api/trades/recent
 Accept: application/json
 

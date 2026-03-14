@@ -51,13 +51,13 @@ public class TradeDbContext : DbContext
         modelBuilder
             .Entity<Trade>()
             .HasOne(t => t.Politician)
-            .WithMany()
+            .WithMany(t => t.Trades)
             .HasForeignKey(t => t.PoliticianId);
 
         modelBuilder
             .Entity<Trade>()
             .HasOne(t => t.Ticker)
-            .WithMany()
+            .WithMany(t => t.Trades)
             .HasForeignKey(t => t.TickerId);
 
         modelBuilder

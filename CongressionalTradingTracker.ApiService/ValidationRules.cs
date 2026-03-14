@@ -1,10 +1,12 @@
-namespace CongressionalTradingTracker.ApiService.UseCases;
+namespace CongressionalTradingTracker.ApiService;
 
-public class PoliticianByBioGuideIdValidator : Validator<PoliticianByBioGuideIdRequest>
+public static class ValidationRules
 {
-    public PoliticianByBioGuideIdValidator()
+    public static IRuleBuilderOptions<T, string> ValidBioGuideId<T>(
+        this IRuleBuilder<T, string> ruleBuilder
+    )
     {
-        RuleFor(x => x.BioGuideId)
+        return ruleBuilder
             .NotEmpty()
             .WithMessage("BioGuideId cannot be empty.")
             .MinimumLength(2)
