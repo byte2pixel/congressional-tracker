@@ -4,33 +4,33 @@ namespace CongressionalTradingTracker.Core;
 
 public interface ITradeService
 {
-    Task<List<Trade>> MostRecentTradesAsync(
+    Task<List<Trade>> MostRecentTrades(
         DateTime from,
         DateTime to,
         int limit = 50,
         CancellationToken ct = default
     );
 
-    Task<List<MostActiveTraderDto>> MostActiveTradersAsync(
+    Task<List<MostActiveTraderDto>> MostActiveTraders(
         DateTime from,
         DateTime to,
         int limit = 50,
         CancellationToken ct = default
     );
 
-    Task<List<MostActiveStockDto>> MostActiveStocksAsync(
+    Task<List<MostActiveStockDto>> MostActiveStocks(
         DateTime from,
         DateTime to,
         int limit = 50,
         CancellationToken ct = default
     );
 
-    Task UpsertBulkTradesAsync(
+    Task UpsertBulkTrades(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,
         CancellationToken ct = default
     );
-    Task UpsertLiveTradesAsync(
+    Task UpsertLiveTrades(
         IEnumerable<CongressLiveDto> trades,
         IFinnhubService finnhub,
         CancellationToken ct = default

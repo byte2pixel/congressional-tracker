@@ -6,12 +6,7 @@ namespace CongressionalTradingTracker.Infrastructure;
 
 public class StockService(TradeDbContext dbContext) : IStockService
 {
-    public Task<Ticker[]> GetAllStocksAsync(CancellationToken ct)
-    {
-        return dbContext.Stocks.ToArrayAsync(ct);
-    }
-
-    public Task<Ticker[]> SearchStocksAsync(string query, int limit, CancellationToken ct)
+    public Task<Ticker[]> SearchStocks(string query, int limit, CancellationToken ct)
     {
         return dbContext
             .Stocks.Where(s =>
@@ -20,5 +15,10 @@ public class StockService(TradeDbContext dbContext) : IStockService
             )
             .Take(limit)
             .ToArrayAsync(ct);
+    }
+
+    public Task<Ticker?> GetStock(string symbol, CancellationToken ct)
+    {
+        return dbContext.Stocks.Where(s => s.Symbol == symbol).FirstOrDefaultAsync(ct);
     }
 }

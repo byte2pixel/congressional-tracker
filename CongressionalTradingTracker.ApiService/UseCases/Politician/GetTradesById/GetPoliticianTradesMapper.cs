@@ -1,14 +1,14 @@
 namespace CongressionalTradingTracker.ApiService.UseCases;
 
-public class PoliticianGetTradesByBioGuideIdMapper
-    : ResponseMapper<List<PoliticianTradeByBioGuideIdResponse>, ICollection<Trade>>
+public class GetPoliticianTradesMapper
+    : ResponseMapper<List<GetPoliticianTradesResponse>, ICollection<Trade>>
 {
-    public override Task<List<PoliticianTradeByBioGuideIdResponse>> FromEntityAsync(
+    public override Task<List<GetPoliticianTradesResponse>> FromEntityAsync(
         ICollection<Trade> e,
         CancellationToken ct
     )
     {
-        var response = e.Select(t => new PoliticianTradeByBioGuideIdResponse
+        var response = e.Select(t => new GetPoliticianTradesResponse
             {
                 Symbol = t.Ticker.Symbol,
                 TransactionDate = t.TransactionDate,

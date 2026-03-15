@@ -6,7 +6,7 @@ namespace CongressionalTradingTracker.Infrastructure;
 
 public class PoliticianService(TradeDbContext dbContext) : IPoliticianService
 {
-    public Task<Politician[]> SearchPoliticiansAsync(string query, int limit, CancellationToken ct)
+    public Task<Politician[]> SearchPoliticians(string query, int limit, CancellationToken ct)
     {
         return dbContext
             .Politicians.Where(p => EF.Functions.ILike(p.Name, $"%{query}%"))
@@ -14,15 +14,12 @@ public class PoliticianService(TradeDbContext dbContext) : IPoliticianService
             .ToArrayAsync(ct);
     }
 
-    public Task<Politician?> GetPoliticianByBioGuideIdAsync(string bioGuideId, CancellationToken ct)
+    public Task<Politician?> GetPolitician(string bioGuideId, CancellationToken ct)
     {
         return dbContext.Politicians.Where(p => p.BioGuideId == bioGuideId).FirstOrDefaultAsync(ct);
     }
 
-    public Task<Politician?> GetPoliticianTradesByBioGuideIdAsync(
-        string bioGuideId,
-        CancellationToken ct
-    )
+    public Task<Politician?> GetPoliticianTrades(string bioGuideId, CancellationToken ct)
     {
         return dbContext
             .Politicians.Include(p => p.Trades)

@@ -38,7 +38,7 @@ public class Worker(
             {
                 logger.LogInformation("Starting one-time bulk congressional trades sync...");
                 var bulkTrades = await quiverQuant.GetBulkTradesAsync(ct);
-                await tradeService.UpsertBulkTradesAsync(bulkTrades, finnhub, ct);
+                await tradeService.UpsertBulkTrades(bulkTrades, finnhub, ct);
                 await syncState.MarkBulkSyncCompletedAsync(ct);
                 logger.LogInformation(
                     "Bulk sync completed. Fetched and upserted {Count} trades.",
@@ -59,7 +59,7 @@ public class Worker(
 
                 logger.LogInformation("Fetching live congressional trades...");
                 var liveTrades = await quiverQuant.GetLiveTradesAsync(ct);
-                await tradeService.UpsertLiveTradesAsync(liveTrades, finnhub, ct);
+                await tradeService.UpsertLiveTrades(liveTrades, finnhub, ct);
                 await syncState.UpdateLastLiveSyncAsync(ct);
                 logger.LogInformation(
                     "Live sync completed. Fetched and upserted {Count} trades.",

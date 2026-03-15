@@ -9,7 +9,7 @@ public class PoliticianSearchEndpoint(IPoliticianService service)
 {
     public override void Configure()
     {
-        Get("/api/politicians/search");
+        Get("/api/politician/search");
         Roles("api-role");
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(1))));
     }
@@ -20,7 +20,7 @@ public class PoliticianSearchEndpoint(IPoliticianService service)
     {
         try
         {
-            var dbPoliticians = await service.SearchPoliticiansAsync(req.Query, req.Limit, ct);
+            var dbPoliticians = await service.SearchPoliticians(req.Query, req.Limit, ct);
             var politicians = Map.FromEntity(dbPoliticians);
             return TypedResults.Ok(politicians);
         }

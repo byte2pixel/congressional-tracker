@@ -1,6 +1,6 @@
 namespace CongressionalTradingTracker.ApiService.UseCases;
 
-public class PoliticianTradesByBioGuideIdRequest
+public class GetPoliticianTradesRequest
 {
     public required string BioGuideId { get; set; }
 }

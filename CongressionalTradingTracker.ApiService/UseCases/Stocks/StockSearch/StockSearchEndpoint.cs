@@ -9,7 +9,7 @@ public class StockSearchEndpoint(IStockService service)
 {
     public override void Configure()
     {
-        Get("/api/stocks/search");
+        Get("/api/stock/search");
         Roles("api-role");
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(1))));
     }
@@ -21,7 +21,7 @@ public class StockSearchEndpoint(IStockService service)
     {
         try
         {
-            var dbStocks = await service.SearchStocksAsync(req.Query, req.Limit, ct);
+            var dbStocks = await service.SearchStocks(req.Query, req.Limit, ct);
             var stocks = Map.FromEntity(dbStocks);
             return TypedResults.Ok(stocks);
         }

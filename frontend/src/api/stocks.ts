@@ -11,7 +11,7 @@ export async function searchStocks(
   token?: string,
 ): Promise<Array<Stock>> {
   const params = new URLSearchParams({ query, limit: String(limit) });
-  const res = await fetch(`${apiUrl}/api/stocks/search?${params}`, {
+  const res = await fetch(`${apiUrl}/api/stock/search?${params}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error("Failed to search stocks");

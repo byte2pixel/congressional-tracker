@@ -25,7 +25,7 @@ export async function searchPoliticians(
   token?: string,
 ): Promise<Array<Politician>> {
   const params = new URLSearchParams({ query, limit: String(limit) });
-  const res = await fetch(`${apiUrl}/api/politicians/search?${params}`, {
+  const res = await fetch(`${apiUrl}/api/politician/search?${params}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error("Failed to search politicians");
@@ -36,7 +36,7 @@ export async function getPolitician(
   bioGuideId: string,
   token?: string,
 ): Promise<Politician> {
-  const res = await fetch(`${apiUrl}/api/politicians/${bioGuideId}`, {
+  const res = await fetch(`${apiUrl}/api/politician/${bioGuideId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error("Failed to fetch politician");
@@ -47,7 +47,7 @@ export async function getPoliticiansTrades(
   bioGuideId: string,
   token?: string,
 ): Promise<Array<PoliticianTrade>> {
-  const res = await fetch(`${apiUrl}/api/politicians/${bioGuideId}/trades`, {
+  const res = await fetch(`${apiUrl}/api/politician/${bioGuideId}/trades`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error("Failed to fetch politician trades");

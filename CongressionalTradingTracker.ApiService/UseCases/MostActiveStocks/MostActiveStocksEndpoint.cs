@@ -21,7 +21,7 @@ public class MostActiveStocksEndpoint(ITradeService tradeService)
         {
             var from = DateTime.UtcNow.AddMonths(-6);
             var to = DateTime.UtcNow;
-            var mostActiveStocks = await tradeService.MostActiveStocksAsync(from, to, 0, ct);
+            var mostActiveStocks = await tradeService.MostActiveStocks(from, to, 0, ct);
             var response = await Map.FromEntityAsync(mostActiveStocks, ct);
             return TypedResults.Ok(response);
         }

@@ -1,11 +1,10 @@
 namespace CongressionalTradingTracker.ApiService.UseCases;
 
-public class PoliticianByBioGuideIdMapper
-    : ResponseMapper<PoliticianByBioGuideIdResponse, Politician>
+public class GetPoliticianMapper : ResponseMapper<GetPoliticianResponse, Politician>
 {
-    public override PoliticianByBioGuideIdResponse FromEntity(Politician e)
+    public override GetPoliticianResponse FromEntity(Politician e)
     {
-        return new PoliticianByBioGuideIdResponse
+        return new GetPoliticianResponse
         {
             Name = e.Name,
             House = e.House,

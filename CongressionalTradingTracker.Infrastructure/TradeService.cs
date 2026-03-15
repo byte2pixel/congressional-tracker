@@ -7,7 +7,7 @@ namespace CongressionalTradingTracker.Infrastructure;
 
 public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger) : ITradeService
 {
-    public Task<List<Trade>> MostRecentTradesAsync(
+    public Task<List<Trade>> MostRecentTrades(
         DateTime from,
         DateTime to,
         int limit = 50,
@@ -24,7 +24,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             .ToListAsync(ct);
     }
 
-    public Task<List<MostActiveTraderDto>> MostActiveTradersAsync(
+    public Task<List<MostActiveTraderDto>> MostActiveTraders(
         DateTime from,
         DateTime to,
         int limit = 50,
@@ -60,7 +60,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             .ToListAsync(ct);
     }
 
-    public Task<List<MostActiveStockDto>> MostActiveStocksAsync(
+    public Task<List<MostActiveStockDto>> MostActiveStocks(
         DateTime from,
         DateTime to,
         int limit = 50,
@@ -91,7 +91,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             .ToListAsync(ct);
     }
 
-    public async Task UpsertBulkTradesAsync(
+    public async Task UpsertBulkTrades(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,
         CancellationToken ct = default
@@ -440,7 +440,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
         await dbContext.SaveChangesAsync(ct);
     }
 
-    public async Task UpsertLiveTradesAsync(
+    public async Task UpsertLiveTrades(
         IEnumerable<CongressLiveDto> trades,
         IFinnhubService finnhub,
         CancellationToken ct = default

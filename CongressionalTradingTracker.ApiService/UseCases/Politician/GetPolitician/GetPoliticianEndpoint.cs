@@ -1,26 +1,27 @@
 namespace CongressionalTradingTracker.ApiService.UseCases;
 
-public class PoliticianByBioGuideIdEndpoint(IPoliticianService service)
+public class GetPoliticianEndpoint(IPoliticianService service)
     : Endpoint<
-        PoliticianByBioGuideIdRequest,
-        Results<Ok<PoliticianByBioGuideIdResponse>, ProblemDetails>,
-        PoliticianByBioGuideIdMapper
+        GetPoliticianRequest,
+        Results<Ok<GetPoliticianResponse>, ProblemDetails>,
+        GetPoliticianMapper
     >
 {
     public override void Configure()
     {
-        Get("/api/politicians/{BioGuideId}");
+        Get("/api/politician/{BioGuideId}");
         AllowAnonymous();
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 
-    public override async Task<
-        Results<Ok<PoliticianByBioGuideIdResponse>, ProblemDetails>
-    > ExecuteAsync(PoliticianByBioGuideIdRequest req, CancellationToken ct)
+    public override async Task<Results<Ok<GetPoliticianResponse>, ProblemDetails>> ExecuteAsync(
+        GetPoliticianRequest req,
+        CancellationToken ct
+    )
     {
         try
         {
-            var dbPolitician = await service.GetPoliticianByBioGuideIdAsync(req.BioGuideId, ct);
+            var dbPolitician = await service.GetPolitician(req.BioGuideId, ct);
             if (dbPolitician != null)
             {
                 return TypedResults.Ok(Map.FromEntity(dbPolitician));
