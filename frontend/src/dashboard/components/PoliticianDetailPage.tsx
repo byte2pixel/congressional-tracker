@@ -5,15 +5,18 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Divider from "@mui/material/Divider";
 import PoliticianTradesDataGrid from "./PoliticianTradesDataGrid";
+import PoliticianTradeStats from "./PoliticianTradeStats";
+import PoliticianDetailBuySellChart from "./PoliticianDetailBuySellChart";
+import PoliticianDetailTradeActivityChart from "./PoliticianDetailTradeActivityChart";
 import { Route } from "@/routes/politicians_.$bioguideid";
 import { usePolitician } from "@/hooks/usePolitician";
 
-function ProfileHeader({ bioGuideId }: { bioGuideId: string }) {
-  const { data, isLoading } = usePolitician(bioGuideId);
+function ProfileHeader() {
+  const { bioguideid } = Route.useParams();
+  const { data, isLoading } = usePolitician(bioguideid);
   return (
-    <Card variant="outlined" sx={{ width: "100%" }}>
+    <Card variant="outlined">
       <CardContent>
         <Stack
           direction={{ xs: "column", sm: "row" }}
@@ -44,7 +47,7 @@ function ProfileHeader({ bioGuideId }: { bioGuideId: string }) {
               )}
             </Stack>
             <Typography variant="caption" color="text.secondary">
-              ID: {bioGuideId}
+              ID: {bioguideid}
             </Typography>
           </Stack>
         </Stack>
@@ -53,73 +56,18 @@ function ProfileHeader({ bioGuideId }: { bioGuideId: string }) {
   );
 }
 
-function StatCards() {
-  return (
-    <Grid container spacing={2}>
-      {/* TODO: replace skeletons with real data */}
-      {(["Total Trades", "Total Volume", "Top Stock"] as const).map((label) => (
-        <Grid key={label} size={{ xs: 12, sm: 4 }}>
-          <Card variant="outlined">
-            <CardContent>
-              <Typography variant="subtitle2" gutterBottom>
-                {label}
-              </Typography>
-              <Skeleton variant="text" width="60%" height={32} />
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
-  );
-}
-
-function ActivityChart() {
-  return (
-    <Card variant="outlined" sx={{ width: "100%" }}>
-      <CardContent>
-        <Typography component="h2" variant="subtitle2" gutterBottom>
-          Trade Activity Over Time
-        </Typography>
-        {/* TODO: replace with real chart */}
-        <Skeleton variant="rectangular" height={240} />
-      </CardContent>
-    </Card>
-  );
-}
-
-function BuySellChart() {
-  return (
-    <Card variant="outlined" sx={{ width: "100%", height: "100%" }}>
-      <CardContent>
-        <Typography component="h2" variant="subtitle2" gutterBottom>
-          Buy / Sell Breakdown
-        </Typography>
-        {/* TODO: replace with real chart */}
-        <Skeleton
-          variant="circular"
-          width={180}
-          height={180}
-          sx={{ mx: "auto", mt: 1 }}
-        />
-      </CardContent>
-    </Card>
-  );
-}
-
 export default function PoliticianDetailPage() {
-  const { bioguideid } = Route.useParams();
-
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Stack spacing={3} sx={{ mb: 2 }}>
-        <ProfileHeader bioGuideId={bioguideid} />
-        <StatCards />
+        <ProfileHeader />
+        <PoliticianTradeStats />
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 8 }}>
-            <ActivityChart />
+            <PoliticianDetailTradeActivityChart />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <BuySellChart />
+            <PoliticianDetailBuySellChart />
           </Grid>
         </Grid>
         <PoliticianTradesDataGrid />

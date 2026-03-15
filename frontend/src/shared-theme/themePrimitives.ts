@@ -24,6 +24,7 @@ declare module "@mui/material/styles" {
 
   interface Palette {
     baseShadow: string;
+    buySell: Array<string>;
   }
 }
 
@@ -84,17 +85,22 @@ export const orange = {
 };
 
 export const red = {
-  50: "hsl(0, 100%, 97%)",
-  100: "hsl(0, 92%, 90%)",
-  200: "hsl(0, 94%, 80%)",
-  300: "hsl(0, 90%, 65%)",
-  400: "hsl(0, 90%, 40%)",
-  500: "hsl(0, 90%, 30%)",
-  600: "hsl(0, 91%, 25%)",
-  700: "hsl(0, 94%, 18%)",
-  800: "hsl(0, 95%, 12%)",
-  900: "hsl(0, 93%, 6%)",
+  50: "hsl(0, 69%, 95%)",
+  100: "#F4C2C2",
+  200: "#ED9B9B",
+  300: "#E77474",
+  400: "#DD3C3C",
+  500: "#D92626",
+  600: "#B21F1F",
+  700: "#8B1818",
+  800: "#641212",
+  900: "#3D0B0B",
 };
+
+export const buySellColors = [
+  "hsl(142, 50%, 50%)", // buy
+  "#dd3c3c", // sell
+];
 
 export const getDesignTokens = (mode: PaletteMode) => {
   customShadows[1] =
@@ -163,6 +169,7 @@ export const getDesignTokens = (mode: PaletteMode) => {
         ...gray,
       },
       divider: mode === "dark" ? alpha(gray[700], 0.6) : alpha(gray[300], 0.4),
+      buySell: buySellColors,
       background: {
         default: "hsl(0, 0%, 99%)",
         paper: "hsl(220, 35%, 97%)",
