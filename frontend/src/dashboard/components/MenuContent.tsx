@@ -29,6 +29,11 @@ const secondaryListItems = [
   { text: "Feedback", icon: <HelpRoundedIcon />, route: "/feedback" },
 ];
 
+function isRouteActive(pathname: string, route: string): boolean {
+  if (route === "/") return pathname === "/";
+  return pathname === route || pathname.startsWith(route + "/") || pathname.startsWith(route + "-");
+}
+
 export default function MenuContent() {
   const navigate = useNavigate();
   const { location } = useRouterState();
@@ -39,7 +44,7 @@ export default function MenuContent() {
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: "block" }}>
             <ListItemButton
-              selected={location.pathname === item.route}
+              selected={isRouteActive(location.pathname, item.route)}
               onClick={() => navigate({ to: item.route })}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
@@ -52,7 +57,7 @@ export default function MenuContent() {
         {secondaryListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: "block" }}>
             <ListItemButton
-              selected={location.pathname === item.route}
+              selected={isRouteActive(location.pathname, item.route)}
               onClick={() => navigate({ to: item.route })}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>

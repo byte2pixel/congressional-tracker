@@ -5,11 +5,14 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import { useNavigate } from "@tanstack/react-router";
 import { formatParty } from "../internals/utils/format";
 import PoliticianTradesDataGrid from "./PoliticianTradesDataGrid";
 import PoliticianTradeStats from "./PoliticianTradeStats";
 import PoliticianDetailBuySellChart from "./PoliticianDetailBuySellChart";
 import PoliticianDetailTradeActivityChart from "./PoliticianDetailTradeActivityChart";
+import PoliticianSearchCard from "./PoliticianSearchCard";
+import type { Politician } from "@/api/politicians";
 import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 import { usePolitician } from "@/hooks/usePolitician";
 
@@ -60,10 +63,30 @@ function ProfileHeader() {
 }
 
 export default function PoliticianDetailPage() {
+  const { bioguideid } = PoliticianDetailRoute.useParams();
+  const navigate = useNavigate();
+
+  function handleCompareSelect(politician: Politician) {
+    void navigate({
+      to: "/politician-compare",
+      search: { id1: bioguideid, id2: politician.bioGuideId },
+    });
+  }
+
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Stack spacing={3} sx={{ mb: 2 }}>
-        <ProfileHeader />
+        <Grid container spacing={2} alignItems="stretch">
+          <Grid size={{ xs: 12, md: 6 }}>
+            <ProfileHeader />
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <PoliticianSearchCard
+              label="Compare with another politician"
+              onSelect={handleCompareSelect}
+            />
+          </Grid>
+        </Grid>
         <PoliticianTradeStats />
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 8 }}>

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WatchlistRouteImport } from './routes/watchlist'
 import { Route as StockRouteImport } from './routes/stock'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as PoliticianCompareRouteImport } from './routes/politician-compare'
 import { Route as PoliticianRouteImport } from './routes/politician'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as AboutRouteImport } from './routes/about'
@@ -32,6 +33,11 @@ const StockRoute = StockRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticianCompareRoute = PoliticianCompareRouteImport.update({
+  id: '/politician-compare',
+  path: '/politician-compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PoliticianRoute = PoliticianRouteImport.update({
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/feedback': typeof FeedbackRoute
   '/politician': typeof PoliticianRoute
+  '/politician-compare': typeof PoliticianCompareRoute
   '/settings': typeof SettingsRoute
   '/stock': typeof StockRoute
   '/watchlist': typeof WatchlistRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/feedback': typeof FeedbackRoute
   '/politician': typeof PoliticianRoute
+  '/politician-compare': typeof PoliticianCompareRoute
   '/settings': typeof SettingsRoute
   '/stock': typeof StockRoute
   '/watchlist': typeof WatchlistRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/feedback': typeof FeedbackRoute
   '/politician': typeof PoliticianRoute
+  '/politician-compare': typeof PoliticianCompareRoute
   '/settings': typeof SettingsRoute
   '/stock': typeof StockRoute
   '/watchlist': typeof WatchlistRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/feedback'
     | '/politician'
+    | '/politician-compare'
     | '/settings'
     | '/stock'
     | '/watchlist'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/feedback'
     | '/politician'
+    | '/politician-compare'
     | '/settings'
     | '/stock'
     | '/watchlist'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/feedback'
     | '/politician'
+    | '/politician-compare'
     | '/settings'
     | '/stock'
     | '/watchlist'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   FeedbackRoute: typeof FeedbackRoute
   PoliticianRoute: typeof PoliticianRoute
+  PoliticianCompareRoute: typeof PoliticianCompareRoute
   SettingsRoute: typeof SettingsRoute
   StockRoute: typeof StockRoute
   WatchlistRoute: typeof WatchlistRoute
@@ -168,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politician-compare': {
+      id: '/politician-compare'
+      path: '/politician-compare'
+      fullPath: '/politician-compare'
+      preLoaderRoute: typeof PoliticianCompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/politician': {
@@ -220,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   FeedbackRoute: FeedbackRoute,
   PoliticianRoute: PoliticianRoute,
+  PoliticianCompareRoute: PoliticianCompareRoute,
   SettingsRoute: SettingsRoute,
   StockRoute: StockRoute,
   WatchlistRoute: WatchlistRoute,

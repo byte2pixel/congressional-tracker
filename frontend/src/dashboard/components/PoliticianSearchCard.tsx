@@ -17,6 +17,11 @@ import type { Politician } from "@/api/politicians";
 import { usePoliticianSearch } from "@/hooks/useSearchPolitician";
 import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 
+interface PoliticianSearchCardProps {
+  onSelect?: (politician: Politician) => void;
+  label?: string;
+}
+
 interface PoliticianOptionProps extends HTMLAttributes<HTMLLIElement> {
   option: Politician;
 }
@@ -35,24 +40,31 @@ function PoliticianOption({ option, ...props }: PoliticianOptionProps) {
   );
 }
 
-export default function PoliticianSearchCard() {
+export default function PoliticianSearchCard({
+  onSelect,
+  label = "Politician Search",
+}: PoliticianSearchCardProps = {}) {
   const [inputValue, setInputValue] = useState("");
   const { data: options = [], isFetching } = usePoliticianSearch(inputValue);
   const navigate = useNavigate();
 
   function handleSelect(_: React.SyntheticEvent, value: Politician | string) {
     if (typeof value === "string") return;
-    void navigate({
-      to: PoliticianDetailRoute.to,
-      params: { bioguideid: value.bioGuideId },
-    });
+    if (onSelect) {
+      onSelect(value);
+    } else {
+      void navigate({
+        to: PoliticianDetailRoute.to,
+        params: { bioguideid: value.bioGuideId },
+      });
+    }
   }
 
   return (
     <Card variant="outlined" sx={{ height: "100%", flexGrow: 1 }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
-          Politician Search
+          {label}
         </Typography>
         <Stack spacing={2} sx={{ justifyContent: "space-between" }}>
           <Autocomplete
