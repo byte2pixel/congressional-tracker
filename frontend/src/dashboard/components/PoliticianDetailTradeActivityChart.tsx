@@ -7,11 +7,11 @@ import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import { LineChart } from "@mui/x-charts";
 import { usePoliticianTrades } from "@/hooks/usePoliticianTrades";
-import { Route } from "@/routes/politicians_.$bioguideid";
+import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 
 export default function PoliticianDetailTradeActivityChart() {
   const theme = useTheme();
-  const { bioguideid } = Route.useParams();
+  const { bioguideid } = PoliticianDetailRoute.useParams();
   const { data, isLoading } = usePoliticianTrades(bioguideid);
 
   const colorPalette = [theme.palette.success.main, theme.palette.error.main];

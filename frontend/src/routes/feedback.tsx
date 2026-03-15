@@ -11,4 +11,7 @@ function FeedbackPage() {
 
 export const Route = createFileRoute("/feedback")({
   component: FeedbackPage,
+  staticData: {
+    getTitle: () => "Feedback",
+  },
 });

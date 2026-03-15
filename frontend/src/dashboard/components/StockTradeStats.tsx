@@ -1,12 +1,11 @@
-import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
-import { formatVolume } from "../internals/utils/format";
-import { usePoliticianTrades } from "@/hooks/usePoliticianTrades";
-import { Route as PoliticianDetialRoute } from "@/routes/politician_.$bioguideid";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
+// import { Route as StockDetailRoute } from "@/routes/stock_.$symbol";
 
-function PoliticianTradeStats() {
-  const { bioguideid } = PoliticianDetialRoute.useParams();
-  const { data, isLoading } = usePoliticianTrades(bioguideid);
+function StockTradeStats() {
+  // const { symbol } = StockDetailRoute.useParams();
+  // const { data, isLoading } = useStockTrades(symbol);
 
+  /*
   const totalTrades = data?.length.toLocaleString() ?? "0";
   const totalVolume = data
     ? formatVolume(data.reduce((sum, trade) => sum + trade.amount, 0))
@@ -35,12 +34,12 @@ function PoliticianTradeStats() {
         { ticker: "", volume: 0 },
       ).ticker
     : "N/A";
-
+*/
   const stats = [
-    { label: "Total Trades", value: totalTrades },
-    { label: "Total Volume", value: totalVolume },
-    { label: "Top Stock by Trades", value: topStock },
-    { label: "Top Stock by Volume", value: topStockVolume },
+    { label: "Total Trades", value: "10" },
+    { label: "Total Volume", value: "1000" },
+    { label: "Top Politician by Trades", value: "Nancy Pelosi" },
+    { label: "Top Politician by Volume", value: "Nancy Pelosi" },
   ];
 
   return (
@@ -52,13 +51,13 @@ function PoliticianTradeStats() {
               <Typography variant="subtitle2" gutterBottom>
                 {stat.label}
               </Typography>
-              {isLoading ? (
+              {/* {isLoading ? (
                 <Skeleton variant="text" width={100} />
-              ) : (
-                <Typography variant="h6" width="60%" fontWeight="bold">
-                  {stat.value}
-                </Typography>
-              )}
+              ) : ( */}
+              <Typography variant="h6" width="60%" fontWeight="bold">
+                {stat.value}
+              </Typography>
+              {/* )} */}
             </CardContent>
           </Card>
         </Grid>
@@ -67,4 +66,4 @@ function PoliticianTradeStats() {
   );
 }
 
-export default PoliticianTradeStats;
+export default StockTradeStats;

@@ -3,6 +3,7 @@ import { formatVolume } from "../utils/format";
 import type { RecentTrade } from "@/api/recentTrades";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { PoliticianLink } from "@/dashboard/components/PoliticianLink";
+import { StockLink } from "@/dashboard/components/StockLink";
 
 export const rows = (trades: Array<RecentTrade>): GridRowsProp => {
   return trades.map((trade, index) => ({
@@ -35,15 +36,11 @@ export const columns: Array<GridColDef> = [
     field: "symbol",
     headerName: "Symbol",
     flex: 1,
-    // minWidth: 300,
-    // render the stack with Symbol and Company using MUI components
     renderCell: (params) => {
       const { symbol, company } = params.row;
       return (
         <Stack direction="column" marginTop={1} marginBottom={1}>
-          <Typography variant="body2" fontWeight="bold">
-            {symbol}
-          </Typography>
+          <StockLink symbol={symbol} sx={{ lineHeight: 1.43 }} />
           <Typography variant="caption" color="text.secondary">
             {company}
           </Typography>
@@ -57,7 +54,6 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    // minWidth: 120,
     renderCell: (params) => {
       const date = new Date(params.value);
       return date.toLocaleDateString("en-US", {
@@ -73,7 +69,6 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    // minWidth: 150,
   },
   {
     field: "amount",
@@ -81,7 +76,6 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    // minWidth: 50,
     renderCell: (params) => {
       const amount = params.value;
       return formatVolume(amount, 1);
@@ -93,7 +87,6 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    // minWidth: 50,
     renderCell: (params) => {
       const excessReturn = params.value as number | null;
       if (excessReturn === null) {

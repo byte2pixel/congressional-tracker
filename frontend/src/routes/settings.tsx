@@ -11,4 +11,7 @@ function SettingsPage() {
 
 export const Route = createFileRoute("/settings")({
   component: SettingsPage,
+  staticData: {
+    getTitle: () => "Settings",
+  },
 });

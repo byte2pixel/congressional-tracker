@@ -18,9 +18,9 @@ const mainListItems = [
   {
     text: "Politicians",
     icon: <PeopleRoundedIcon />,
-    route: "/politicians",
+    route: "/politician",
   },
-  { text: "Stocks", icon: <AnalyticsRoundedIcon />, route: "/stocks" },
+  { text: "Stocks", icon: <AnalyticsRoundedIcon />, route: "/stock" },
   { text: "Watchlist", icon: <AssignmentRoundedIcon />, route: "/watchlist" },
 ];
 const secondaryListItems = [

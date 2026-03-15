@@ -3,4 +3,7 @@ import MainGrid from "@/dashboard/components/MainGrid";
 
 export const Route = createFileRoute("/")({
   component: MainGrid,
+  staticData: {
+    getTitle: () => "Home",
+  },
 });

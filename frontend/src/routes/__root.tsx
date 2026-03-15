@@ -9,4 +9,7 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => <Dashboard />,
+  staticData: {
+    getTitle: () => "Dashboard",
+  },
 });

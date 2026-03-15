@@ -8,6 +8,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Gradient } from "../internals/components/Gradient";
 import { formatVolume } from "../internals/utils/format";
 import { useActiveTraders } from "@/hooks/useActiveTraders";
+import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 
 export default function TopTradersBarChart() {
   const { data, isLoading } = useActiveTraders();
@@ -64,7 +65,7 @@ export default function TopTradersBarChart() {
               const bioGuideId = bioGuideIds[context.dataIndex];
               if (bioGuideId) {
                 void navigate({
-                  to: "/politicians/$bioguideid",
+                  to: PoliticianDetailRoute.to,
                   params: { bioguideid: bioGuideId },
                 });
               }
@@ -74,7 +75,7 @@ export default function TopTradersBarChart() {
               const bioGuideId = bioGuideIds[context.dataIndex];
               if (bioGuideId) {
                 void navigate({
-                  to: "/politicians/$bioguideid",
+                  to: PoliticianDetailRoute.to,
                   params: { bioguideid: bioGuideId },
                 });
               }

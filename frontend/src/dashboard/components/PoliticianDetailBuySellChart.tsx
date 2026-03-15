@@ -10,7 +10,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { usePoliticianTrades } from "@/hooks/usePoliticianTrades";
-import { Route } from "@/routes/politicians_.$bioguideid";
+import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 
 const StyledText = styled("text")(({ theme }) => ({
   textAnchor: "middle",
@@ -43,7 +43,7 @@ function PieCenterLabel({ total }: Readonly<{ total: number }>) {
 export default function PoliticianDetailBuySellChart() {
   const theme = useTheme();
   const colorPalette = [theme.palette.success.main, theme.palette.error.main];
-  const { bioguideid } = Route.useParams();
+  const { bioguideid } = PoliticianDetailRoute.useParams();
   const { data, isLoading } = usePoliticianTrades(bioguideid);
 
   const { pieData, total } = useMemo(() => {

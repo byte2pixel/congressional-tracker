@@ -11,4 +11,7 @@ function AboutPage() {
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
+  staticData: {
+    getTitle: () => "About",
+  },
 });

@@ -14,6 +14,7 @@ import { useNavigate } from "@tanstack/react-router";
 import type { HTMLAttributes } from "react";
 import type { Politician } from "@/api/politicians";
 import { usePoliticianSearch } from "@/hooks/useSearchPolitician";
+import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 
 interface PoliticianOptionProps extends HTMLAttributes<HTMLLIElement> {
   option: Politician;
@@ -41,7 +42,7 @@ export default function PoliticianSearchCard() {
   function handleSelect(_: React.SyntheticEvent, value: Politician | string) {
     if (typeof value === "string") return;
     void navigate({
-      to: "/politicians/$bioguideid",
+      to: PoliticianDetailRoute.to,
       params: { bioguideid: value.bioGuideId },
     });
   }

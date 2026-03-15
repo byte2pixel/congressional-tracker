@@ -5,6 +5,10 @@ export interface Stock {
   company: string;
 }
 
+export interface StockDetail extends Stock {
+  type: string;
+}
+
 export async function searchStocks(
   query: string,
   limit: number,
@@ -15,5 +19,16 @@ export async function searchStocks(
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error("Failed to search stocks");
+  return await res.json();
+}
+
+export async function getStockDetail(
+  symbol: string,
+  token?: string,
+): Promise<StockDetail> {
+  const res = await fetch(`${apiUrl}/api/stock/${symbol}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Failed to get stock detail");
   return await res.json();
 }

@@ -11,4 +11,7 @@ function WatchlistPage() {
 
 export const Route = createFileRoute("/watchlist")({
   component: WatchlistPage,
+  staticData: {
+    getTitle: () => "Watchlist",
+  },
 });

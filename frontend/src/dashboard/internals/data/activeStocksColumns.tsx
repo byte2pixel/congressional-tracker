@@ -1,5 +1,6 @@
 import type { MostActiveStock } from "@/api/mostActiveStocks";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { StockLink } from "@/dashboard/components/StockLink";
 
 export const rows = (stocks: Array<MostActiveStock>): GridRowsProp => {
   return stocks.map((stock, index) => ({
@@ -20,12 +21,20 @@ export const columns: Array<GridColDef> = [
     headerName: "Symbol",
     flex: 0.8,
     minWidth: 80,
+    renderCell: (params) => <StockLink symbol={params.value} />,
   },
   {
     field: "company",
     headerName: "Company",
     flex: 2,
     minWidth: 160,
+    renderCell: (params) => (
+      <StockLink
+        symbol={params.row.symbol}
+        name={params.value}
+        sx={{ fontWeight: "normal" }}
+      />
+    ),
   },
   {
     field: "tickerType",
