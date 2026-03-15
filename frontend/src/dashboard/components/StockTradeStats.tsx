@@ -1,45 +1,46 @@
-import { Card, CardContent, Grid, Typography } from "@mui/material";
-// import { Route as StockDetailRoute } from "@/routes/stock_.$symbol";
+import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
+import { formatVolume } from "../internals/utils/format";
+import { Route as StockDetailRoute } from "@/routes/stock_.$symbol";
+import { useStockTrades } from "@/hooks/useStockTrades";
 
 function StockTradeStats() {
-  // const { symbol } = StockDetailRoute.useParams();
-  // const { data, isLoading } = useStockTrades(symbol);
+  const { symbol } = StockDetailRoute.useParams();
+  const { data, isLoading } = useStockTrades(symbol);
 
-  /*
   const totalTrades = data?.length.toLocaleString() ?? "0";
   const totalVolume = data
     ? formatVolume(data.reduce((sum, trade) => sum + trade.amount, 0))
     : formatVolume(0);
 
-  // top stock by number of trades
-  const topStock: string = data
+  // top politician by number of trades  const topPolitician: string = data
+  const topPolitician: string = data
     ? data.reduce(
         (top, trade) => {
-          const count = data.filter((t) => t.symbol === trade.symbol).length;
-          return count > top.count ? { ticker: trade.symbol, count } : top;
+          const count = data.filter((t) => t.name === trade.name).length;
+          return count > top.count ? { name: trade.name, count } : top;
         },
-        { ticker: "", count: 0 },
-      ).ticker
+        { name: "", count: 0 },
+      ).name
     : "N/A";
 
-  // top stock symbol by total volume
-  const topStockVolume: string = data
+  // top politician by total volume
+  const topPoliticianVolume: string = data
     ? data.reduce(
         (top, trade) => {
           const volume = data
-            .filter((t) => t.symbol === trade.symbol)
+            .filter((t) => t.name === trade.name)
             .reduce((sum, t) => sum + t.amount, 0);
-          return volume > top.volume ? { ticker: trade.symbol, volume } : top;
+          return volume > top.volume ? { name: trade.name, volume } : top;
         },
-        { ticker: "", volume: 0 },
-      ).ticker
+        { name: "", volume: 0 },
+      ).name
     : "N/A";
-*/
+
   const stats = [
-    { label: "Total Trades", value: "10" },
-    { label: "Total Volume", value: "1000" },
-    { label: "Top Politician by Trades", value: "Nancy Pelosi" },
-    { label: "Top Politician by Volume", value: "Nancy Pelosi" },
+    { label: "Total Trades", value: totalTrades },
+    { label: "Total Volume", value: totalVolume },
+    { label: "Top Politician by Trades", value: topPolitician },
+    { label: "Top Politician by Volume", value: topPoliticianVolume },
   ];
 
   return (
@@ -51,13 +52,13 @@ function StockTradeStats() {
               <Typography variant="subtitle2" gutterBottom>
                 {stat.label}
               </Typography>
-              {/* {isLoading ? (
+              {isLoading ? (
                 <Skeleton variant="text" width={100} />
-              ) : ( */}
-              <Typography variant="h6" width="60%" fontWeight="bold">
-                {stat.value}
-              </Typography>
-              {/* )} */}
+              ) : (
+                <Typography variant="h6" width="60%" fontWeight="bold">
+                  {stat.value}
+                </Typography>
+              )}
             </CardContent>
           </Card>
         </Grid>

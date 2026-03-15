@@ -1,14 +1,17 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { memo, useMemo } from "react";
-import { columns, rows } from "../internals/data/activeStocksColumns";
-import { useMostActiveStocks } from "@/hooks/useMostActiveStocks";
+import { columns, rows } from "../internals/data/stockTradesColumns";
+import { useStockTrades } from "@/hooks/useStockTrades";
+import { Route as StockDetailRoute } from "@/routes/stock_.$symbol";
 
-function ActiveStocksDataGrid() {
-  const { data, isLoading, error } = useMostActiveStocks();
+function StockTradesDataGrid() {
+  const { symbol } = StockDetailRoute.useParams();
+  const { data, isLoading, error } = useStockTrades(symbol);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const isMedium = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isLarge = useMediaQuery(theme.breakpoints.between("md", "lg"));
 
   const getRows = useMemo(() => {
     if (!data) return [];
@@ -18,34 +21,37 @@ function ActiveStocksDataGrid() {
   let columnVisibilityModel = {};
   if (isSmall) {
     columnVisibilityModel = {
-      company: false,
-      tickerType: false,
-      purchaseCount: false,
-      saleCount: false,
+      amount: false,
+      transactionDate: false,
+      transactionType: false,
     };
   } else if (isMedium) {
     columnVisibilityModel = {
-      company: true,
-      tickerType: false,
-      purchaseCount: false,
-      saleCount: false,
+      amount: true,
+      transactionDate: false,
+      transactionType: false,
+    };
+  } else if (isLarge) {
+    columnVisibilityModel = {
+      amount: true,
+      transactionDate: true,
+      transactionType: false,
     };
   } else {
     columnVisibilityModel = {
-      company: true,
-      tickerType: true,
-      purchaseCount: true,
-      saleCount: true,
+      amount: true,
+      transactionDate: true,
+      transactionType: true,
     };
   }
 
   if (error) {
-    console.error("Error fetching most active stocks:", error);
+    console.log("Error fetching stock trades:", error);
   }
 
   return (
     <DataGrid
-      label="Most Active Stocks (By Estimated Volume)"
+      label="Trade History"
       showToolbar
       loading={isLoading}
       checkboxSelection
@@ -97,5 +103,4 @@ function ActiveStocksDataGrid() {
   );
 }
 
-export default memo(ActiveStocksDataGrid);
-
+export default memo(StockTradesDataGrid);

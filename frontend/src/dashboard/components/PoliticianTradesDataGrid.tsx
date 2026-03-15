@@ -2,10 +2,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { memo, useMemo } from "react";
 import { columns, rows } from "../internals/data/politicianTradesColumns";
-import { useRecentTrades } from "@/hooks/useRecentTrades";
+import { usePoliticianTrades } from "@/hooks/usePoliticianTrades";
+import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 
 function PoliticianTradesDataGrid() {
-  const { data, isLoading, error } = useRecentTrades();
+  const { bioguideid } = PoliticianDetailRoute.useParams();
+  const { data, isLoading, error } = usePoliticianTrades(bioguideid);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const isMedium = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -56,6 +58,7 @@ function PoliticianTradesDataGrid() {
       rows={getRows}
       columns={columns}
       disableColumnSelector
+      disableRowSelectionOnClick
       columnVisibilityModel={columnVisibilityModel}
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

@@ -1,20 +1,14 @@
-import { Stack, Typography } from "@mui/material";
-import { formatVolume } from "../utils/format";
-import type { RecentTrade } from "@/api/recentTrades";
+import { formatParty, formatVolume } from "../utils/format";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
-import { PoliticianLink } from "@/dashboard/components/PoliticianLink";
-import { StockLink } from "@/dashboard/components/StockLink";
+import type { StockTrade } from "@/api/stocks";
 
-export const rows = (trades: Array<RecentTrade>): GridRowsProp => {
+export const rows = (trades: Array<StockTrade>): GridRowsProp => {
   return trades.map((trade, index) => ({
     id: index,
-    bioGuideId: trade.bioGuideId,
     name: trade.name,
     party: trade.party,
     house: trade.house,
-    symbol: trade.symbol,
-    company: trade.company,
-    transactionDate: new Date(trade.transactionDate),
+    transactionDate: trade.transactionDate,
     transactionType: trade.transactionType,
     amount: trade.amount,
     range: trade.range,
@@ -25,28 +19,20 @@ export const rows = (trades: Array<RecentTrade>): GridRowsProp => {
 export const columns: Array<GridColDef> = [
   {
     field: "name",
-    headerName: "Politician",
+    headerName: "Name",
     flex: 1.5,
     minWidth: 150,
-    renderCell: (params) => (
-      <PoliticianLink name={params.value} bioGuideId={params.row.bioGuideId} />
-    ),
   },
   {
-    field: "symbol",
-    headerName: "Symbol",
+    field: "party",
+    headerName: "Affiliation",
     flex: 1,
-    renderCell: (params) => {
-      const { symbol, company } = params.row;
-      return (
-        <Stack direction="column" marginTop={1} marginBottom={1}>
-          <StockLink symbol={symbol} sx={{ lineHeight: 1.43 }} />
-          <Typography variant="caption" color="text.secondary">
-            {company}
-          </Typography>
-        </Stack>
-      );
-    },
+    valueFormatter: (params) => formatParty(params as string),
+  },
+  {
+    field: "house",
+    headerName: "Chamber",
+    flex: 1,
   },
   {
     field: "transactionDate",
@@ -54,6 +40,7 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
+    // minWidth: 120,
     renderCell: (params) => {
       const date = new Date(params.value);
       return date.toLocaleDateString("en-US", {
@@ -69,6 +56,7 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
+    // minWidth: 150,
   },
   {
     field: "amount",
@@ -76,6 +64,7 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
+    // minWidth: 50,
     renderCell: (params) => {
       const amount = params.value;
       return formatVolume(amount, 1);
@@ -87,6 +76,7 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
+    // minWidth: 50,
     renderCell: (params) => {
       const excessReturn = params.value as number | null;
       if (excessReturn === null) {

@@ -10,9 +10,11 @@ import {
 } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import type { HTMLAttributes } from "react";
 import type { Stock } from "@/api/stocks";
 import { useStockSearch } from "@/hooks/useSearchStock";
+import { Route as StockDetailRoute } from "@/routes/stock_.$symbol";
 
 interface StockOptionProps extends HTMLAttributes<HTMLLIElement> {
   option: Stock;
@@ -35,6 +37,15 @@ function StockOption({ option, ...props }: StockOptionProps) {
 export default function StockSearchCard() {
   const [inputValue, setInputValue] = useState("");
   const { data: options = [], isFetching } = useStockSearch(inputValue);
+  const navigate = useNavigate();
+
+  function handleSelect(_: React.SyntheticEvent, value: Stock | string) {
+    if (typeof value === "string") return;
+    void navigate({
+      to: StockDetailRoute.to,
+      params: { symbol: value.symbol },
+    });
+  }
 
   return (
     <Card variant="outlined" sx={{ height: "100%", flexGrow: 1 }}>
@@ -55,6 +66,7 @@ export default function StockSearchCard() {
             inputValue={inputValue}
             onInputChange={(_, newValue) => setInputValue(newValue)}
             loading={isFetching}
+            onChange={handleSelect}
             renderOption={({ key, ...props }, option) => (
               <StockOption key={key} {...props} option={option} />
             )}

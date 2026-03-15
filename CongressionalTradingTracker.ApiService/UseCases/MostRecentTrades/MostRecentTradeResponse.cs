@@ -6,6 +6,7 @@ public class MostRecentTradeResponse
     public required string Name { get; set; }
     public required string Party { get; set; }
     public required string House { get; set; }
+    public required string State { get; set; }
     public required string Symbol { get; set; }
     public required string Company { get; set; }
     public required DateTime TransactionDate { get; set; }

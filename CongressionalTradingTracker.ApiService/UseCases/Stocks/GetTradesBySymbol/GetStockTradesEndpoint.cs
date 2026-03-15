@@ -20,7 +20,10 @@ public class GetStockTradesEndpoint(ITradeService tradeService)
     {
         try
         {
-            var trades = await tradeService.GetStockTrades(req.Symbol, ct);
+            DateTime from = DateTime.UtcNow.AddMonths(-60);
+            DateTime to = DateTime.UtcNow;
+            int limit = 0;
+            var trades = await tradeService.GetStockTrades(req.Symbol, from, to, limit, ct);
             var response = await Map.FromEntityAsync(trades, ct);
             return TypedResults.Ok(response);
         }

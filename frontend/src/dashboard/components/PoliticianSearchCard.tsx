@@ -11,6 +11,7 @@ import {
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { formatParty } from "../internals/utils/format";
 import type { HTMLAttributes } from "react";
 import type { Politician } from "@/api/politicians";
 import { usePoliticianSearch } from "@/hooks/useSearchPolitician";
@@ -27,7 +28,7 @@ function PoliticianOption({ option, ...props }: PoliticianOptionProps) {
       <Stack direction="row" spacing={1} alignItems="center">
         <Typography variant="body2">{option.name}</Typography>
         <Typography variant="caption" color="text.secondary">
-          {option.party} · {option.house}
+          {formatParty(option.party)} · {option.house}
         </Typography>
       </Stack>
     </li>

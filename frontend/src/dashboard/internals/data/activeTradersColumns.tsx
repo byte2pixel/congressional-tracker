@@ -1,3 +1,4 @@
+import { formatParty } from "../utils/format";
 import type { ActiveTrader } from "@/api/activeTraders";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { PoliticianLink } from "@/dashboard/components/PoliticianLink";
@@ -31,6 +32,7 @@ export const columns: Array<GridColDef> = [
     field: "party",
     headerName: "Affiliation",
     flex: 1,
+    valueFormatter: (params) => formatParty(params as string),
   },
   {
     field: "totalTrades",

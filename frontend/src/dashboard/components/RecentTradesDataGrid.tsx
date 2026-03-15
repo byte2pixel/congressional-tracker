@@ -56,6 +56,7 @@ function RecentTradesDataGrid() {
       rows={getRows}
       columns={columns}
       disableColumnSelector
+      disableRowSelectionOnClick
       columnVisibilityModel={columnVisibilityModel}
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

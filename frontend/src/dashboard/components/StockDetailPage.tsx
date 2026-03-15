@@ -6,6 +6,9 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import StockTradeStats from "./StockTradeStats";
+import StockDetailTradeActivityChart from "./StockDetailTradeActivityChart";
+import StockDetailBuySellChart from "./StockDetailBuySellChart";
+import StockTradesDataGrid from "./StockTradesDataGrid";
 import { useStock } from "@/hooks/useStock";
 import { Route as StockDetailRoute } from "@/routes/stock_.$symbol";
 
@@ -40,14 +43,9 @@ function StockHeader() {
             )}
             <Stack direction="row" spacing={1}>
               {isLoading ? (
-                <>
-                  <Skeleton variant="text" width={80} />
-                  <Skeleton variant="text" width={80} />
-                </>
+                <Skeleton variant="text" width={80} />
               ) : (
-                <>
-                  <Typography variant="body2">{data?.type}</Typography>
-                </>
+                <Typography variant="body2">{data?.type}</Typography>
               )}
             </Stack>
             <Typography variant="caption" color="text.secondary">
@@ -68,16 +66,13 @@ export default function StockDetailPage() {
         <StockTradeStats />
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 8 }}>
-            <Skeleton variant="rectangular" width="100%" height={300} />
-            {/* <PoliticianDetailTradeActivityChart /> */}
+            <StockDetailTradeActivityChart />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <Skeleton variant="rectangular" width="100%" height={300} />
-            {/* <PoliticianDetailBuySellChart /> */}
+            <StockDetailBuySellChart />
           </Grid>
         </Grid>
-        <Skeleton variant="rectangular" width="100%" height={400} />
-        {/* <PoliticianTradesDataGrid /> */}
+        <StockTradesDataGrid />
       </Stack>
     </Box>
   );

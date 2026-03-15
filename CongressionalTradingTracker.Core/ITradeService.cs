@@ -25,7 +25,13 @@ public interface ITradeService
         CancellationToken ct = default
     );
 
-    Task<List<MostActiveTraderDto>> GetStockTrades(string symbol, CancellationToken ct = default);
+    Task<List<Trade>> GetStockTrades(
+        string symbol,
+        DateTime from,
+        DateTime to,
+        int limit = 50,
+        CancellationToken ct = default
+    );
 
     Task UpsertBulkTrades(
         IEnumerable<CongressBulkDto> trades,

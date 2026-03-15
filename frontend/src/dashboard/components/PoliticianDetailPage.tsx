@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import { formatParty } from "../internals/utils/format";
 import PoliticianTradesDataGrid from "./PoliticianTradesDataGrid";
 import PoliticianTradeStats from "./PoliticianTradeStats";
 import PoliticianDetailBuySellChart from "./PoliticianDetailBuySellChart";
@@ -41,7 +42,9 @@ function ProfileHeader() {
                 </>
               ) : (
                 <>
-                  <Typography variant="body2">{data?.party}</Typography>
+                  <Typography variant="body2">
+                    {formatParty(data?.party ?? "Other")}
+                  </Typography>
                   <Typography variant="body2">{data?.house}</Typography>
                 </>
               )}

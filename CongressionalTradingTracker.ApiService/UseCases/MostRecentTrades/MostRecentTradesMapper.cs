@@ -9,10 +9,11 @@ public class MostRecentTradesMapper : ResponseMapper<List<MostRecentTradeRespons
     {
         var responses = e.Select(t => new MostRecentTradeResponse
             {
-                BioGuideId = t.Politician.BioGuideId ?? string.Empty,
+                BioGuideId = t.Politician.BioGuideId,
                 Name = t.Politician.Name,
                 Party = t.Politician.Party ?? "Unknown",
                 House = t.Politician.House,
+                State = t.Politician.State ?? "Unknown",
                 Symbol = t.Ticker.Symbol,
                 Company = t.Ticker.Company ?? t.Ticker.Symbol,
                 TransactionDate = t.TransactionDate,

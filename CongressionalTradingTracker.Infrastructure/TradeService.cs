@@ -91,37 +91,23 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             .ToListAsync(ct);
     }
 
-    public Task<List<MostActiveTraderDto>> GetStockTrades(
+    public Task<List<Trade>> GetStockTrades(
         string symbol,
+        DateTime from,
+        DateTime to,
+        int limit = 50,
         CancellationToken ct = default
     )
     {
-        // get all trades for the symbol and group them by politician for the stock details page
         return dbContext
-            .Trades.Where(t => t.Ticker.Symbol == symbol)
-            .GroupBy(t => new
-            {
-                t.PoliticianId,
-                t.Politician.Name,
-                t.Politician.BioGuideId,
-                t.Politician.Party,
-                t.Politician.House,
-                t.Politician.State,
-            })
-            .Select(g => new MostActiveTraderDto
-            {
-                PoliticianId = g.Key.PoliticianId,
-                Name = g.Key.Name,
-                BioGuideId = g.Key.BioGuideId,
-                Party = g.Key.Party,
-                House = g.Key.House,
-                State = g.Key.State,
-                TotalTrades = g.Count(),
-                PurchaseCount = g.Count(t => EF.Functions.ILike(t.Transaction, "P%")),
-                SaleCount = g.Count(t => EF.Functions.ILike(t.Transaction, "S%")),
-                TotalEstimatedVolume = g.Sum(t => t.RangeMid ?? t.RangeMin),
-            })
-            .OrderByDescending(d => d.TotalEstimatedVolume)
+            .Trades.Where(t =>
+                t.Ticker.Symbol == symbol && t.TransactionDate >= from && t.TransactionDate <= to
+            )
+            .Include(t => t.Politician)
+            .Include(t => t.Ticker)
+            .OrderByDescending(t => t.TransactionDate)
+            .ThenByDescending(t => t.ReportDate)
+            .Take(limit == 0 ? int.MaxValue : limit)
             .ToListAsync(ct);
     }
 
