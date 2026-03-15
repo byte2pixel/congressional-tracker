@@ -25,6 +25,8 @@ public interface ITradeService
         CancellationToken ct = default
     );
 
+    Task<List<MostActiveTraderDto>> GetStockTrades(string symbol, CancellationToken ct = default);
+
     Task UpsertBulkTrades(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,

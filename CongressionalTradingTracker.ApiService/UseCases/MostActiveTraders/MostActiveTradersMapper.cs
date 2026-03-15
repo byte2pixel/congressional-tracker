@@ -10,7 +10,7 @@ public class MostActiveTradersMapper
     {
         var responses = e.Select(t => new MostActiveTraderResponse
             {
-                BioGuideId = t.BioGuideId ?? string.Empty,
+                BioGuideId = t.BioGuideId,
                 Name = t.Name,
                 Party = t.Party ?? "Unknown",
                 House = t.House,

@@ -1,6 +1,6 @@
-namespace CongressionalTradingTracker.ApiService.UseCases;
+namespace CongressionalTradingTracker.ApiService.UseCases.GetTradesBySymbol;
 
-public class MostActiveTraderResponse
+public class GetStockTradesResponse
 {
     public required string BioGuideId { get; set; }
     public required string Name { get; set; }

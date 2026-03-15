@@ -6,7 +6,7 @@ public class GetStockEndpoint(IStockService service)
     public override void Configure()
     {
         Get("/api/stock/{Symbol}");
-        AllowAnonymous();
+        Roles("api-role");
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 

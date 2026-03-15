@@ -69,7 +69,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.MapGet("/", () => "API service is running.");
+app.MapGet("/", () => "API service is running.").AllowAnonymous();
 
 app.MapGet(
         "/health",

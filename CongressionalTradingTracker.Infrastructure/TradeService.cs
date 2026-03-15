@@ -91,6 +91,40 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             .ToListAsync(ct);
     }
 
+    public Task<List<MostActiveTraderDto>> GetStockTrades(
+        string symbol,
+        CancellationToken ct = default
+    )
+    {
+        // get all trades for the symbol and group them by politician for the stock details page
+        return dbContext
+            .Trades.Where(t => t.Ticker.Symbol == symbol)
+            .GroupBy(t => new
+            {
+                t.PoliticianId,
+                t.Politician.Name,
+                t.Politician.BioGuideId,
+                t.Politician.Party,
+                t.Politician.House,
+                t.Politician.State,
+            })
+            .Select(g => new MostActiveTraderDto
+            {
+                PoliticianId = g.Key.PoliticianId,
+                Name = g.Key.Name,
+                BioGuideId = g.Key.BioGuideId,
+                Party = g.Key.Party,
+                House = g.Key.House,
+                State = g.Key.State,
+                TotalTrades = g.Count(),
+                PurchaseCount = g.Count(t => EF.Functions.ILike(t.Transaction, "P%")),
+                SaleCount = g.Count(t => EF.Functions.ILike(t.Transaction, "S%")),
+                TotalEstimatedVolume = g.Sum(t => t.RangeMid ?? t.RangeMin),
+            })
+            .OrderByDescending(d => d.TotalEstimatedVolume)
+            .ToListAsync(ct);
+    }
+
     public async Task UpsertBulkTrades(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,

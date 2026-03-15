@@ -10,7 +10,7 @@ public class GetPoliticianEndpoint(IPoliticianService service)
     public override void Configure()
     {
         Get("/api/politician/{BioGuideId}");
-        AllowAnonymous();
+        Roles("api-role");
         Options(x => x.CacheOutput(p => p.Expire(TimeSpan.FromMinutes(60))));
     }
 

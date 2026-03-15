@@ -5,17 +5,17 @@ Accept: application/json
 
 ###
 
-GET {{ApiService_HostAddress}}/api/politicians/search?query=nan&Limit=5
+GET {{ApiService_HostAddress}}/api/politician/search?query=nan&Limit=5
 Accept: application/json
 
 ###
 
-GET {{ApiService_HostAddress}}/api/politicians/T000250
+GET {{ApiService_HostAddress}}/api/politician/T000250
 Accept: application/json
 
 ### 
 
-GET {{ApiService_HostAddress}}/api/politicians/T000250/trades
+GET {{ApiService_HostAddress}}/api/politician/T000250/trades
 Accept: application/json
 
 ### 
@@ -23,7 +23,22 @@ Accept: application/json
 GET {{ApiService_HostAddress}}/api/trades/recent
 Accept: application/json
 
-### 
+###
+
+GET {{ApiService_HostAddress}}/api/stock/search?query=APP&Limit=10
+Accept: application/json
+
+###
+
+GET {{ApiService_HostAddress}}/api/stock/AAPL
+Accept: application/json
+
+###
+
+GET {{ApiService_HostAddress}}/api/stock/AAPL/trades
+Accept: application/json
+
+###
 
 GET {{ApiService_HostAddress}}/api/traders/most-active
 Accept: application/json
