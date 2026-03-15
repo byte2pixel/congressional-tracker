@@ -2,7 +2,7 @@ import * as React from "react";
 import { useMemo } from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useDrawingArea } from "@mui/x-charts/hooks";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -10,8 +10,6 @@ import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useMostActiveStocks } from "@/hooks/useMostActiveStocks";
-
-const colors = ["hsl(142, 50%, 50%)", "hsl(0, 70%, 55%)"];
 
 const StyledText = styled("text")(({ theme }) => ({
   textAnchor: "middle",
@@ -42,6 +40,8 @@ function PieCenterLabel({ total }: Readonly<{ total: number }>) {
 }
 
 export default function BuySellRatioPieChart() {
+  const theme = useTheme();
+  const colors = [theme.palette.success.main, theme.palette.error.main];
   const { data, isLoading } = useMostActiveStocks();
 
   const { pieData, total } = useMemo(() => {
@@ -60,7 +60,12 @@ export default function BuySellRatioPieChart() {
   return (
     <Card
       variant="outlined"
-      sx={{ display: "flex", flexDirection: "column", flexGrow: 1, height: "100%" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: 1,
+        height: "100%",
+      }}
     >
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
@@ -74,7 +79,13 @@ export default function BuySellRatioPieChart() {
             sx={{ mx: "auto", my: 2 }}
           />
         ) : (
-          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <PieChart
               colors={colors}
               series={[
@@ -95,7 +106,12 @@ export default function BuySellRatioPieChart() {
             </PieChart>
             <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
               {pieData.map((item, i) => (
-                <Stack key={item.label} direction="row" alignItems="center" spacing={0.5}>
+                <Stack
+                  key={item.label}
+                  direction="row"
+                  alignItems="center"
+                  spacing={0.5}
+                >
                   <Box
                     sx={{
                       width: 10,

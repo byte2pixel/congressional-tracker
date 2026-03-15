@@ -17,15 +17,18 @@ export default function StockTypeBarChart() {
     const counts: Record<string, { purchases: number; sales: number }> = {};
     for (const stock of data) {
       const type = stock.tickerType ?? "Unknown";
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!counts[type]) counts[type] = { purchases: 0, sales: 0 };
       counts[type].purchases += stock.purchaseCount;
       counts[type].sales += stock.saleCount;
     }
 
-    // Sort by total volume descending, cap at top 6 types
+    // Sort by total volume descending, cap at top 3 types
     const sorted = Object.entries(counts)
-      .sort((a, b) => b[1].purchases + b[1].sales - (a[1].purchases + a[1].sales))
-      .slice(0, 6);
+      .sort(
+        (a, b) => b[1].purchases + b[1].sales - (a[1].purchases + a[1].sales),
+      )
+      .slice(0, 3);
 
     return {
       types: sorted.map(([type]) => type),

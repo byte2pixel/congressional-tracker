@@ -27,7 +27,7 @@ function PieCenterLabel({ total }: Readonly<{ total: number }>) {
         y={top + height / 2 - 10}
         style={{ fontSize: "1.25rem", fontWeight: 600 }}
       >
-        {total}
+        {total.toLocaleString()}
       </StyledText>
       <StyledText
         x={left + width / 2}

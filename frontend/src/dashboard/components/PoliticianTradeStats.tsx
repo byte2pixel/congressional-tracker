@@ -7,7 +7,7 @@ function PoliticianTradeStats() {
   const { bioguideid } = Route.useParams();
   const { data, isLoading } = usePoliticianTrades(bioguideid);
 
-  const totalTrades = data?.length ?? 0;
+  const totalTrades = data?.length.toLocaleString() ?? "0";
   const totalVolume = data
     ? formatVolume(data.reduce((sum, trade) => sum + trade.amount, 0))
     : formatVolume(0);

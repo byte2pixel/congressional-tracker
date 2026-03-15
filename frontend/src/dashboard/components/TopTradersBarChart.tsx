@@ -58,7 +58,19 @@ export default function TopTradersBarChart() {
             margin={{ left: 0, right: 10, top: 10, bottom: 0 }}
             grid={{ vertical: true }}
             hideLegend
+            onAxisClick={(_, context) => {
+              if (context?.dataIndex === undefined) return;
+              console.log("axis clicked with context:", context);
+              const bioGuideId = bioGuideIds[context.dataIndex];
+              if (bioGuideId) {
+                void navigate({
+                  to: "/politicians/$bioguideid",
+                  params: { bioguideid: bioGuideId },
+                });
+              }
+            }}
             onItemClick={(_, context) => {
+              console.log("Clicked item with context:", context);
               const bioGuideId = bioGuideIds[context.dataIndex];
               if (bioGuideId) {
                 void navigate({
