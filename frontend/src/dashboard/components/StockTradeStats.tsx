@@ -1,5 +1,6 @@
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 import { formatVolume } from "../internals/utils/format";
+import { PoliticianLink } from "./PoliticianLink";
 import { Route as StockDetailRoute } from "@/routes/stock_.$symbol";
 import { useStockTrades } from "@/hooks/useStockTrades";
 
@@ -23,24 +24,40 @@ function StockTradeStats() {
       ).name
     : "N/A";
 
+  const topPoliticianComponent = (
+    <PoliticianLink
+      name={topPolitician}
+      bioGuideId={data?.find((t) => t.name === topPolitician)?.bioGuideId ?? ""}
+    />
+  );
+
   // top politician by total volume
-  const topPoliticianVolume: string = data
+  const topPoliticianVolume: { name: string; bioGuideId: string } = data
     ? data.reduce(
         (top, trade) => {
           const volume = data
             .filter((t) => t.name === trade.name)
             .reduce((sum, t) => sum + t.amount, 0);
-          return volume > top.volume ? { name: trade.name, volume } : top;
+          return volume > top.volume
+            ? { name: trade.name, volume, bioGuideId: trade.bioGuideId }
+            : top;
         },
-        { name: "", volume: 0 },
-      ).name
-    : "N/A";
+        { name: "", volume: 0, bioGuideId: "" },
+      )
+    : { name: "N/A", bioGuideId: "" };
+
+  const topPoliticianVolumeComponent = (
+    <PoliticianLink
+      name={topPoliticianVolume.name}
+      bioGuideId={topPoliticianVolume.bioGuideId}
+    />
+  );
 
   const stats = [
     { label: "Total Trades", value: totalTrades },
     { label: "Total Volume", value: totalVolume },
-    { label: "Top Politician by Trades", value: topPolitician },
-    { label: "Top Politician by Volume", value: topPoliticianVolume },
+    { label: "Top Politician by Trades", value: topPoliticianComponent },
+    { label: "Top Politician by Volume", value: topPoliticianVolumeComponent },
   ];
 
   return (

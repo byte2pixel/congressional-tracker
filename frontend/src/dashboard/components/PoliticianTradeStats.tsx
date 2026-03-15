@@ -1,5 +1,6 @@
 import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 import { formatVolume } from "../internals/utils/format";
+import { StockLink } from "./StockLink";
 import { usePoliticianTrades } from "@/hooks/usePoliticianTrades";
 import { Route as PoliticianDetialRoute } from "@/routes/politician_.$bioguideid";
 
@@ -39,8 +40,11 @@ function PoliticianTradeStats() {
   const stats = [
     { label: "Total Trades", value: totalTrades },
     { label: "Total Volume", value: totalVolume },
-    { label: "Top Stock by Trades", value: topStock },
-    { label: "Top Stock by Volume", value: topStockVolume },
+    { label: "Top Stock by Trades", value: <StockLink symbol={topStock} /> },
+    {
+      label: "Top Stock by Volume",
+      value: <StockLink symbol={topStockVolume} />,
+    },
   ];
 
   return (

@@ -1,6 +1,7 @@
 import { formatVolume } from "../utils/format";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import type { PoliticianTrade } from "@/api/politicians";
+import { StockLink } from "@/dashboard/components/StockLink";
 
 export const rows = (trades: Array<PoliticianTrade>): GridRowsProp => {
   return trades.map((trade, index) => ({
@@ -21,11 +22,19 @@ export const columns: Array<GridColDef> = [
     headerName: "Symbol",
     flex: 1.5,
     minWidth: 150,
+    renderCell: (params) => <StockLink symbol={params.value} />,
   },
   {
     field: "company",
     headerName: "Company",
     flex: 1,
+    renderCell: (params) => (
+      <StockLink
+        name={params.value}
+        symbol={params.row.symbol}
+        sx={{ fontWeight: "normal" }}
+      />
+    ),
   },
   {
     field: "transactionDate",

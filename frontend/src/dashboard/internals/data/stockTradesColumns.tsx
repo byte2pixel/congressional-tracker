@@ -1,10 +1,12 @@
 import { formatParty, formatVolume } from "../utils/format";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import type { StockTrade } from "@/api/stocks";
+import { PoliticianLink } from "@/dashboard/components/PoliticianLink";
 
 export const rows = (trades: Array<StockTrade>): GridRowsProp => {
   return trades.map((trade, index) => ({
     id: index,
+    bioGuideId: trade.bioGuideId,
     name: trade.name,
     party: trade.party,
     house: trade.house,
@@ -22,6 +24,9 @@ export const columns: Array<GridColDef> = [
     headerName: "Name",
     flex: 1.5,
     minWidth: 150,
+    renderCell: (params) => (
+      <PoliticianLink name={params.value} bioGuideId={params.row.bioGuideId} />
+    ),
   },
   {
     field: "party",
