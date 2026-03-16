@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import MainGrid from "@/dashboard/components/MainGrid";
+import MainPage from "@/dashboard/pages/MainPage";
 
 export const Route = createFileRoute("/")({
-  component: MainGrid,
+  component: MainPage,
   staticData: {
     getTitle: () => "Home",
   },

@@ -14,7 +14,7 @@ export default function PageViewsBarChart() {
     (theme.vars || theme).palette.primary.light,
   ];
   return (
-    <Card variant="outlined" sx={{ width: "100%" }}>
+    <Card sx={{ width: "100%" }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
           Politician Buy & Sell Actions

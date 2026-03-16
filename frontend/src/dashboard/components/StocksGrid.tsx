@@ -21,7 +21,7 @@ interface CountCardProps {
 
 function CountCard({ title, value }: Readonly<CountCardProps>) {
   return (
-    <Card variant="outlined" sx={{ height: "100%" }}>
+    <Card sx={{ height: "100%" }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
           {title}

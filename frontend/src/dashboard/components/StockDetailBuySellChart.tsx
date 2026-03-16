@@ -63,7 +63,6 @@ export default function StockDetailBuySellChart() {
 
   return (
     <Card
-      variant="outlined"
       sx={{
         display: "flex",
         flexDirection: "column",

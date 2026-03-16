@@ -6,11 +6,11 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Copyright from "../internals/components/Copyright";
-import ActiveTradersDataGrid from "./ActiveTradersDataGrid";
-import HouseSenateChart from "./HouseSenateChart";
-import PartyTradesBarChart from "./PartyTradesBarChart";
-import PoliticianSearchCard from "./PoliticianSearchCard";
-import TopTradersBarChart from "./TopTradersBarChart";
+import ActiveTradersDataGrid from "../components/ActiveTradersDataGrid";
+import HouseSenateChart from "../components/HouseSenateChart";
+import PartyTradesBarChart from "../components/PartyTradesBarChart";
+import PoliticianSearchCard from "../components/PoliticianSearchCard";
+import TopTradersBarChart from "../components/TopTradersBarChart";
 import { useActiveTraders } from "@/hooks/useActiveTraders";
 
 interface CountCardProps {
@@ -20,7 +20,7 @@ interface CountCardProps {
 
 function CountCard({ title, value }: CountCardProps) {
   return (
-    <Card variant="outlined" sx={{ height: "100%" }}>
+    <Card sx={{ height: "100%" }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
           {title}
@@ -33,7 +33,7 @@ function CountCard({ title, value }: CountCardProps) {
   );
 }
 
-export default function PoliticiansGrid() {
+export default function PoliticianPage() {
   const { data } = useActiveTraders();
 
   const counts = useMemo(() => {

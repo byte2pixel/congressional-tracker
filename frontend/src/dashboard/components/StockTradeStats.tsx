@@ -64,7 +64,7 @@ function StockTradeStats() {
     <Grid container spacing={2}>
       {stats.map((stat) => (
         <Grid key={stat.label} size={{ xs: 12, sm: 6, lg: 3 }}>
-          <Card variant="outlined">
+          <Card>
             <CardContent>
               <Typography variant="subtitle2" gutterBottom>
                 {stat.label}

@@ -126,7 +126,6 @@ const colors = [
 export default function ChartUserByCountry() {
   return (
     <Card
-      variant="outlined"
       sx={{ display: "flex", flexDirection: "column", gap: "8px", flexGrow: 1 }}
     >
       <CardContent>

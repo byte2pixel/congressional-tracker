@@ -1,26 +1,48 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import Bookmark from "@mui/icons-material/Bookmark";
+import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
 import { useNavigate } from "@tanstack/react-router";
 import { formatParty } from "../internals/utils/format";
-import PoliticianTradesDataGrid from "./PoliticianTradesDataGrid";
-import PoliticianTradeStats from "./PoliticianTradeStats";
-import PoliticianDetailBuySellChart from "./PoliticianDetailBuySellChart";
-import PoliticianDetailTradeActivityChart from "./PoliticianDetailTradeActivityChart";
-import PoliticianSearchCard from "./PoliticianSearchCard";
+import PoliticianTradesDataGrid from "../components/PoliticianTradesDataGrid";
+import PoliticianTradeStats from "../components/PoliticianTradeStats";
+import PoliticianDetailBuySellChart from "../components/PoliticianDetailBuySellChart";
+import PoliticianDetailTradeActivityChart from "../components/PoliticianDetailTradeActivityChart";
+import PoliticianSearchCard from "../components/PoliticianSearchCard";
 import type { Politician } from "@/api/politicians";
 import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 import { usePolitician } from "@/hooks/usePolitician";
+import { useWatchlist } from "@/context/WatchlistContext";
 
 function ProfileHeader() {
   const { bioguideid } = PoliticianDetailRoute.useParams();
   const { data, isLoading } = usePolitician(bioguideid);
+  const { addPolitician, removePolitician, isWatchingPolitician } =
+    useWatchlist();
+  const watching = isWatchingPolitician(bioguideid);
+
+  function handleWatchToggle() {
+    if (watching) {
+      removePolitician(bioguideid);
+    } else if (data) {
+      addPolitician({
+        bioGuideId: bioguideid,
+        name: data.name,
+        party: data.party,
+        house: data.house,
+      });
+    }
+  }
+
   return (
-    <Card variant="outlined">
+    <Card>
       <CardContent>
         <Stack
           direction={{ xs: "column", sm: "row" }}
@@ -30,13 +52,33 @@ function ProfileHeader() {
           {/* TODO: replace with politician photo */}
           <Skeleton variant="circular" width={80} height={80} />
           <Stack spacing={0.5}>
-            <Typography variant="h6" fontWeight="bold">
-              {isLoading ? (
-                <Skeleton variant="text" width={120} />
-              ) : (
-                data?.name || "Unknown Politician"
-              )}
-            </Typography>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="h6" fontWeight="bold">
+                {isLoading ? (
+                  <Skeleton variant="text" width={120} />
+                ) : (
+                  data?.name || "Unknown Politician"
+                )}
+              </Typography>
+              <Tooltip
+                title={watching ? "Remove from watchlist" : "Add to watchlist"}
+              >
+                <span>
+                  <IconButton
+                    size="small"
+                    onClick={handleWatchToggle}
+                    color={watching ? "primary" : "default"}
+                    disabled={!data}
+                  >
+                    {watching ? (
+                      <Bookmark fontSize="small" />
+                    ) : (
+                      <BookmarkBorder fontSize="small" />
+                    )}
+                  </IconButton>
+                </span>
+              </Tooltip>
+            </Stack>
             <Stack direction="row" spacing={1}>
               {isLoading ? (
                 <>

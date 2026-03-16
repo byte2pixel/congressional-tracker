@@ -63,7 +63,6 @@ export default function PoliticianDetailBuySellChart() {
 
   return (
     <Card
-      variant="outlined"
       sx={{
         display: "flex",
         flexDirection: "column",

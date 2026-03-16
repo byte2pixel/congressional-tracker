@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import PoliticiansGrid from "@/dashboard/components/PoliticiansGrid";
+import PoliticianPage from "@/dashboard/pages/PoliticianPage";
 
 export const Route = createFileRoute("/politician")({
-  component: PoliticiansGrid,
+  component: PoliticianPage,
   staticData: {
     getTitle: () => "Politicians",
   },

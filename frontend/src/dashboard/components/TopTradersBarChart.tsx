@@ -31,7 +31,7 @@ export default function TopTradersBarChart() {
   }, [data]);
 
   return (
-    <Card variant="outlined" sx={{ width: "100%" }}>
+    <Card sx={{ width: "100%" }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
           Top 10 Traders by Volume

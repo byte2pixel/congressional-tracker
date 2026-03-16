@@ -1,20 +1,36 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import StockTradeStats from "./StockTradeStats";
-import StockDetailTradeActivityChart from "./StockDetailTradeActivityChart";
-import StockDetailBuySellChart from "./StockDetailBuySellChart";
-import StockTradesDataGrid from "./StockTradesDataGrid";
+import Bookmark from "@mui/icons-material/Bookmark";
+import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
+import StockTradeStats from "../components/StockTradeStats";
+import StockDetailTradeActivityChart from "../components/StockDetailTradeActivityChart";
+import StockDetailBuySellChart from "../components/StockDetailBuySellChart";
+import StockTradesDataGrid from "../components/StockTradesDataGrid";
 import { useStock } from "@/hooks/useStock";
+import { useWatchlist } from "@/context/WatchlistContext";
 import { Route as StockDetailRoute } from "@/routes/stock_.$symbol";
 
 function StockHeader() {
   const { symbol } = StockDetailRoute.useParams();
   const { data, isLoading } = useStock(symbol);
+  const { addStock, removeStock, isWatchingStock } = useWatchlist();
+  const watching = isWatchingStock(symbol);
+
+  function handleWatchToggle() {
+    if (watching) {
+      removeStock(symbol);
+    } else if (data) {
+      addStock({ symbol, company: data.company });
+    }
+  }
+
   return (
     <Card variant="outlined">
       <CardContent>
@@ -39,6 +55,26 @@ function StockHeader() {
                 <Typography variant="body2" color="text.secondary">
                   {data?.company || "Company name not available"}
                 </Typography>
+                <Tooltip
+                  title={
+                    watching ? "Remove from watchlist" : "Add to watchlist"
+                  }
+                >
+                  <span>
+                    <IconButton
+                      size="small"
+                      onClick={handleWatchToggle}
+                      color={watching ? "primary" : "default"}
+                      disabled={!data}
+                    >
+                      {watching ? (
+                        <Bookmark fontSize="small" />
+                      ) : (
+                        <BookmarkBorder fontSize="small" />
+                      )}
+                    </IconButton>
+                  </span>
+                </Tooltip>
               </Stack>
             )}
             <Stack direction="row" spacing={1}>

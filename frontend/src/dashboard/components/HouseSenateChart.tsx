@@ -59,7 +59,6 @@ export default function HouseSenateChart() {
 
   return (
     <Card
-      variant="outlined"
       sx={{
         display: "flex",
         flexDirection: "column",

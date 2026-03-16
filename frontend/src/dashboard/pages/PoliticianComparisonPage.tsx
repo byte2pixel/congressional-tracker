@@ -3,15 +3,20 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import Bookmark from "@mui/icons-material/Bookmark";
+import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
 import { formatParty, formatVolume } from "../internals/utils/format";
-import { PoliticianLink } from "./PoliticianLink";
-import { StockLink } from "./StockLink";
+import { PoliticianLink } from "../components/PoliticianLink";
+import { StockLink } from "../components/StockLink";
 import type { PoliticianTrade } from "@/api/politicians";
 import { usePolitician } from "@/hooks/usePolitician";
 import { usePoliticianTrades } from "@/hooks/usePoliticianTrades";
+import { useWatchlist } from "@/context/WatchlistContext";
 import { Route as CompareRoute } from "@/routes/politician-compare";
 
 function computeStats(data: Array<PoliticianTrade> | undefined) {
@@ -75,6 +80,22 @@ function PoliticianColumn({ bioguideid }: PoliticianColumnProps) {
     usePolitician(bioguideid);
   const { data: trades, isLoading: tradesLoading } =
     usePoliticianTrades(bioguideid);
+  const { addPolitician, removePolitician, isWatchingPolitician } =
+    useWatchlist();
+  const watching = isWatchingPolitician(bioguideid);
+
+  function handleWatchToggle() {
+    if (watching) {
+      removePolitician(bioguideid);
+    } else if (politician) {
+      addPolitician({
+        bioGuideId: bioguideid,
+        name: politician.name,
+        party: politician.party,
+        house: politician.house,
+      });
+    }
+  }
 
   const stats = computeStats(trades);
   const isLoading = politicianLoading || tradesLoading;
@@ -110,18 +131,40 @@ function PoliticianColumn({ bioguideid }: PoliticianColumnProps) {
           <Stack direction="row" spacing={2} alignItems="center">
             <Skeleton variant="circular" width={60} height={60} />
             <Stack spacing={0.5}>
-              <Typography variant="h6" fontWeight="bold">
-                {politicianLoading ? (
-                  <Skeleton variant="text" width={140} />
-                ) : politician ? (
-                  <PoliticianLink
-                    name={politician.name}
-                    bioGuideId={politician.bioGuideId}
-                  />
-                ) : (
-                  "Unknown Politician"
-                )}
-              </Typography>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="h6" fontWeight="bold">
+                  {politicianLoading ? (
+                    <Skeleton variant="text" width={140} />
+                  ) : politician ? (
+                    <PoliticianLink
+                      name={politician.name}
+                      bioGuideId={politician.bioGuideId}
+                    />
+                  ) : (
+                    "Unknown Politician"
+                  )}
+                </Typography>
+                <Tooltip
+                  title={
+                    watching ? "Remove from watchlist" : "Add to watchlist"
+                  }
+                >
+                  <span>
+                    <IconButton
+                      size="small"
+                      onClick={handleWatchToggle}
+                      color={watching ? "primary" : "default"}
+                      disabled={!politician}
+                    >
+                      {watching ? (
+                        <Bookmark fontSize="small" />
+                      ) : (
+                        <BookmarkBorder fontSize="small" />
+                      )}
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              </Stack>
               <Stack direction="row" spacing={1}>
                 {politicianLoading ? (
                   <Skeleton variant="text" width={100} />

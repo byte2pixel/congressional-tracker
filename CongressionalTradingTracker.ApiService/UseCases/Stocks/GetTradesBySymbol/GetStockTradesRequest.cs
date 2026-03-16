@@ -2,5 +2,5 @@ namespace CongressionalTradingTracker.ApiService.UseCases.GetTradesBySymbol;
 
 public class GetStockTradesRequest
 {
-    public string Symbol { get; set; }
+    public required string Symbol { get; set; }
 }

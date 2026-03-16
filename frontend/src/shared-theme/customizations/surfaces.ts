@@ -52,7 +52,7 @@ export const surfacesCustomizations: Components<Theme> = {
   },
   MuiPaper: {
     defaultProps: {
-      elevation: 0,
+      elevation: 1,
     },
   },
   MuiCard: {
@@ -65,7 +65,7 @@ export const surfacesCustomizations: Components<Theme> = {
           backgroundColor: gray[50],
           borderRadius: (theme.vars || theme).shape.borderRadius,
           border: `1px solid ${(theme.vars || theme).palette.divider}`,
-          boxShadow: "none",
+          // boxShadow: "none",
           ...theme.applyStyles("dark", {
             backgroundColor: gray[800],
           }),
@@ -76,7 +76,7 @@ export const surfacesCustomizations: Components<Theme> = {
               },
               style: {
                 border: `1px solid ${(theme.vars || theme).palette.divider}`,
-                boxShadow: "none",
+                // boxShadow: "none",
                 background: "hsl(0, 0%, 100%)",
                 ...theme.applyStyles("dark", {
                   background: alpha(gray[900], 0.4),

@@ -59,7 +59,6 @@ export default function BuySellRatioPieChart() {
 
   return (
     <Card
-      variant="outlined"
       sx={{
         display: "flex",
         flexDirection: "column",

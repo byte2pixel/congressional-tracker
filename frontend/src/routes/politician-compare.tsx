@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import PoliticianComparisonPage from "@/dashboard/components/PoliticianComparisonPage";
+import PoliticianComparisonPage from "@/dashboard/pages/PoliticianComparisonPage";
 
 export const Route = createFileRoute("/politician-compare")({
   component: PoliticianComparisonPage,
