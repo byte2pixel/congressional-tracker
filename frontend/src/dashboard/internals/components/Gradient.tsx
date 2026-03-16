@@ -11,9 +11,9 @@ export function Gradient({ id }: { id: string }) {
       y2="0%"
       gradientUnits="userSpaceOnUse"
     >
-      <stop offset="0%" stopColor={theme.palette.success.dark} />
-      <stop offset="50%" stopColor={theme.palette.success.main} />
-      <stop offset="100%" stopColor={theme.palette.success.light} />
+      <stop offset="0%" stopColor={theme.palette.grey[600]} />
+      <stop offset="50%" stopColor={theme.palette.grey[500]} />
+      <stop offset="100%" stopColor={theme.palette.grey[400]} />
     </linearGradient>
   );
 }

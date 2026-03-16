@@ -31,7 +31,7 @@ export default function WatchlistPage() {
       <Grid container spacing={2} sx={{ mb: 3 }}>
         {/* Watched Stocks */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <Card variant="outlined" sx={{ height: "100%" }}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography
                 component="h3"
@@ -69,7 +69,7 @@ export default function WatchlistPage() {
 
         {/* Watched Politicians */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <Card variant="outlined" sx={{ height: "100%" }}>
+          <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography
                 component="h3"
@@ -89,6 +89,7 @@ export default function WatchlistPage() {
                   {watchedPoliticians.map((politician) => (
                     <Chip
                       key={politician.bioGuideId}
+                      color="default"
                       label={politician.name}
                       onClick={() =>
                         void navigate({

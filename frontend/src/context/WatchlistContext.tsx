@@ -42,8 +42,12 @@ function loadFromStorage(): WatchlistState {
     if (!raw) return { stocks: [], politicians: [] };
     const parsed = JSON.parse(raw) as WatchlistState;
     return {
-      stocks: Array.isArray(parsed.stocks) ? parsed.stocks : [],
-      politicians: Array.isArray(parsed.politicians) ? parsed.politicians : [],
+      stocks: Array.isArray(parsed.stocks)
+        ? parsed.stocks.sort((a, b) => a.symbol.localeCompare(b.symbol))
+        : [],
+      politicians: Array.isArray(parsed.politicians)
+        ? parsed.politicians.sort((a, b) => a.name.localeCompare(b.name))
+        : [],
     };
   } catch {
     return { stocks: [], politicians: [] };
@@ -70,7 +74,12 @@ export const WatchlistProvider: React.FC<{ children: React.ReactNode }> = ({
   const addStock = useCallback((stock: WatchedStock) => {
     setState((prev) => {
       if (prev.stocks.some((s) => s.symbol === stock.symbol)) return prev;
-      return { ...prev, stocks: [...prev.stocks, stock] };
+      return {
+        ...prev,
+        stocks: [...prev.stocks, stock].sort((a, b) =>
+          a.symbol.localeCompare(b.symbol),
+        ),
+      };
     });
   }, []);
 
@@ -90,7 +99,12 @@ export const WatchlistProvider: React.FC<{ children: React.ReactNode }> = ({
     setState((prev) => {
       if (prev.politicians.some((p) => p.bioGuideId === politician.bioGuideId))
         return prev;
-      return { ...prev, politicians: [...prev.politicians, politician] };
+      return {
+        ...prev,
+        politicians: [...prev.politicians, politician].sort((a, b) =>
+          a.name.localeCompare(b.name),
+        ),
+      };
     });
   }, []);
 

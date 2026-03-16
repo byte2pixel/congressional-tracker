@@ -4,12 +4,15 @@ import CardContent from "@mui/material/CardContent";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
+import { useNavigate } from "@tanstack/react-router";
 import { Gradient } from "../internals/components/Gradient";
 import { formatVolume } from "../internals/utils/format";
 import { useMostActiveStocks } from "@/hooks/useMostActiveStocks";
+import { Route as StockDetailsRoute } from "@/routes/stock_.$symbol";
 
 export default function TopStocksBarChart() {
   const { data, isLoading } = useMostActiveStocks();
+  const navigate = useNavigate();
 
   const { symbols, volumes } = useMemo(() => {
     if (!data) return { symbols: [], volumes: [] };
@@ -51,6 +54,17 @@ export default function TopStocksBarChart() {
             margin={{ left: 0, right: 10, top: 10, bottom: 0 }}
             grid={{ vertical: true }}
             hideLegend
+            onAxisClick={(_, context) => {
+              if (context?.dataIndex === undefined) return;
+              const symbol = symbols[context.dataIndex];
+              console.log("Clicked on symbol:", symbol);
+              if (symbol) {
+                void navigate({
+                  to: StockDetailsRoute.to,
+                  params: { symbol },
+                });
+              }
+            }}
           >
             <Gradient id="my-gradient" />
           </BarChart>

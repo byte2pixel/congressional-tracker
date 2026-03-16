@@ -48,7 +48,7 @@ function ActiveTradersDataGrid() {
   }
 
   return (
-    <Card variant="outlined" sx={{ width: "100%" }}>
+    <Card sx={{ width: "100%" }}>
       <DataGrid
         label="Most Active Traders (By Estimated Volume)"
         showToolbar

@@ -1,4 +1,5 @@
 import { alpha } from "@mui/material/styles";
+import { blueGrey } from "@mui/material/colors";
 import { gray } from "../themePrimitives";
 import type { Components, Theme } from "@mui/material/styles";
 
@@ -62,12 +63,12 @@ export const surfacesCustomizations: Components<Theme> = {
           padding: 16,
           gap: 16,
           transition: "all 100ms ease",
-          backgroundColor: gray[50],
+          backgroundColor: blueGrey[50],
           borderRadius: (theme.vars || theme).shape.borderRadius,
           border: `1px solid ${(theme.vars || theme).palette.divider}`,
           // boxShadow: "none",
           ...theme.applyStyles("dark", {
-            backgroundColor: gray[800],
+            backgroundColor: alpha(gray[900], 0.4),
           }),
           variants: [
             {
