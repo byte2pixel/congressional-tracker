@@ -21,6 +21,8 @@ public class MostRecentTradesMapper : ResponseMapper<List<MostRecentTradeRespons
                 Amount = t.Amount,
                 Range = t.RawRange ?? t.RawAmount,
                 ExcessReturn = t.ExcessReturn,
+                CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt,
             })
             .ToList();
 

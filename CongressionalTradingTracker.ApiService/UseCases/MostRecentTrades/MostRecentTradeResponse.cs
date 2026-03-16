@@ -14,4 +14,6 @@ public class MostRecentTradeResponse
     public required decimal Amount { get; set; }
     public required string Range { get; set; }
     public decimal? ExcessReturn { get; set; }
+    public required DateTime CreatedAt { get; set; }
+    public required DateTime UpdatedAt { get; set; }
 }

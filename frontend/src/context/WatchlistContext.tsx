@@ -9,6 +9,7 @@ import React, {
 export interface WatchedStock {
   symbol: string;
   company: string;
+  addedAt: string;
 }
 
 export interface WatchedPolitician {
@@ -16,6 +17,7 @@ export interface WatchedPolitician {
   name: string;
   party: string;
   house: string;
+  addedAt: string;
 }
 
 interface WatchlistState {
@@ -26,10 +28,10 @@ interface WatchlistState {
 interface WatchlistContextProps {
   watchedStocks: Array<WatchedStock>;
   watchedPoliticians: Array<WatchedPolitician>;
-  addStock: (stock: WatchedStock) => void;
+  addStock: (stock: Omit<WatchedStock, "addedAt">) => void;
   removeStock: (symbol: string) => void;
   isWatchingStock: (symbol: string) => boolean;
-  addPolitician: (politician: WatchedPolitician) => void;
+  addPolitician: (politician: Omit<WatchedPolitician, "addedAt">) => void;
   removePolitician: (bioGuideId: string) => void;
   isWatchingPolitician: (bioGuideId: string) => boolean;
 }
@@ -71,12 +73,16 @@ export const WatchlistProvider: React.FC<{ children: React.ReactNode }> = ({
     saveToStorage(state);
   }, [state]);
 
-  const addStock = useCallback((stock: WatchedStock) => {
+  const addStock = useCallback((stock: Omit<WatchedStock, "addedAt">) => {
     setState((prev) => {
       if (prev.stocks.some((s) => s.symbol === stock.symbol)) return prev;
+      const entry: WatchedStock = {
+        ...stock,
+        addedAt: new Date().toISOString(),
+      };
       return {
         ...prev,
-        stocks: [...prev.stocks, stock].sort((a, b) =>
+        stocks: [...prev.stocks, entry].sort((a, b) =>
           a.symbol.localeCompare(b.symbol),
         ),
       };
@@ -95,18 +101,27 @@ export const WatchlistProvider: React.FC<{ children: React.ReactNode }> = ({
     [state.stocks],
   );
 
-  const addPolitician = useCallback((politician: WatchedPolitician) => {
-    setState((prev) => {
-      if (prev.politicians.some((p) => p.bioGuideId === politician.bioGuideId))
-        return prev;
-      return {
-        ...prev,
-        politicians: [...prev.politicians, politician].sort((a, b) =>
-          a.name.localeCompare(b.name),
-        ),
-      };
-    });
-  }, []);
+  const addPolitician = useCallback(
+    (politician: Omit<WatchedPolitician, "addedAt">) => {
+      setState((prev) => {
+        if (
+          prev.politicians.some((p) => p.bioGuideId === politician.bioGuideId)
+        )
+          return prev;
+        const entry: WatchedPolitician = {
+          ...politician,
+          addedAt: new Date().toISOString(),
+        };
+        return {
+          ...prev,
+          politicians: [...prev.politicians, entry].sort((a, b) =>
+            a.name.localeCompare(b.name),
+          ),
+        };
+      });
+    },
+    [],
+  );
 
   const removePolitician = useCallback((bioGuideId: string) => {
     setState((prev) => ({

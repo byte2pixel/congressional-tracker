@@ -6,6 +6,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
+import { useNavigate } from "@tanstack/react-router";
+import { useNotifications } from "@/context/NotificationsContext";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
 
@@ -18,6 +20,9 @@ export default function SideMenuMobile({
   open,
   toggleDrawer,
 }: SideMenuMobileProps) {
+  const navigate = useNavigate();
+  const { unreadCount } = useNotifications();
+
   return (
     <Drawer
       anchor="right"
@@ -52,7 +57,13 @@ export default function SideMenuMobile({
               Mel Dommer
             </Typography>
           </Stack>
-          <MenuButton showBadge>
+          <MenuButton
+            showBadge={unreadCount > 0}
+            onClick={() => {
+              toggleDrawer(false)();
+              void navigate({ to: "/notifications" });
+            }}
+          >
             <NotificationsRoundedIcon />
           </MenuButton>
         </Stack>

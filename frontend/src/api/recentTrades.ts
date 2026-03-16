@@ -12,6 +12,8 @@ export interface RecentTrade {
   amount: number;
   range: string | null;
   excessReturn: number | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export async function recentTrades(

@@ -5,6 +5,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import * as TanStackQueryProvider from "./integrations/tanstack-query/root-provider.tsx";
 import { KeycloakProvider } from "./context/KeycloakContext.tsx";
 import { WatchlistProvider } from "./context/WatchlistContext.tsx";
+import { NotificationsProvider } from "./context/NotificationsContext.tsx";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -40,7 +41,9 @@ if (rootElement && !rootElement.innerHTML) {
       <KeycloakProvider>
         <WatchlistProvider>
           <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
-            <RouterProvider router={router} />
+            <NotificationsProvider>
+              <RouterProvider router={router} />
+            </NotificationsProvider>
           </TanStackQueryProvider.Provider>
         </WatchlistProvider>
       </KeycloakProvider>
