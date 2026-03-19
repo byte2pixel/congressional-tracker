@@ -97,11 +97,6 @@ export const red = {
   900: "#3D0B0B",
 };
 
-export const buySellColors = [
-  "hsl(142, 50%, 50%)", // buy
-  "#dd3c3c", // sell
-];
-
 export const getDesignTokens = (mode: PaletteMode) => {
   customShadows[1] =
     mode === "dark"
@@ -169,7 +164,6 @@ export const getDesignTokens = (mode: PaletteMode) => {
         ...gray,
       },
       divider: mode === "dark" ? alpha(gray[700], 0.6) : alpha(gray[300], 0.4),
-      buySell: buySellColors,
       background: {
         default: "hsl(0, 0%, 99%)",
         paper: "hsl(220, 35%, 97%)",
@@ -182,9 +176,12 @@ export const getDesignTokens = (mode: PaletteMode) => {
         primary: gray[800],
         secondary: gray[600],
         warning: orange[400],
+        error: red[600],
         ...(mode === "dark" && {
           primary: "hsl(0, 0%, 100%)",
           secondary: gray[400],
+          warning: orange[400],
+          error: red[400],
         }),
       },
       action: {

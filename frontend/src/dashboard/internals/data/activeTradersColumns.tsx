@@ -1,4 +1,5 @@
 import { formatParty } from "../utils/format";
+import { CellTypographyAmount } from "../components/CellTypographyAmount";
 import type { ActiveTrader } from "@/api/activeTraders";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { PoliticianLink } from "@/dashboard/components/PoliticianLink";
@@ -35,6 +36,25 @@ export const columns: Array<GridColDef> = [
     valueFormatter: (params) => formatParty(params as string),
   },
   {
+    field: "house",
+    headerName: "Chamber",
+    flex: 1,
+  },
+  {
+    field: "saleCount",
+    headerName: "Sales",
+    headerAlign: "right",
+    align: "right",
+    flex: 1,
+  },
+  {
+    field: "purchaseCount",
+    headerName: "Purchases",
+    headerAlign: "right",
+    align: "right",
+    flex: 1,
+  },
+  {
     field: "totalTrades",
     headerName: "Total Trades",
     headerAlign: "right",
@@ -50,10 +70,11 @@ export const columns: Array<GridColDef> = [
     renderCell: (params) => {
       const amount = params.value;
       // padded to 2 decimal places.
-      return `$${amount.toLocaleString(undefined, {
+      const formatted = `$${amount.toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`;
+      return <CellTypographyAmount amount={formatted} />;
     },
   },
 ];

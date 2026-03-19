@@ -1,4 +1,7 @@
 import { formatParty, formatVolume } from "../utils/format";
+import { CellTypographyGainLoss } from "../components/CellTypographyGainLoss";
+import { CellTypographyAmount } from "../components/CellTypographyAmount";
+import { CellChipTransactionType } from "../components/CellChipTransactionType";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import type { StockTrade } from "@/api/stocks";
 import { PoliticianLink } from "@/dashboard/components/PoliticianLink";
@@ -45,7 +48,6 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    // minWidth: 120,
     renderCell: (params) => {
       const date = new Date(params.value);
       return date.toLocaleDateString("en-US", {
@@ -61,7 +63,7 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    // minWidth: 150,
+    renderCell: CellChipTransactionType,
   },
   {
     field: "amount",
@@ -69,11 +71,9 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    // minWidth: 50,
-    renderCell: (params) => {
-      const amount = params.value;
-      return formatVolume(amount, 1);
-    },
+    renderCell: (params) => (
+      <CellTypographyAmount amount={formatVolume(params.value as number)} />
+    ),
   },
   {
     field: "excessReturn",
@@ -81,13 +81,6 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    // minWidth: 50,
-    renderCell: (params) => {
-      const excessReturn = params.value as number | null;
-      if (excessReturn === null) {
-        return "-";
-      }
-      return `${excessReturn >= 0 ? "+" : ""}${excessReturn.toFixed(2)}%`;
-    },
+    renderCell: CellTypographyGainLoss,
   },
 ];

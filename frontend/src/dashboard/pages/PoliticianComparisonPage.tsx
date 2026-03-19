@@ -10,6 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Bookmark from "@mui/icons-material/Bookmark";
 import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
+import { useTheme } from "@mui/material";
 import { formatParty, formatVolume } from "../internals/utils/format";
 import { PoliticianLink } from "../components/PoliticianLink";
 import { StockLink } from "../components/StockLink";
@@ -76,6 +77,7 @@ interface PoliticianColumnProps {
 }
 
 function PoliticianColumn({ bioguideid }: PoliticianColumnProps) {
+  const theme = useTheme();
   const { data: politician, isLoading: politicianLoading } =
     usePolitician(bioguideid);
   const { data: trades, isLoading: tradesLoading } =
@@ -120,6 +122,12 @@ function PoliticianColumn({ bioguideid }: PoliticianColumnProps) {
         stats?.avgExcessReturn != null
           ? `${stats.avgExcessReturn >= 0 ? "+" : ""}${stats.avgExcessReturn.toFixed(2)}%`
           : "N/A",
+      color:
+        stats?.avgExcessReturn != null
+          ? stats.avgExcessReturn > 0
+            ? theme.palette.success.main
+            : theme.palette.error.main
+          : undefined,
     },
   ];
 
@@ -189,7 +197,7 @@ function PoliticianColumn({ bioguideid }: PoliticianColumnProps) {
             Trade Summary
           </Typography>
           <Stack spacing={1.5} divider={<Divider flexItem />}>
-            {summaryRows.map(({ label, value }) => (
+            {summaryRows.map(({ label, value, color }) => (
               <Stack
                 key={label}
                 direction="row"
@@ -202,7 +210,7 @@ function PoliticianColumn({ bioguideid }: PoliticianColumnProps) {
                 {isLoading ? (
                   <Skeleton variant="text" width={60} />
                 ) : (
-                  <Typography variant="body2" fontWeight="bold">
+                  <Typography variant="body2" fontWeight="bold" color={color}>
                     {value}
                   </Typography>
                 )}

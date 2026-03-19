@@ -1,4 +1,7 @@
 import { Stack, Typography } from "@mui/material";
+import { CellTypographyAmount } from "../components/CellTypographyAmount";
+import { CellTypographyGainLoss } from "../components/CellTypographyGainLoss";
+import { CellChipTransactionType } from "../components/CellChipTransactionType";
 import { formatVolume } from "../utils/format";
 import type { RecentTrade } from "@/api/recentTrades";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
@@ -85,6 +88,7 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
+    renderCell: CellChipTransactionType,
   },
   {
     field: "amount",
@@ -92,10 +96,9 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    renderCell: (params) => {
-      const amount = params.value;
-      return formatVolume(amount, 1);
-    },
+    renderCell: (params) => (
+      <CellTypographyAmount amount={formatVolume(params.value as number)} />
+    ),
   },
   {
     field: "excessReturn",
@@ -103,12 +106,6 @@ export const columns: Array<GridColDef> = [
     headerAlign: "right",
     align: "right",
     flex: 1,
-    renderCell: (params) => {
-      const excessReturn = params.value as number | null;
-      if (excessReturn === null) {
-        return "-";
-      }
-      return `${excessReturn >= 0 ? "+" : ""}${excessReturn.toFixed(2)}%`;
-    },
+    renderCell: CellTypographyGainLoss,
   },
 ];
