@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Bookmark from "@mui/icons-material/Bookmark";
 import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
 import { useTheme } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import { formatParty, formatVolume } from "../internals/utils/format";
 import { PoliticianLink } from "../components/PoliticianLink";
 import { StockLink } from "../components/StockLink";
@@ -72,11 +73,64 @@ function computeStats(data: Array<PoliticianTrade> | undefined) {
   };
 }
 
-interface PoliticianColumnProps {
-  bioguideid: string;
+type Stats = ReturnType<typeof computeStats>;
+
+function computeHighlights(
+  leftStats: Stats,
+  rightStats: Stats,
+): [Set<string>, Set<string>] {
+  const leftSet = new Set<string>();
+  const rightSet = new Set<string>();
+  if (!leftStats || !rightStats) return [leftSet, rightSet];
+  const comparisons: Array<{
+    label: string;
+    left: number | null;
+    right: number | null;
+  }> = [
+    {
+      label: "Total Trades",
+      left: leftStats.totalTrades,
+      right: rightStats.totalTrades,
+    },
+    {
+      label: "Purchases",
+      left: leftStats.totalPurchases,
+      right: rightStats.totalPurchases,
+    },
+    {
+      label: "Sales",
+      left: leftStats.totalSales,
+      right: rightStats.totalSales,
+    },
+    {
+      label: "Total Volume",
+      left: leftStats.totalVolume,
+      right: rightStats.totalVolume,
+    },
+    {
+      label: "Avg Excess Return",
+      left: leftStats.avgExcessReturn,
+      right: rightStats.avgExcessReturn,
+    },
+  ];
+  for (const { label, left, right } of comparisons) {
+    if (left != null && right != null && left !== right) {
+      if (left > right) leftSet.add(label);
+      else rightSet.add(label);
+    }
+  }
+  return [leftSet, rightSet];
 }
 
-function PoliticianColumn({ bioguideid }: PoliticianColumnProps) {
+interface PoliticianColumnProps {
+  bioguideid: string;
+  highlightedRows?: Set<string>;
+}
+
+function PoliticianColumn({
+  bioguideid,
+  highlightedRows,
+}: PoliticianColumnProps) {
   const theme = useTheme();
   const { data: politician, isLoading: politicianLoading } =
     usePolitician(bioguideid);
@@ -203,6 +257,16 @@ function PoliticianColumn({ bioguideid }: PoliticianColumnProps) {
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
+                sx={
+                  highlightedRows?.has(label)
+                    ? {
+                        bgcolor: alpha(theme.palette.success.main, 0.15),
+                        borderRadius: 1,
+                        px: 0.75,
+                        mx: -0.75,
+                      }
+                    : undefined
+                }
               >
                 <Typography variant="body2" color="text.secondary">
                   {label}
@@ -281,6 +345,12 @@ function PoliticianColumn({ bioguideid }: PoliticianColumnProps) {
 
 export default function PoliticianComparisonPage() {
   const { id1, id2 } = CompareRoute.useSearch();
+  const { data: trades1 } = usePoliticianTrades(id1);
+  const { data: trades2 } = usePoliticianTrades(id2);
+  const [highlights1, highlights2] = computeHighlights(
+    computeStats(trades1),
+    computeStats(trades2),
+  );
 
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
@@ -290,10 +360,10 @@ export default function PoliticianComparisonPage() {
         </Typography>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 6 }}>
-            <PoliticianColumn bioguideid={id1} />
+            <PoliticianColumn bioguideid={id1} highlightedRows={highlights1} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <PoliticianColumn bioguideid={id2} />
+            <PoliticianColumn bioguideid={id2} highlightedRows={highlights2} />
           </Grid>
         </Grid>
       </Stack>
