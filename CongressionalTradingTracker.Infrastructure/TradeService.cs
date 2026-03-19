@@ -18,8 +18,8 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             .Trades.Where(t => t.TransactionDate >= from && t.TransactionDate <= to)
             .Include(t => t.Politician)
             .Include(t => t.Ticker)
-            .OrderByDescending(t => t.TransactionDate)
-            .ThenByDescending(t => t.ReportDate)
+            .OrderByDescending(t => t.ReportDate)
+            .ThenByDescending(t => t.TransactionDate)
             .Take(limit == 0 ? int.MaxValue : limit)
             .ToListAsync(ct);
     }
@@ -647,7 +647,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                     ExcessReturn = dto.ExcessReturn,
                     PriceChange = dto.PriceChange,
                     SpyChange = dto.SpyChange,
-                    CreatedAt = key.EffectiveTransactionDate,
+                    CreatedAt = DateTime.UtcNow,
                     UpdatedAt = dto.EffectiveLastModified,
                 }
             );

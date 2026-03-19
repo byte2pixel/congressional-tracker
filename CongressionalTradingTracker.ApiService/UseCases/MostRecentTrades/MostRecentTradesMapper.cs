@@ -17,12 +17,11 @@ public class MostRecentTradesMapper : ResponseMapper<List<MostRecentTradeRespons
                 Symbol = t.Ticker.Symbol,
                 Company = t.Ticker.Company ?? t.Ticker.Symbol,
                 TransactionDate = t.TransactionDate,
+                ReportDate = t.ReportDate,
                 TransactionType = t.Transaction,
                 Amount = t.Amount,
                 Range = t.RawRange ?? t.RawAmount,
                 ExcessReturn = t.ExcessReturn,
-                CreatedAt = t.CreatedAt,
-                UpdatedAt = t.UpdatedAt,
             })
             .ToList();
 

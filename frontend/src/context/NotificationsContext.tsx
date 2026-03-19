@@ -70,17 +70,17 @@ export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({
         if (dismissed.has(id)) return false;
 
         const stockWatchedSince = stockAddedAt.get(trade.symbol);
-        if (stockWatchedSince && trade.createdAt > stockWatchedSince)
+        if (stockWatchedSince && trade.reportDate > stockWatchedSince)
           return true;
 
         const politicianWatchedSince = politicianAddedAt.get(trade.bioGuideId);
-        if (politicianWatchedSince && trade.createdAt > politicianWatchedSince)
+        if (politicianWatchedSince && trade.reportDate > politicianWatchedSince)
           return true;
 
         return false;
       })
       .map((trade) => ({ id: getTradeId(trade), trade }))
-      .sort((a, b) => b.trade.createdAt.localeCompare(a.trade.createdAt));
+      .sort((a, b) => b.trade.reportDate.localeCompare(a.trade.reportDate));
   }, [trades, stockAddedAt, politicianAddedAt, dismissed]);
 
   const dismiss = useCallback((id: string) => {

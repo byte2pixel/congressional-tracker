@@ -15,6 +15,7 @@ export const rows = (trades: Array<RecentTrade>): GridRowsProp => {
     symbol: trade.symbol,
     company: trade.company,
     transactionDate: new Date(trade.transactionDate),
+    reportDate: new Date(trade.reportDate),
     transactionType: trade.transactionType,
     amount: trade.amount,
     range: trade.range,
@@ -46,6 +47,21 @@ export const columns: Array<GridColDef> = [
           </Typography>
         </Stack>
       );
+    },
+  },
+  {
+    field: "reportDate",
+    headerName: "Report Date",
+    headerAlign: "right",
+    align: "right",
+    flex: 1,
+    renderCell: (params) => {
+      const date = new Date(params.value);
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
     },
   },
   {

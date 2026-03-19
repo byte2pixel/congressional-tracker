@@ -55,16 +55,26 @@ public class CongressLiveDto
     [JsonPropertyName("Party")]
     public string Party { get; init; } = string.Empty;
 
+    // specify utc time zone but all the current time zone hours to it so that we can compare with current utc time and determine if the trade is new or not
     public DateTime EffectiveTransactionDate =>
-        DateTime.SpecifyKind(TransactionDate, DateTimeKind.Utc);
+        DateTime.SpecifyKind(TransactionDate + TimeToAddFromHours(), DateTimeKind.Utc);
 
-    public DateTime EffectiveReportDate => DateTime.SpecifyKind(ReportDate, DateTimeKind.Utc);
+    private static TimeSpan TimeToAddFromHours()
+    {
+        return TimeSpan.FromHours(Math.Abs(TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours));
+    }
+
+    public DateTime EffectiveReportDate =>
+        DateTime.SpecifyKind(ReportDate + TimeToAddFromHours(), DateTimeKind.Utc);
 
     public DateTime EffectiveLastModified
     {
         get
         {
-            var lastModified = DateTime.SpecifyKind(LastModified, DateTimeKind.Utc);
+            var lastModified = DateTime.SpecifyKind(
+                LastModified + TimeToAddFromHours(),
+                DateTimeKind.Utc
+            );
             return DateTime.Compare(DateTime.UtcNow, lastModified) > 0
                 ? lastModified
                 : DateTime.UtcNow;

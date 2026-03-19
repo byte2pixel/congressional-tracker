@@ -21,24 +21,28 @@ function RecentTradesDataGrid() {
     columnVisibilityModel = {
       amount: false,
       transactionDate: false,
+      reportDate: false,
       transactionType: false,
     };
   } else if (isMedium) {
     columnVisibilityModel = {
       amount: true,
       transactionDate: false,
+      reportDate: false,
       transactionType: false,
     };
   } else if (isLarge) {
     columnVisibilityModel = {
       amount: true,
       transactionDate: true,
+      reportDate: true,
       transactionType: false,
     };
   } else {
     columnVisibilityModel = {
       amount: true,
       transactionDate: true,
+      reportDate: true,
       transactionType: true,
     };
   }

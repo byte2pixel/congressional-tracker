@@ -8,12 +8,11 @@ export interface RecentTrade {
   symbol: string;
   company: string;
   transactionDate: string;
+  reportDate: string;
   transactionType: string;
   amount: number;
   range: string | null;
   excessReturn: number | null;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export async function recentTrades(
