@@ -7,9 +7,10 @@ import Typography from "@mui/material/Typography";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import { useNavigate } from "@tanstack/react-router";
-import { useNotifications } from "@/context/NotificationsContext";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
+import { useNotifications } from "@/context/NotificationsContext";
+import useKeycloak from "@/hooks/useKeycloak";
 
 interface SideMenuMobileProps {
   open: boolean | undefined;
@@ -20,9 +21,10 @@ export default function SideMenuMobile({
   open,
   toggleDrawer,
 }: SideMenuMobileProps) {
+  const { keycloak, userPicture } = useKeycloak();
   const navigate = useNavigate();
   const { unreadCount } = useNotifications();
-
+  console.log("token parsed", keycloak?.tokenParsed);
   return (
     <Drawer
       anchor="right"
@@ -42,21 +44,10 @@ export default function SideMenuMobile({
           height: "100%",
         }}
       >
-        <Stack direction="row" sx={{ p: 2, pb: 0, gap: 1 }}>
-          <Stack
-            direction="row"
-            sx={{ gap: 1, alignItems: "center", flexGrow: 1, p: 1 }}
-          >
-            <Avatar
-              sizes="small"
-              alt="Mel Dommer"
-              src="/static/images/avatar/7.jpg"
-              sx={{ width: 24, height: 24 }}
-            />
-            <Typography component="p" variant="h6">
-              Mel Dommer
-            </Typography>
-          </Stack>
+        <Stack
+          direction="column"
+          sx={{ p: 2, pb: 0, gap: 1, alignItems: "end" }}
+        >
           <MenuButton
             showBadge={unreadCount > 0}
             onClick={() => {
@@ -66,6 +57,27 @@ export default function SideMenuMobile({
           >
             <NotificationsRoundedIcon />
           </MenuButton>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              flexGrow: 1,
+              p: 0,
+              pb: 1,
+              gap: 1,
+              width: "100%",
+            }}
+          >
+            <Avatar
+              sizes="small"
+              alt={keycloak?.tokenParsed?.preferred_username ?? "Unknown User"}
+              src={userPicture ?? "/static/images/avatar/7.jpg"}
+              sx={{ width: 24, height: 24 }}
+            />
+            <Typography component="p" variant="h6">
+              {keycloak?.tokenParsed?.given_name ?? "Unknown User"}
+            </Typography>
+          </Stack>
         </Stack>
         <Divider />
         <Stack sx={{ flexGrow: 1 }}>
