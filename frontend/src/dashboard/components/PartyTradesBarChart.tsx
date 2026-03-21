@@ -19,15 +19,15 @@ export default function PartyTradesBarChart() {
   const chartData = useMemo(() => {
     // Initialize counts
     const counts = {
-      Democrat: { sales: 0, purchases: 0 },
+      Democratic: { sales: 0, purchases: 0 },
       Republican: { sales: 0, purchases: 0 },
       Other: { sales: 0, purchases: 0 },
     };
     if (data) {
       for (const trader of data) {
-        let party: "Democrat" | "Republican" | "Other" = "Other";
-        if (trader.party === "Democratic") party = "Democrat";
-        else if (trader.party === "Republican") party = "Republican";
+        let party: "Democratic" | "Republican" | "Other" = "Other";
+        if (trader.party === "Democratic") party = trader.party;
+        else if (trader.party === "Republican") party = trader.party;
         counts[party].sales += trader.saleCount;
         counts[party].purchases += trader.purchaseCount;
       }
@@ -56,9 +56,12 @@ export default function PartyTradesBarChart() {
             xAxis={[{ scaleType: "band", data: ["Sales", "Purchases"] }]}
             series={[
               {
-                id: "Democrat",
-                label: "Democrat",
-                data: [chartData.Democrat.sales, chartData.Democrat.purchases],
+                id: "Democratic",
+                label: "Democratic",
+                data: [
+                  chartData.Democratic.sales,
+                  chartData.Democratic.purchases,
+                ],
                 color: partyColors.Democrat,
               },
               {

@@ -6,7 +6,9 @@ export interface Politician {
   house: string;
   party: string;
   state?: string;
-  district?: string;
+  district?: number;
+  imageAltText?: string;
+  imageUrl?: string;
 }
 
 export interface PoliticianTrade {

@@ -10,8 +10,10 @@ public class GetPoliticianMapper : ResponseMapper<GetPoliticianResponse, Politic
             House = e.House,
             Party = e.Party,
             BioGuideId = e.BioGuideId,
-            District = e.District.HasValue ? e.District.Value.ToString() : "",
+            District = e.District,
             State = e.State ?? "",
+            ImageAltText = e.ImageAltText,
+            ImageUrl = e.ImageUrl,
         };
     }
 }

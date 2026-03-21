@@ -12,7 +12,7 @@ import Bookmark from "@mui/icons-material/Bookmark";
 import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
 import { useTheme } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-import { formatParty, formatVolume } from "../internals/utils/format";
+import { formatVolume } from "../internals/utils/format";
 import { PoliticianLink } from "../components/PoliticianLink";
 import { StockLink } from "../components/StockLink";
 import type { PoliticianTrade } from "@/api/politicians";
@@ -233,7 +233,7 @@ function PoliticianColumn({
                 ) : (
                   <>
                     <Typography variant="body2">
-                      {formatParty(politician?.party ?? "Other")}
+                      {politician?.party ?? "Other"}
                     </Typography>
                     <Typography variant="body2">{politician?.house}</Typography>
                   </>

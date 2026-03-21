@@ -1,4 +1,4 @@
-import { formatParty, formatVolume } from "../utils/format";
+import { formatVolume } from "../utils/format";
 import { CellTypographyGainLoss } from "../components/CellTypographyGainLoss";
 import { CellTypographyAmount } from "../components/CellTypographyAmount";
 import { CellChipTransactionType } from "../components/CellChipTransactionType";
@@ -35,7 +35,6 @@ export const columns: Array<GridColDef> = [
     field: "party",
     headerName: "Affiliation",
     flex: 1,
-    valueFormatter: (params) => formatParty(params as string),
   },
   {
     field: "house",

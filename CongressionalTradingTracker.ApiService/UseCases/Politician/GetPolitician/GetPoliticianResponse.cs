@@ -7,5 +7,7 @@ public class GetPoliticianResponse
     public string? Party { get; set; }
     public required string BioGuideId { get; set; }
     public required string State { get; set; }
-    public required string District { get; set; }
+    public int? District { get; set; }
+    public string? ImageAltText { get; set; }
+    public string? ImageUrl { get; set; }
 }

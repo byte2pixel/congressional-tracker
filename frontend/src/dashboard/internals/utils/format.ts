@@ -16,12 +16,3 @@ export function formatVolume(value: number, precision: number = 1): string {
   if (value >= 1_000) return `$${(value / 1_000).toFixed(precision)}K`;
   return `$${value.toFixed(precision)}`;
 }
-
-export function formatParty(party: string): string {
-  switch (party) {
-    case "Democratic":
-      return "Democrat";
-    default:
-      return party;
-  }
-}

@@ -10,7 +10,7 @@ import CardContent from "@mui/material/CardContent";
 import Bookmark from "@mui/icons-material/Bookmark";
 import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
 import { useNavigate } from "@tanstack/react-router";
-import { formatParty } from "../internals/utils/format";
+import { Avatar } from "@mui/material";
 import PoliticianTradesDataGrid from "../components/PoliticianTradesDataGrid";
 import PoliticianTradeStats from "../components/PoliticianTradeStats";
 import PoliticianDetailBuySellChart from "../components/PoliticianDetailBuySellChart";
@@ -49,8 +49,15 @@ function ProfileHeader() {
           spacing={3}
           alignItems={{ sm: "center" }}
         >
-          {/* TODO: replace with politician photo */}
-          <Skeleton variant="circular" width={80} height={80} />
+          {isLoading ? (
+            <Skeleton variant="circular" width={80} height={80} />
+          ) : (
+            <Avatar
+              alt={data?.imageAltText ?? data?.name ?? "Politician Image"}
+              src={data?.imageUrl}
+              sx={{ width: 80, height: 80 }}
+            />
+          )}
           <Stack spacing={0.5}>
             <Stack direction="row" spacing={1} alignItems="center">
               <Typography variant="h6" fontWeight="bold">
@@ -88,7 +95,7 @@ function ProfileHeader() {
               ) : (
                 <>
                   <Typography variant="body2">
-                    {formatParty(data?.party ?? "Other")}
+                    {data?.party ?? "Other"}
                   </Typography>
                   <Typography variant="body2">{data?.house}</Typography>
                 </>
