@@ -36,11 +36,13 @@ public interface ITradeService
     Task UpsertBulkTrades(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,
+        ICongressGovService congressGov,
         CancellationToken ct = default
     );
     Task UpsertLiveTrades(
         IEnumerable<CongressLiveDto> trades,
         IFinnhubService finnhub,
+        ICongressGovService congressGov,
         CancellationToken ct = default
     );
 }

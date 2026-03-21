@@ -2,7 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using CongressionalTradingTracker.Core;
 
-namespace CongressionalTradingTracker.BackgroundTasks;
+namespace CongressionalTradingTracker.Infrastructure;
 
 public class FinnhubService(HttpClient client) : IFinnhubService
 {

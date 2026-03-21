@@ -114,6 +114,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
     public async Task UpsertBulkTrades(
         IEnumerable<CongressBulkDto> trades,
         IFinnhubService finnhub,
+        ICongressGovService congressGov,
         CancellationToken ct = default
     )
     {
@@ -157,7 +158,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                 Name = dto.Name,
                 BioGuideId = dto.BioGuideId,
                 Party = dto.Party,
-                District = dto.District,
+                District = null,
                 House = dto.House,
                 State = dto.State,
                 CreatedAt = dto.EffectiveLastModified,
@@ -178,30 +179,9 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             var politician = politicianCache[dto.BioGuideId];
             var dirty = false;
 
-            if (politician.BioGuideId is null)
-            {
-                politician.BioGuideId = dto.BioGuideId;
-                dirty = true;
-            }
             if (politician.House != dto.House)
             {
                 politician.House = dto.House;
-                dirty = true;
-            }
-            if (politician.Party is null && dto.Party is not null)
-            {
-                politician.Party = dto.Party;
-                dirty = true;
-            }
-            if (politician.State is null && dto.State is not null)
-            {
-                politician.State = dto.State;
-                dirty = true;
-            }
-
-            if (politician.District is null && dto.District is not null)
-            {
-                politician.District = dto.District;
                 dirty = true;
             }
 
@@ -458,11 +438,14 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
         // ── 5. Insert all new trades in one batch ────────────────────────────
         dbContext.Trades.AddRange(newTrades);
         await dbContext.SaveChangesAsync(ct);
+
+        await EnrichPoliticiansWithCongressGov(congressGov, ct);
     }
 
     public async Task UpsertLiveTrades(
         IEnumerable<CongressLiveDto> trades,
         IFinnhubService finnhub,
+        ICongressGovService congressGov,
         CancellationToken ct = default
     )
     {
@@ -521,12 +504,6 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                 politician.House = dto.House;
                 dirty = true;
             }
-            if (politician.Party is null && !string.IsNullOrWhiteSpace(dto.Party))
-            {
-                politician.Party = dto.Party;
-                dirty = true;
-            }
-
             if (dirty)
                 politician.UpdatedAt = DateTime.UtcNow;
         }
@@ -741,6 +718,77 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
         );
 
         dbContext.Trades.AddRange(newTrades);
+        await dbContext.SaveChangesAsync(ct);
+
+        await EnrichPoliticiansWithCongressGov(congressGov, ct);
+    }
+
+    private async Task EnrichPoliticiansWithCongressGov(
+        ICongressGovService congressGov,
+        CancellationToken ct
+    )
+    {
+        ICollection<Member> members = await congressGov.GetAllMembers(ct);
+        // now update any politicians in the database with data from members.
+        var politicians = await dbContext.Politicians.ToListAsync(ct);
+        var memberDict = members.ToDictionary(m => m.BioGuideId, StringComparer.OrdinalIgnoreCase);
+        var updatedCount = 0;
+        foreach (var politician in politicians)
+        {
+            if (!memberDict.TryGetValue(politician.BioGuideId, out var member))
+                continue;
+
+            var dirty = false;
+            var house = member.Terms.Items.Last().Chamber;
+            house = house switch
+            {
+                "House of Representatives" => "Representatives",
+                _ => house,
+            };
+            if (politician.House != house)
+            {
+                politician.House = house;
+                dirty = true;
+            }
+            if (politician.Party != member.PartyName)
+            {
+                politician.Party = member.PartyName;
+                dirty = true;
+            }
+            if (politician.State != member.State)
+            {
+                politician.State = member.State;
+                dirty = true;
+            }
+            if (politician.District != member.District)
+            {
+                politician.District = member.District;
+                dirty = true;
+            }
+
+            if (
+                member.Depiction.Attribution != null
+                && politician.ImageAltText != member.Depiction.Attribution
+            )
+            {
+                politician.ImageAltText = member.Depiction.Attribution;
+                dirty = true;
+            }
+
+            if (politician.ImageUrl != member.Depiction.ImageUrl)
+            {
+                politician.ImageUrl = member.Depiction.ImageUrl;
+                dirty = true;
+            }
+
+            if (dirty)
+                updatedCount++;
+        }
+
+        logger.LogInformation(
+            "Enriched {Updated} politicians with data from Congress.gov.",
+            updatedCount
+        );
         await dbContext.SaveChangesAsync(ct);
     }
 }

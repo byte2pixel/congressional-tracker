@@ -1,6 +1,8 @@
+using System.Net.Http.Headers;
 using CongressionalTradingTracker.BackgroundTasks;
 using CongressionalTradingTracker.Core;
 using CongressionalTradingTracker.Infrastructure;
+using CongressionalTradingTracker.Infrastructure.ApiCongressGov;
 using DotNetEnv;
 using DotNetEnv.Configuration;
 
@@ -9,6 +11,7 @@ builder.Configuration.AddDotNetEnv(".env", LoadOptions.TraversePath());
 builder.AddServiceDefaults();
 builder.AddNpgsqlDbContext<TradeDbContext>("CongressTradingDb");
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddLogging();
 
 builder.Services.AddHttpClient<IQuiverQuantService, QuiverQuantService>(client =>
 {
@@ -21,8 +24,7 @@ builder.Services.AddHttpClient<IQuiverQuantService, QuiverQuantService>(client =
 
     client.BaseAddress = new Uri(baseUrl);
     client.Timeout = TimeSpan.FromMinutes(5);
-    client.DefaultRequestHeaders.Authorization =
-        new System.Net.Http.Headers.AuthenticationHeaderValue("Token", apiKey);
+    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", apiKey);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
@@ -39,6 +41,12 @@ builder.Services.AddHttpClient<IFinnhubService, FinnhubService>(client =>
     client.Timeout = TimeSpan.FromMinutes(5);
     client.DefaultRequestHeaders.Add("X-Finnhub-Token", apiKey);
     client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+builder.Services.AddHttpClient<ICongressGovService, CongressGovService>(client =>
+{
+    var apiKey = builder.Configuration["CongressGov:ApiKey"];
+    client.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
 });
 
 builder.Services.AddHostedService<Worker>();

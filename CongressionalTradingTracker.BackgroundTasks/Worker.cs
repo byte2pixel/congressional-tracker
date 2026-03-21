@@ -27,6 +27,7 @@ public class Worker(
         await using var scope = scopeFactory.CreateAsyncScope();
         var quiverQuant = scope.ServiceProvider.GetRequiredService<IQuiverQuantService>();
         var finnhub = scope.ServiceProvider.GetRequiredService<IFinnhubService>();
+        var congressGov = scope.ServiceProvider.GetRequiredService<ICongressGovService>();
         var tradeService = scope.ServiceProvider.GetRequiredService<ITradeService>();
         var syncState = scope.ServiceProvider.GetRequiredService<ISyncStateService>();
 
@@ -38,7 +39,7 @@ public class Worker(
             {
                 logger.LogInformation("Starting one-time bulk congressional trades sync...");
                 var bulkTrades = await quiverQuant.GetBulkTradesAsync(ct);
-                await tradeService.UpsertBulkTrades(bulkTrades, finnhub, ct);
+                await tradeService.UpsertBulkTrades(bulkTrades, finnhub, congressGov, ct);
                 await syncState.MarkBulkSyncCompletedAsync(ct);
                 logger.LogInformation(
                     "Bulk sync completed. Fetched and upserted {Count} trades.",
@@ -59,7 +60,7 @@ public class Worker(
 
                 logger.LogInformation("Fetching live congressional trades...");
                 var liveTrades = await quiverQuant.GetLiveTradesAsync(ct);
-                await tradeService.UpsertLiveTrades(liveTrades, finnhub, ct);
+                await tradeService.UpsertLiveTrades(liveTrades, finnhub, congressGov, ct);
                 await syncState.UpdateLastLiveSyncAsync(ct);
                 logger.LogInformation(
                     "Live sync completed. Fetched and upserted {Count} trades.",

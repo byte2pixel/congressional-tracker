@@ -4,6 +4,8 @@ public class Politician
 {
     public int PoliticianId { get; set; }
     public required string Name { get; set; }
+    public string? ImageUrl { get; set; }
+    public string? ImageAltText { get; set; }
 
     /// <summary>Senate / House</summary>
     public required string House { get; set; }
@@ -16,7 +18,7 @@ public class Politician
 
     /// <summary>US state the politician represents.</summary>
     public string? State { get; set; }
-    public string? District { get; set; }
+    public int? District { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
