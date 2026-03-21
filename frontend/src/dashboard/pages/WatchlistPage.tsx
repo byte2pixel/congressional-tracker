@@ -10,9 +10,12 @@ import {
 } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import WatchlistTradesDataGrid from "../components/WatchlistTradesDataGrid";
+import { RouterLink } from "../internals/components/RouterLink";
 import { useWatchlist } from "@/context/WatchlistContext";
 import { Route as StockDetailRoute } from "@/routes/stock_.$symbol";
 import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
+import { Route as StockRoute } from "@/routes/stock";
+import { Route as PoliticianRoute } from "@/routes/politician";
 
 export default function WatchlistPage() {
   const { watchedStocks, watchedPoliticians, removeStock, removePolitician } =
@@ -43,7 +46,9 @@ export default function WatchlistPage() {
               </Typography>
               {watchedStocks.length === 0 ? (
                 <Typography variant="body2" color="text.secondary">
-                  No stocks watched yet. Visit a stock page to add one.
+                  No stocks watched yet. Visit a{" "}
+                  <RouterLink to={StockRoute.to}>stock</RouterLink> page to add
+                  one.
                 </Typography>
               ) : (
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
@@ -81,8 +86,9 @@ export default function WatchlistPage() {
               </Typography>
               {watchedPoliticians.length === 0 ? (
                 <Typography variant="body2" color="text.secondary">
-                  No politicians watched yet. Visit a politician page to add
-                  one.
+                  No politicians watched yet. Visit a{" "}
+                  <RouterLink to={PoliticianRoute.to}>politician</RouterLink>{" "}
+                  page to add one.
                 </Typography>
               ) : (
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
@@ -116,14 +122,14 @@ export default function WatchlistPage() {
       {hasWatchedItems ? (
         <WatchlistTradesDataGrid />
       ) : (
-        <Card variant="outlined">
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              Add stocks or politicians to your watchlist to see their recent
-              trades here.
-            </Typography>
-          </CardContent>
-        </Card>
+        <>
+          <Divider sx={{ mb: 2 }} />
+          <Typography variant="body2" color="text.secondary">
+            Add <RouterLink to={StockRoute.to}>stocks</RouterLink> or{" "}
+            <RouterLink to={PoliticianRoute.to}>politicians</RouterLink> to your
+            watchlist to see their recent trades here.
+          </Typography>
+        </>
       )}
     </Box>
   );
