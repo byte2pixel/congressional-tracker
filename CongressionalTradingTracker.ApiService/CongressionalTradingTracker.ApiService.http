@@ -59,3 +59,8 @@ Content-Type: application/json
 
 GET https://finnhub.io/api/v1/search?q=zzff&exchange=US&token={{finnhub.apiKey}}
 Content-Type: application/json
+
+###
+
+GET https://finnhub.io/api/v1/stock/profile2?symbol=MSC&token={{finnhub.apiKey}}
+Content-Type: application/json

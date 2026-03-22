@@ -2,11 +2,11 @@ using System.Text.Json.Serialization;
 
 namespace CongressionalTradingTracker.Core;
 
-public class FinnhubSymbolLookup
+public class SymbolLookup
 {
     [JsonPropertyName("count")]
     public int Count { get; init; }
 
     [JsonPropertyName("result")]
-    public IReadOnlyList<FinnhubSymbol> Result { get; init; } = [];
+    public IReadOnlyList<SymbolInfo> Result { get; init; } = [];
 }

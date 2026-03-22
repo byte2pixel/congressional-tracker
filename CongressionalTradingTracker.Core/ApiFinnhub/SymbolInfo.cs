@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace CongressionalTradingTracker.Core;
 
-public class FinnhubSymbol
+public class SymbolInfo
 {
     [JsonPropertyName("description")]
     public string Description { get; set; } = string.Empty;
