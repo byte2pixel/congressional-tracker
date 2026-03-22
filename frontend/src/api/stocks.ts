@@ -4,6 +4,10 @@ export interface Stock {
   symbol: string;
   company: string;
   type: string;
+  logo?: string;
+  website?: string;
+  exchange: string;
+  industry: string;
 }
 
 export interface StockTrade {

@@ -5,4 +5,8 @@ public class GetStockResponse
     public required string Symbol { get; set; }
     public required string Company { get; set; }
     public required string Type { get; set; }
+    public string? Website { get; set; }
+    public string? Logo { get; set; }
+    public string Industry { get; set; }
+    public string Exchange { get; set; }
 }

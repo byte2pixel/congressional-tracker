@@ -9,6 +9,10 @@ public class GetStockMapper : ResponseMapper<GetStockResponse, Ticker>
             Symbol = e.Symbol,
             Company = e.Company ?? "Unknown",
             Type = e.TickerType ?? "Unknown",
+            Exchange = e.Exchange,
+            Website = e.Website,
+            Logo = e.Logo,
+            Industry = e.Industry,
         };
     }
 }

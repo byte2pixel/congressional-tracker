@@ -9,6 +9,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Bookmark from "@mui/icons-material/Bookmark";
 import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
+import { Avatar } from "@mui/material";
 import StockTradeStats from "../components/StockTradeStats";
 import StockDetailTradeActivityChart from "../components/StockDetailTradeActivityChart";
 import StockDetailBuySellChart from "../components/StockDetailBuySellChart";
@@ -39,8 +40,15 @@ function StockHeader() {
           spacing={3}
           alignItems={{ sm: "center" }}
         >
-          {/* TODO: replace with stock logo */}
-          <Skeleton variant="circular" width={80} height={80} />
+          {isLoading ? (
+            <Skeleton variant="circular" width={80} height={80} />
+          ) : (
+            <Avatar
+              src={data?.logo ?? "/static/images/avatar/7.jpg"}
+              alt={`${data?.company} logo`}
+              sx={{ width: 80, height: 80 }}
+            />
+          )}
           <Stack spacing={0.5}>
             {isLoading ? (
               <>

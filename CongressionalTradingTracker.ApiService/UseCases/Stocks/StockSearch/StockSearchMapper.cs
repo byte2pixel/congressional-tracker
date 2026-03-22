@@ -9,6 +9,8 @@ public class StockSearchMapper : ResponseMapper<List<StockSearchResponse>, Ticke
             {
                 Symbol = s.Symbol,
                 Company = s.Company ?? s.Symbol,
+                Website = s.Website,
+                Logo = s.Logo,
             })
             .ToList();
     }
