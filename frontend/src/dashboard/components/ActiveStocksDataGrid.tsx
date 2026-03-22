@@ -49,7 +49,6 @@ function ActiveStocksDataGrid() {
         label="Most Active Stocks (By Estimated Volume)"
         showToolbar
         loading={isLoading}
-        checkboxSelection
         rows={getRows}
         columns={columns}
         disableRowSelectionOnClick

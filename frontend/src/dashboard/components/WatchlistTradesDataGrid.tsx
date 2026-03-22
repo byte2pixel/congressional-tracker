@@ -69,7 +69,6 @@ function WatchlistTradesDataGrid() {
         label="Watchlist Trades"
         showToolbar
         loading={isLoading}
-        checkboxSelection
         rows={getRows}
         columns={columns}
         disableColumnSelector

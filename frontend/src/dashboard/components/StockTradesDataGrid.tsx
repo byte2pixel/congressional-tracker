@@ -55,7 +55,6 @@ function StockTradesDataGrid() {
         label="Trade History"
         showToolbar
         loading={isLoading}
-        checkboxSelection
         rows={getRows}
         columns={columns}
         disableRowSelectionOnClick

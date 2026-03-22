@@ -57,7 +57,6 @@ function RecentTradesDataGrid() {
         label="Most Recent Trades"
         showToolbar
         loading={isLoading}
-        checkboxSelection
         rows={getRows}
         columns={columns}
         disableColumnSelector
