@@ -48,7 +48,7 @@ var apiService = builder
 // Configure the frontend service with a reference to the API service
 var frontend = builder
     .AddViteApp("frontend", "../frontend")
-    .WithEndpoint("http", endpointAnnotation => endpointAnnotation.Port = 57788)
+    .WithEndpoint("http", endpointAnnotation => endpointAnnotation.Port = 5174)
     .WithReference(keycloak)
     .WithReference(apiService)
     .WaitFor(apiService);
