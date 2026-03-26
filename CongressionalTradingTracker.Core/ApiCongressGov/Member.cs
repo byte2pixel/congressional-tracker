@@ -8,7 +8,7 @@ public class Member
     public required string BioGuideId { get; set; }
 
     [JsonPropertyName("depiction")]
-    public required Depiction Depiction { get; set; }
+    public Depiction? Depiction { get; set; }
 
     [JsonPropertyName("partyName")]
     public required string PartyName { get; set; }

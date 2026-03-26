@@ -810,7 +810,7 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
             }
 
             if (
-                member.Depiction.Attribution != null
+                member.Depiction?.Attribution != null
                 && politician.ImageAltText != member.Depiction.Attribution
             )
             {
@@ -818,7 +818,10 @@ public class TradeService(TradeDbContext dbContext, ILogger<TradeService> logger
                 dirty = true;
             }
 
-            if (politician.ImageUrl != member.Depiction.ImageUrl)
+            if (
+                member.Depiction?.ImageUrl != null
+                && politician.ImageUrl != member.Depiction.ImageUrl
+            )
             {
                 politician.ImageUrl = member.Depiction.ImageUrl;
                 dirty = true;
