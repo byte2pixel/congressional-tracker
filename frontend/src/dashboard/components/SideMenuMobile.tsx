@@ -1,4 +1,3 @@
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Drawer, { drawerClasses } from "@mui/material/Drawer";
@@ -9,6 +8,7 @@ import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import { useNavigate } from "@tanstack/react-router";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
+import { LazyAvatar } from "./LazyAvatar";
 import { useNotifications } from "@/context/NotificationsContext";
 import useKeycloak from "@/hooks/useKeycloak";
 
@@ -24,7 +24,6 @@ export default function SideMenuMobile({
   const { keycloak, userPicture } = useKeycloak();
   const navigate = useNavigate();
   const { unreadCount } = useNotifications();
-  console.log("token parsed", keycloak?.tokenParsed);
   return (
     <Drawer
       anchor="right"
@@ -68,7 +67,8 @@ export default function SideMenuMobile({
               width: "100%",
             }}
           >
-            <Avatar
+            <LazyAvatar
+              isLoading={!keycloak}
               sizes="small"
               alt={keycloak?.tokenParsed?.preferred_username ?? "Unknown User"}
               src={userPicture ?? "/static/images/avatar/7.jpg"}

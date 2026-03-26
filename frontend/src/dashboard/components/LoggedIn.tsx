@@ -1,5 +1,6 @@
-import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { LazyAvatar } from "./LazyAvatar";
 import useKeycloak from "@/hooks/useKeycloak";
 
 export default function LoggedIn() {
@@ -7,7 +8,8 @@ export default function LoggedIn() {
   return (
     <Stack direction="column" alignItems="end">
       <Stack direction="row" alignItems="center" spacing={2}>
-        <Avatar
+        <LazyAvatar
+          isLoading={!keycloak}
           sizes="small"
           alt={keycloak?.tokenParsed?.preferred_username ?? "Unknown User"}
           src={userPicture ?? "/static/images/avatar/7.jpg"}

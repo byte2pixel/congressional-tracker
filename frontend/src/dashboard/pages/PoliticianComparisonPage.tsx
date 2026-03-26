@@ -15,6 +15,7 @@ import { alpha } from "@mui/material/styles";
 import { formatVolume } from "../internals/utils/format";
 import { PoliticianLink } from "../components/PoliticianLink";
 import { StockLink } from "../components/StockLink";
+import { LazyAvatar } from "../components/LazyAvatar";
 import type { PoliticianTrade } from "@/api/politicians";
 import { usePolitician } from "@/hooks/usePolitician";
 import { usePoliticianTrades } from "@/hooks/usePoliticianTrades";
@@ -191,7 +192,12 @@ function PoliticianColumn({
       <Card variant="outlined">
         <CardContent>
           <Stack direction="row" spacing={2} alignItems="center">
-            <Skeleton variant="circular" width={60} height={60} />
+            <LazyAvatar
+              src={politician?.imageUrl}
+              alt={politician?.name}
+              sx={{ width: 60, height: 60 }}
+              isLoading={politicianLoading}
+            />
             <Stack spacing={0.5}>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Typography variant="h6" fontWeight="bold">

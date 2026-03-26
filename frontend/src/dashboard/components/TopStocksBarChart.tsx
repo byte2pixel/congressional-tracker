@@ -57,7 +57,6 @@ export default function TopStocksBarChart() {
             onAxisClick={(_, context) => {
               if (context?.dataIndex === undefined) return;
               const symbol = symbols[context.dataIndex];
-              console.log("Clicked on symbol:", symbol);
               if (symbol) {
                 void navigate({
                   to: StockDetailsRoute.to,

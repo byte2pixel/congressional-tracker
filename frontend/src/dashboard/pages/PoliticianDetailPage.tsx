@@ -10,12 +10,12 @@ import CardContent from "@mui/material/CardContent";
 import Bookmark from "@mui/icons-material/Bookmark";
 import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
 import { useNavigate } from "@tanstack/react-router";
-import { Avatar } from "@mui/material";
 import PoliticianTradesDataGrid from "../components/PoliticianTradesDataGrid";
 import PoliticianTradeStats from "../components/PoliticianTradeStats";
 import PoliticianDetailBuySellChart from "../components/PoliticianDetailBuySellChart";
 import PoliticianDetailTradeActivityChart from "../components/PoliticianDetailTradeActivityChart";
 import PoliticianSearchCard from "../components/PoliticianSearchCard";
+import { LazyAvatar } from "../components/LazyAvatar";
 import type { Politician } from "@/api/politicians";
 import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 import { usePolitician } from "@/hooks/usePolitician";
@@ -49,15 +49,12 @@ function ProfileHeader() {
           spacing={3}
           alignItems={{ sm: "center" }}
         >
-          {isLoading ? (
-            <Skeleton variant="circular" width={80} height={80} />
-          ) : (
-            <Avatar
-              alt={data?.imageAltText ?? data?.name ?? "Politician Image"}
-              src={data?.imageUrl}
-              sx={{ width: 80, height: 80 }}
-            />
-          )}
+          <LazyAvatar
+            isLoading={isLoading}
+            alt={data?.imageAltText ?? data?.name ?? "Politician Image"}
+            src={data?.imageUrl}
+            sx={{ width: 80, height: 80 }}
+          />
           <Stack spacing={0.5}>
             <Stack direction="row" spacing={1} alignItems="center">
               <Typography variant="h6" fontWeight="bold">

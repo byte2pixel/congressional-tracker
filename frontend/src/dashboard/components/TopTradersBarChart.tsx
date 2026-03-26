@@ -61,7 +61,6 @@ export default function TopTradersBarChart() {
             hideLegend
             onAxisClick={(_, context) => {
               if (context?.dataIndex === undefined) return;
-              console.log("axis clicked with context:", context);
               const bioGuideId = bioGuideIds[context.dataIndex];
               if (bioGuideId) {
                 void navigate({
@@ -71,7 +70,6 @@ export default function TopTradersBarChart() {
               }
             }}
             onItemClick={(_, context) => {
-              console.log("Clicked item with context:", context);
               const bioGuideId = bioGuideIds[context.dataIndex];
               if (bioGuideId) {
                 void navigate({
