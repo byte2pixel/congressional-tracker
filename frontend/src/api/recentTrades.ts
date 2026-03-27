@@ -7,6 +7,7 @@ export interface RecentTrade {
   house: string;
   symbol: string;
   company: string;
+  industry: string;
   transactionDate: string;
   reportDate: string;
   transactionType: string;

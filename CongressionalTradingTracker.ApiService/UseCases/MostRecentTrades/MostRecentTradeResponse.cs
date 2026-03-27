@@ -9,6 +9,7 @@ public class MostRecentTradeResponse
     public required string State { get; set; }
     public required string Symbol { get; set; }
     public required string Company { get; set; }
+    public required string Industry { get; set; }
     public required DateTime TransactionDate { get; set; }
     public required DateTime ReportDate { get; set; }
     public required string TransactionType { get; set; }

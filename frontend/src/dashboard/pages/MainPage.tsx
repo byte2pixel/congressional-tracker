@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 // import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
+import { useMemo } from "react";
 import Copyright from "../internals/components/Copyright";
 // import ChartUserByCountry from "./ChartUserByCountry";
 // import CustomizedDataGrid from "./CustomizedDataGrid";
@@ -14,6 +15,9 @@ import PoliticianSearchCard from "../components/PoliticianSearchCard";
 import StockSearchCard from "../components/StockSearchCard";
 import RecentTradesDataGrid from "../components/RecentTradesDataGrid";
 import ActiveTradersDataGrid from "../components/ActiveTradersDataGrid";
+import TopIndustryPieChart from "../components/TopIndustryPieChart";
+import { formatVolume } from "../internals/utils/format";
+import { useRecentTrades } from "@/hooks/useRecentTrades";
 // import type { StatCardProps } from "./StatCard";
 
 // const data: Array<StatCardProps> = [
@@ -51,6 +55,36 @@ import ActiveTradersDataGrid from "../components/ActiveTradersDataGrid";
 // ];
 
 export default function MainPage() {
+  const { data: recentTrades, isLoading: recentTradesLoading } =
+    useRecentTrades();
+
+  const topIndustriesByCount = useMemo(() => {
+    if (!recentTrades) return [];
+    const industryCounts: Record<string, number> = {};
+    recentTrades.forEach((trade) => {
+      const industry = trade.industry || "Unknown";
+      industryCounts[industry] = (industryCounts[industry] || 0) + 1;
+    });
+    return Object.entries(industryCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([label, value]) => ({ label, value }));
+  }, [recentTrades]);
+
+  const topIndustriesByVolume = useMemo(() => {
+    if (!recentTrades) return [];
+    const industryVolumes: Record<string, number> = {};
+    recentTrades.forEach((trade) => {
+      const industry = trade.industry || "Unknown";
+      industryVolumes[industry] =
+        (industryVolumes[industry] || 0) + trade.amount;
+    });
+    return Object.entries(industryVolumes)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([label, value]) => ({ label, value }));
+  }, [recentTrades]);
+
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       {/* cards */}
@@ -80,6 +114,24 @@ export default function MainPage() {
         columns={12}
         sx={{ mb: (theme) => theme.spacing(2) }}
       >
+        <Grid size={{ xs: 12, md: 6 }}>
+          <TopIndustryPieChart
+            title="Top Industries by Trade Count"
+            subtitle="Top 10 industries"
+            data={topIndustriesByCount}
+            isLoading={recentTradesLoading}
+            valueFormatter={(value) => value.toString()}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <TopIndustryPieChart
+            title="Top Industries by Trade Volume"
+            subtitle="Top 10 industries"
+            data={topIndustriesByVolume}
+            isLoading={recentTradesLoading}
+            valueFormatter={formatVolume}
+          />
+        </Grid>
         <Grid size={{ xs: 12 }}>
           <RecentTradesDataGrid />
         </Grid>

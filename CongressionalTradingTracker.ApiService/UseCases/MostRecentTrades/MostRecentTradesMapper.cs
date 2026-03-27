@@ -16,6 +16,7 @@ public class MostRecentTradesMapper : ResponseMapper<List<MostRecentTradeRespons
                 State = t.Politician.State ?? "Unknown",
                 Symbol = t.Ticker.Symbol,
                 Company = t.Ticker.Company ?? t.Ticker.Symbol,
+                Industry = t.Ticker.Industry,
                 TransactionDate = t.TransactionDate,
                 ReportDate = t.ReportDate,
                 TransactionType = t.Transaction,
