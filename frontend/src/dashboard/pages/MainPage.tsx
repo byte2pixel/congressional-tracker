@@ -1,58 +1,17 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
 import { useMemo } from "react";
-import Copyright from "../internals/components/Copyright";
-// import ChartUserByCountry from "./ChartUserByCountry";
-// import CustomizedDataGrid from "./CustomizedDataGrid";
-// import HighlightedCard from "./HighlightedCard";
-// import PageViewsBarChart from "./PageViewsBarChart";
-// import SessionsChart from "./SessionsChart";
-// import StatCard from "./StatCard";
 import PoliticianSearchCard from "../components/PoliticianSearchCard";
 import StockSearchCard from "../components/StockSearchCard";
 import RecentTradesDataGrid from "../components/RecentTradesDataGrid";
 import ActiveTradersDataGrid from "../components/ActiveTradersDataGrid";
 import TopIndustryPieChart from "../components/TopIndustryPieChart";
+import LiveStatCard from "../components/LiveStatCard";
 import { formatVolume } from "../internals/utils/format";
 import { useRecentTrades } from "@/hooks/useRecentTrades";
-// import type { StatCardProps } from "./StatCard";
-
-// const data: Array<StatCardProps> = [
-//   {
-//     title: "Total Trades",
-//     value: "1,245",
-//     interval: "This Session",
-//     trend: "up",
-//     data: [
-//       200, 24, 220, 260, 240, 380, 100, 240, 280, 240, 300, 340, 320, 360, 340,
-//       380, 360, 400, 380, 420, 400, 640, 340, 460, 440, 480, 460, 600, 880, 920,
-//     ],
-//   },
-//   {
-//     title: "Insider Buys",
-//     value: "312",
-//     interval: "This Month",
-//     trend: "up",
-//     data: [
-//       1640, 1250, 970, 1130, 1050, 900, 720, 1080, 900, 450, 920, 820, 840, 600,
-//       820, 780, 800, 760, 380, 740, 660, 620, 840, 500, 520, 480, 400, 360, 300,
-//       220,
-//     ],
-//   },
-//   {
-//     title: "Politicians Tracked",
-//     value: "538",
-//     interval: "All Time",
-//     trend: "neutral",
-//     data: [
-//       500, 400, 510, 530, 520, 600, 530, 520, 510, 730, 520, 510, 530, 620, 510,
-//       530, 520, 410, 530, 520, 610, 530, 520, 610, 530, 420, 510, 430, 520, 510,
-//     ],
-//   },
-// ];
+import Copyright from "../internals/components/Copyright";
 
 export default function MainPage() {
   const { data: recentTrades, isLoading: recentTradesLoading } =
@@ -85,6 +44,79 @@ export default function MainPage() {
       .map(([label, value]) => ({ label, value }));
   }, [recentTrades]);
 
+  // Daily trade volume sparkline
+  const dailyVolumeStat = useMemo(() => {
+    if (!recentTrades || recentTrades.length === 0)
+      return { value: "$0", trendLabel: "0%", trend: "neutral" as const, data: [], xLabels: [] };
+
+    const byDay: Record<string, number> = {};
+    recentTrades.forEach((trade) => {
+      const day = trade.transactionDate.slice(0, 10);
+      byDay[day] = (byDay[day] || 0) + trade.amount;
+    });
+
+    const sorted = Object.entries(byDay).sort(([a], [b]) => a.localeCompare(b));
+    const data = sorted.map(([, v]) => v);
+    const xLabels = sorted.map(([d]) => {
+      const date = new Date(d + "T00:00:00");
+      return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    });
+
+    const total = data.reduce((s, v) => s + v, 0);
+    const half = Math.floor(data.length / 2);
+    const firstHalf = data.slice(0, half).reduce((s, v) => s + v, 0);
+    const secondHalf = data.slice(half).reduce((s, v) => s + v, 0);
+    const pct = firstHalf > 0 ? ((secondHalf - firstHalf) / firstHalf) * 100 : 0;
+    let trend: "up" | "down" | "neutral" = "neutral";
+    if (pct > 2) trend = "up";
+    else if (pct < -2) trend = "down";
+    const sign = pct >= 0 ? "+" : "";
+
+    return {
+      value: formatVolume(total),
+      trendLabel: `${sign}${pct.toFixed(0)}%`,
+      trend,
+      data,
+      xLabels,
+    };
+  }, [recentTrades]);
+
+  // Daily buy ratio sparkline
+  const buyRatioStat = useMemo(() => {
+    if (!recentTrades || recentTrades.length === 0)
+      return { value: "0%", trendLabel: "Neutral", trend: "neutral" as const, data: [], xLabels: [] };
+
+    const byDay: Record<string, { buys: number; total: number }> = {};
+    recentTrades.forEach((trade) => {
+      const day = trade.transactionDate.slice(0, 10);
+      if (!byDay[day]) byDay[day] = { buys: 0, total: 0 };
+      byDay[day].total += 1;
+      if (trade.transactionType.startsWith("P")) byDay[day].buys += 1;
+    });
+
+    const sorted = Object.entries(byDay).sort(([a], [b]) => a.localeCompare(b));
+    const data = sorted.map(([, v]) => Math.round((v.buys / v.total) * 100));
+    const xLabels = sorted.map(([d]) => {
+      const date = new Date(d + "T00:00:00");
+      return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    });
+
+    const totalBuys = recentTrades.filter((t) => t.transactionType.startsWith("P")).length;
+    const overallPct = Math.round((totalBuys / recentTrades.length) * 100);
+
+    let trend: "up" | "down" | "neutral" = "neutral";
+    if (overallPct > 55) trend = "up";
+    else if (overallPct < 45) trend = "down";
+
+    return {
+      value: `${overallPct}% Buys`,
+      trendLabel: `${recentTrades.length - totalBuys} Sells`,
+      trend,
+      data,
+      xLabels,
+    };
+  }, [recentTrades]);
+
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       {/* cards */}
@@ -114,6 +146,29 @@ export default function MainPage() {
         columns={12}
         sx={{ mb: (theme) => theme.spacing(2) }}
       >
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <LiveStatCard
+            title="Trade Volume"
+            value={dailyVolumeStat.value}
+            interval="All synced trades, grouped by day"
+            trend={dailyVolumeStat.trend}
+            trendLabel={dailyVolumeStat.trendLabel}
+            data={dailyVolumeStat.data}
+            xLabels={dailyVolumeStat.xLabels}
+            valueFormatter={(v) => (v == null ? "" : formatVolume(v))}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <LiveStatCard
+            title="Buy / Sell Ratio"
+            value={buyRatioStat.value}
+            interval="% of trades that are purchases, per day"
+            trend={buyRatioStat.trend}
+            trendLabel={buyRatioStat.trendLabel}
+            data={buyRatioStat.data}
+            xLabels={buyRatioStat.xLabels}
+          />
+        </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <TopIndustryPieChart
             title="Top Industries by Trade Count"
