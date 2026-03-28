@@ -2,7 +2,7 @@ import * as React from "react";
 import { useMemo } from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useDrawingArea } from "@mui/x-charts/hooks";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -10,8 +10,6 @@ import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useActiveTraders } from "@/hooks/useActiveTraders";
-
-const colors = ["hsl(220, 20%, 55%)", "hsl(220, 20%, 35%)"];
 
 const StyledText = styled("text")(({ theme }) => ({
   textAnchor: "middle",
@@ -42,6 +40,14 @@ function PieCenterLabel({ total }: { total: number }) {
 }
 
 export default function HouseSenateChart() {
+  const theme = useTheme();
+  const colors = [
+    theme.palette.primary.main,
+    theme.palette.error.main,
+    theme.palette.grey[500],
+    "hsl(220, 20%, 55%)",
+    "hsl(220, 20%, 35%)",
+  ];
   const { data, isLoading } = useActiveTraders();
 
   const { pieData, total } = useMemo(() => {
@@ -50,10 +56,56 @@ export default function HouseSenateChart() {
     const senateCount = data.filter((t) => t.house === "Senate").length;
     return {
       pieData: [
-        { label: "House", value: houseCount },
-        { label: "Senate", value: senateCount },
+        { label: "House", value: houseCount, color: colors[3] },
+        { label: "Senate", value: senateCount, color: colors[4] },
       ],
       total: data.length,
+    };
+  }, [data]);
+
+  const { pieData2 } = useMemo(() => {
+    if (!data) return { pieData2: [] };
+    const senateDemocrats = data.filter(
+      (t) => t.house === "Senate" && t.party === "Democratic",
+    ).length;
+    const senateRepublicans = data.filter(
+      (t) => t.house === "Senate" && t.party === "Republican",
+    ).length;
+    const senateOthers = data.filter(
+      (t) =>
+        t.house === "Senate" &&
+        t.party !== "Democratic" &&
+        t.party !== "Republican",
+    ).length;
+    const houseDemocrats = data.filter(
+      (t) => t.house === "Representatives" && t.party === "Democratic",
+    ).length;
+    const houseRepublicans = data.filter(
+      (t) => t.house === "Representatives" && t.party === "Republican",
+    ).length;
+    const houseOthers = data.filter(
+      (t) =>
+        t.house === "Representatives" &&
+        t.party !== "Democratic" &&
+        t.party !== "Republican",
+    ).length;
+    return {
+      pieData2: [
+        { label: "House Democrats", value: houseDemocrats, color: colors[0] },
+        {
+          label: "House Republicans",
+          value: houseRepublicans,
+          color: colors[1],
+        },
+        { label: "House Others", value: houseOthers, color: colors[2] },
+        { label: "Senate Democrats", value: senateDemocrats, color: colors[0] },
+        {
+          label: "Senate Republicans",
+          value: senateRepublicans,
+          color: colors[1],
+        },
+        { label: "Senate Others", value: senateOthers, color: colors[2] },
+      ],
     };
   }, [data]);
 
@@ -86,12 +138,18 @@ export default function HouseSenateChart() {
             }}
           >
             <PieChart
-              colors={colors}
               series={[
                 {
                   data: pieData,
-                  innerRadius: 60,
-                  outerRadius: 85,
+                  innerRadius: 50,
+                  outerRadius: 65,
+                  paddingAngle: 2,
+                  highlightScope: { fade: "global", highlight: "item" },
+                },
+                {
+                  data: pieData2,
+                  innerRadius: 70,
+                  outerRadius: 100,
                   paddingAngle: 2,
                   highlightScope: { fade: "global", highlight: "item" },
                 },
@@ -116,7 +174,7 @@ export default function HouseSenateChart() {
                       width: 10,
                       height: 10,
                       borderRadius: "50%",
-                      bgcolor: colors[i],
+                      bgcolor: colors[i + 2],
                     }}
                   />
                   <Typography variant="caption">

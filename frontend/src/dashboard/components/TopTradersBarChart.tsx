@@ -5,17 +5,26 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { useNavigate } from "@tanstack/react-router";
+import { useTheme } from "@mui/material";
 import { Gradient } from "../internals/components/Gradient";
 import { formatVolume } from "../internals/utils/format";
 import { useActiveTraders } from "@/hooks/useActiveTraders";
 import { Route as PoliticianDetailRoute } from "@/routes/politician_.$bioguideid";
 
 export default function TopTradersBarChart() {
+  const theme = useTheme();
   const { data, isLoading } = useActiveTraders();
   const navigate = useNavigate();
 
-  const { names, volumes, bioGuideIds } = useMemo(() => {
-    if (!data) return { names: [], volumes: [], bioGuideIds: [] };
+  const partyColors = {
+    Democrat: theme.palette.primary.main,
+    Republican: theme.palette.error.main,
+    Other: theme.palette.grey[500],
+  };
+
+  const { names, volumes, bioGuideIds, partyColor } = useMemo(() => {
+    if (!data)
+      return { names: [], volumes: [], bioGuideIds: [], partyColor: [] };
     const top10 = [...data]
       .sort((a, b) => b.totalEstimatedVolume - a.totalEstimatedVolume)
       .slice(0, 10);
@@ -27,6 +36,13 @@ export default function TopTradersBarChart() {
       }),
       volumes: v,
       bioGuideIds: top10.map((t) => t.bioGuideId),
+      partyColor: top10.map((t) =>
+        t.party === "Democratic"
+          ? partyColors.Democrat
+          : t.party === "Republican"
+            ? partyColors.Republican
+            : partyColors.Other,
+      ),
     };
   }, [data]);
 
@@ -41,7 +57,17 @@ export default function TopTradersBarChart() {
         ) : (
           <BarChart
             layout="horizontal"
-            yAxis={[{ scaleType: "band", data: names, width: 80 }]}
+            yAxis={[
+              {
+                scaleType: "band",
+                data: names,
+                width: 80,
+                colorMap: {
+                  type: "ordinal",
+                  colors: partyColor,
+                },
+              },
+            ]}
             xAxis={[
               {
                 valueFormatter: (value: number) => formatVolume(value, 1),
@@ -52,7 +78,8 @@ export default function TopTradersBarChart() {
               {
                 data: volumes,
                 label: "Est. Volume",
-                color: `url(#my-gradient)`,
+                valueFormatter: (value: number | null) =>
+                  formatVolume(value ?? 0, 1),
               },
             ]}
             height={320}
