@@ -1,6 +1,8 @@
 import type { MostActiveStock } from "@/api/mostActiveStocks";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { StockLink } from "@/dashboard/components/StockLink";
+import { formatVolume } from "../utils/format";
+import { CellTypographyAmount } from "../components/CellTypographyAmount";
 
 export const rows = (stocks: Array<MostActiveStock>): GridRowsProp => {
   return stocks.map((stock, index) => ({
@@ -75,11 +77,7 @@ export const columns: Array<GridColDef> = [
     minWidth: 120,
     renderCell: (params) => {
       const amount: number = params.value;
-      return `$${amount.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`;
+      return <CellTypographyAmount amount={formatVolume(amount)} />;
     },
   },
 ];
-

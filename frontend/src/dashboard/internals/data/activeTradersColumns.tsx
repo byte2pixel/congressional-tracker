@@ -2,6 +2,7 @@ import { CellTypographyAmount } from "../components/CellTypographyAmount";
 import type { ActiveTrader } from "@/api/activeTraders";
 import type { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { PoliticianLink } from "@/dashboard/components/PoliticianLink";
+import { formatVolume } from "../utils/format";
 
 export const rows = (traders: Array<ActiveTrader>): GridRowsProp => {
   return traders.map((trader, index) => ({
@@ -67,11 +68,7 @@ export const columns: Array<GridColDef> = [
     flex: 1,
     renderCell: (params) => {
       const amount = params.value;
-      // padded to 2 decimal places.
-      const formatted = `$${amount.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`;
+      const formatted = formatVolume(amount);
       return <CellTypographyAmount amount={formatted} />;
     },
   },
