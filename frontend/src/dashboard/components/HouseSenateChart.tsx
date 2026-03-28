@@ -118,7 +118,9 @@ export default function HouseSenateChart() {
         height: "100%",
       }}
     >
-      <CardContent>
+      <CardContent
+        sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
+      >
         <Typography component="h2" variant="subtitle2" gutterBottom>
           Chamber Breakdown
         </Typography>
@@ -135,6 +137,7 @@ export default function HouseSenateChart() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              height: "100%",
             }}
           >
             <PieChart
@@ -161,7 +164,7 @@ export default function HouseSenateChart() {
             >
               <PieCenterLabel total={total} />
             </PieChart>
-            <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
+            <Stack direction="row" spacing={3}>
               {pieData.map((item, i) => (
                 <Stack
                   key={item.label}
