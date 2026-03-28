@@ -7,6 +7,7 @@ public class GetStockTradesResponse
     public required string Party { get; set; }
     public required string House { get; set; }
     public required string State { get; set; }
+    public required DateTime ReportDate { get; set; }
     public required DateTime TransactionDate { get; set; }
     public required string TransactionType { get; set; }
     public required decimal Amount { get; set; }

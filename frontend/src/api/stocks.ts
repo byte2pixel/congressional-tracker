@@ -16,6 +16,7 @@ export interface StockTrade {
   party: string;
   house: string;
   state: string;
+  reportDate: string;
   transactionDate: string;
   transactionType: string;
   amount: number;
