@@ -16,21 +16,11 @@ export default function PoliticianDetailTradeActivityChart() {
 
   const colorPalette = [theme.palette.success.main, theme.palette.error.main];
 
-  // group trades by month and count purchases vs sales
   const monthlyData = useMemo(() => {
     if (!data) return [];
     const monthlyCounts: Record<string, { purchases: number; sales: number }> =
       {};
     data.forEach((trade) => {
-      // use only the last 24 months of data
-      // if (
-      //   trade.transactionDate <
-      //   new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000)
-      //     .toISOString()
-      //     .slice(0, 10)
-      // ) {
-      //   return;
-      // }
       const month = trade.transactionDate.slice(0, 7); // YYYY-MM
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -44,7 +34,7 @@ export default function PoliticianDetailTradeActivityChart() {
         monthlyCounts[month].sales += 1;
       }
     });
-    // convert to array and sort by month
+    
     return Object.entries(monthlyCounts)
       .map(([month, counts]) => ({
         month,
