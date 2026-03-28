@@ -103,9 +103,6 @@ export default function StockDetailTradeActivityChart() {
                   label: "Purchase Volume",
                   showMark: false,
                   curve: "linear",
-                  stack: "total",
-                  area: true,
-                  stackOrder: "ascending",
                 },
                 {
                   id: "sales",
@@ -113,9 +110,6 @@ export default function StockDetailTradeActivityChart() {
                   label: "Sale Volume",
                   showMark: false,
                   curve: "linear",
-                  stack: "total",
-                  area: true,
-                  stackOrder: "descending",
                 },
               ]}
               sx={{ marginRight: 6 }}

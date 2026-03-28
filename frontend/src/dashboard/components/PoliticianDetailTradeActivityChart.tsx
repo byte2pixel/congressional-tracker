@@ -23,14 +23,14 @@ export default function PoliticianDetailTradeActivityChart() {
       {};
     data.forEach((trade) => {
       // use only the last 24 months of data
-      if (
-        trade.transactionDate <
-        new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000)
-          .toISOString()
-          .slice(0, 10)
-      ) {
-        return;
-      }
+      // if (
+      //   trade.transactionDate <
+      //   new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000)
+      //     .toISOString()
+      //     .slice(0, 10)
+      // ) {
+      //   return;
+      // }
       const month = trade.transactionDate.slice(0, 7); // YYYY-MM
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -87,9 +87,10 @@ export default function PoliticianDetailTradeActivityChart() {
                   label: "Purchases",
                   showMark: false,
                   curve: "linear",
-                  stack: "total",
-                  area: true,
-                  stackOrder: "ascending",
+                  labelMarkType: "circle",
+                  // stack: "total",
+                  // area: true,
+                  // stackOrder: "ascending",
                 },
                 {
                   id: "sales",
@@ -97,9 +98,10 @@ export default function PoliticianDetailTradeActivityChart() {
                   label: "Sales",
                   showMark: false,
                   curve: "linear",
-                  stack: "total",
-                  area: true,
-                  stackOrder: "descending",
+                  labelMarkType: "circle",
+                  // stack: "total",
+                  // area: true,
+                  // stackOrder: "descending",
                 },
               ]}
             />
