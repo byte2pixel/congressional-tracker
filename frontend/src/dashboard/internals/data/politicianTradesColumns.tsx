@@ -11,6 +11,7 @@ export const rows = (trades: Array<PoliticianTrade>): GridRowsProp => {
     id: index,
     symbol: trade.symbol,
     company: trade.company,
+    reportDate: trade.reportDate,
     transactionDate: trade.transactionDate,
     transactionType: trade.transactionType,
     amount: trade.amount,
@@ -38,6 +39,21 @@ export const columns: Array<GridColDef> = [
         sx={{ fontWeight: "normal" }}
       />
     ),
+  },
+  {
+    field: "reportDate",
+    headerName: "Report Date",
+    headerAlign: "right",
+    align: "right",
+    flex: 1,
+    renderCell: (params) => {
+      const date = new Date(params.value);
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    },
   },
   {
     field: "transactionDate",

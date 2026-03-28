@@ -11,6 +11,7 @@ public class GetPoliticianTradesMapper
         var response = e.Select(t => new GetPoliticianTradesResponse
             {
                 Symbol = t.Ticker.Symbol,
+                ReportDate = t.ReportDate,
                 TransactionDate = t.TransactionDate,
                 Amount = t.Amount,
                 TransactionType = t.Transaction,

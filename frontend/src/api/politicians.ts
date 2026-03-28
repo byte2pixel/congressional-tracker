@@ -14,6 +14,7 @@ export interface Politician {
 export interface PoliticianTrade {
   symbol: string;
   company: string;
+  reportDate: string;
   transactionDate: string;
   transactionType: string;
   amount: number;

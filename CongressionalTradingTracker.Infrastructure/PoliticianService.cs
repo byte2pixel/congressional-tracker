@@ -22,7 +22,7 @@ public class PoliticianService(TradeDbContext dbContext) : IPoliticianService
     public Task<Politician?> GetPoliticianTrades(string bioGuideId, CancellationToken ct)
     {
         return dbContext
-            .Politicians.Include(p => p.Trades)
+            .Politicians.Include(p => p.Trades.OrderByDescending(t => t.ReportDate))
                 .ThenInclude(t => t.Ticker)
             .Where(p => p.BioGuideId == bioGuideId)
             .FirstOrDefaultAsync(ct);
